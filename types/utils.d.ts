@@ -44,3 +44,15 @@ export function parseFoldersToGlobs(
  * @param {any} value
  */
 export function jsonStringifyReplacerSortKeys(_: string, value: any): any;
+/**
+ * Recursively find all files matching the wanted patterns and not matching exclude patterns
+ * @param {string[]} wanted - Glob patterns for files to include
+ * @param {string[]} exclude - Glob patterns for files to exclude
+ * @param {string} baseDir - Base directory to start searching from
+ * @returns {string[]} Array of absolute file paths
+ */
+export function findAllMatchingFiles(
+  wanted: string[],
+  exclude: string[],
+  baseDir: string,
+): string[];

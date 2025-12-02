@@ -1,7 +1,8 @@
-const { resolve } = require('path');
-const { statSync } = require('fs');
+const { resolve, join } = require('path');
+const { statSync, readdirSync, existsSync } = require('fs');
 
 const normalizePath = require('normalize-path');
+const { isMatch } = require('micromatch');
 
 /**
  * @template T
@@ -109,9 +110,55 @@ const jsonStringifyReplacerSortKeys = (_, value) => {
     : value;
 };
 
+/**
+ * Recursively find all files matching the wanted patterns and not matching exclude patterns
+ * @param {string[]} wanted - Glob patterns for files to include
+ * @param {string[]} exclude - Glob patterns for files to exclude
+ * @param {string} baseDir - Base directory to start searching from
+ * @returns {string[]} Array of absolute file paths
+ */
+function findAllMatchingFiles(wanted, exclude, baseDir) {
+  /** @type {string[]} */
+  const files = [];
+
+  /**
+   * @param {string} dir
+   */
+  function walkDirectory(dir) {
+    if (!existsSync(dir)) {
+      return;
+    }
+
+    let entries;
+    try {
+      entries = readdirSync(dir, { withFileTypes: true });
+    } catch (error) {
+      return;
+    }
+
+    for (const entry of entries) {
+      const fullPath = normalizePath(join(dir, entry.name));
+
+      if (!isMatch(fullPath, exclude, { dot: true })) {
+        if (entry.isDirectory()) {
+          walkDirectory(fullPath);
+        } else if (entry.isFile()) {
+          if (isMatch(fullPath, wanted, { dot: true })) {
+            files.push(fullPath);
+          }
+        }
+      }
+    }
+  }
+
+  walkDirectory(baseDir);
+  return files;
+}
+
 module.exports = {
   arrify,
   parseFiles,
   parseFoldersToGlobs,
   jsonStringifyReplacerSortKeys,
+  findAllMatchingFiles,
 };
