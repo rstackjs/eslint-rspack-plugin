@@ -1,15 +1,11 @@
 const { isAbsolute, join } = require('path');
 
+const { globSync } = require('tinyglobby');
 const { isMatch } = require('micromatch');
 
 const { getOptions } = require('./options');
 const linter = require('./linter');
-const {
-  arrify,
-  parseFiles,
-  parseFoldersToGlobs,
-  findAllMatchingFiles,
-} = require('./utils');
+const { arrify, parseFiles, parseFoldersToGlobs } = require('./utils');
 
 /** @typedef {import('webpack').Compiler} Compiler */
 /** @typedef {import('webpack').Module} Module */
@@ -110,7 +106,7 @@ class ESLintWebpackPlugin {
 
       const shouldLintAllFiles = this.options.lintAllMatchingFiles;
       const allMatchingFiles = shouldLintAllFiles
-        ? findAllMatchingFiles(wanted, exclude, this.getContext(compiler))
+        ? globSync(wanted, { dot: true, ignore: exclude })
         : [];
 
       // Need to register a finishModules hook first.
