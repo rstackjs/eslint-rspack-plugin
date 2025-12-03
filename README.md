@@ -241,12 +241,12 @@ type lintDirtyModulesOnly = boolean;
 
 Lint only changed files, skip lint on start.
 
-### `lintAllMatchingFiles`
+### `lintAllFiles`
 
 - Type:
 
 ```ts
-type lintAllMatchingFiles = boolean;
+type lintAllFiles = boolean;
 ```
 
 - Default: `false`

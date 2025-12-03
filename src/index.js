@@ -104,7 +104,7 @@ class ESLintWebpackPlugin {
       /** @type {string[]} */
       const files = [];
 
-      const shouldLintAllFiles = this.options.lintAllMatchingFiles;
+      const shouldLintAllFiles = this.options.lintAllFiles;
       const allMatchingFiles = shouldLintAllFiles
         ? globSync(wanted, { dot: true, ignore: exclude })
         : [];
