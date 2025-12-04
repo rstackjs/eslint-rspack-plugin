@@ -7,8 +7,8 @@ export default (entry, pluginConf = {}, webpackConf = {}) => {
 
   /**
    * Entry supports two formats:
-   * - Simple: 'error' → './error-entry.js' in 'fixtures/'
-   * - Subdirectory: 'lint-all-files/entry' → './entry.js' in 'fixtures/lint-all-files/'
+   * - Simple: 'error' -> './error-entry.js' in 'fixtures/'
+   * - Subdirectory: 'lint-all-files/entry' -> './entry.js' in 'fixtures/lint-all-files/'
    */
   const [dirOrEntry, file] = entry.split('/');
   const entryFile = file ? `./${file}.js` : `./${dirOrEntry}-entry.js`;
