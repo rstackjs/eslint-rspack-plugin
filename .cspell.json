@@ -12,7 +12,9 @@
     "checkstyle",
     "commitlint",
     "indentifiers",
-    "rspack"
+    "rspack",
+    "rsbuild",
+    "tinyglobby"
   ],
 
   "ignorePaths": [

@@ -1,5 +1,6 @@
 const { isAbsolute, join } = require('path');
 
+const { globSync } = require('tinyglobby');
 const { isMatch } = require('micromatch');
 
 const { getOptions } = require('./options');
@@ -103,11 +104,16 @@ class ESLintWebpackPlugin {
       /** @type {string[]} */
       const files = [];
 
+      const shouldLintAllFiles = this.options.lintAllFiles;
+      const allMatchingFiles = shouldLintAllFiles
+        ? globSync(wanted, { dot: true, ignore: exclude })
+        : [];
+
       // Need to register a finishModules hook first.
       // The linter is an asynchronous operation, which will cause subsequent hooks to fail to be registered.
       // Maybe this is caused by the call optimization of rspack?
       compilation.hooks.finishModules.tap(this.key, (modules) => {
-        if (!this.options.lintDirtyModulesOnly) {
+        if (!this.options.lintDirtyModulesOnly && !shouldLintAllFiles) {
           for (const m of modules) {
             addFile(m);
           }
@@ -158,7 +164,14 @@ class ESLintWebpackPlugin {
       // Lint all files added
       // DIFF: use seal hook to make sure built modules exists
       compilation.hooks.seal.tap(this.key, () => {
-        if (this.options.lintDirtyModulesOnly) {
+        if (shouldLintAllFiles) {
+          for (const file of allMatchingFiles) {
+            if (!files.includes(file)) {
+              files.push(file);
+              if (threads > 1) lint(file);
+            }
+          }
+        } else if (this.options.lintDirtyModulesOnly) {
           // compatible with old rspack which not support built modules
           if (compilation.builtModules) {
             for (const m of /** @type {Set<Module>} */ (

@@ -22,6 +22,7 @@ export type PluginOptions = {
   fix?: boolean | undefined;
   formatter?: (string | FormatterFunction) | undefined;
   lintDirtyModulesOnly?: boolean | undefined;
+  lintAllFiles?: boolean | undefined;
   quiet?: boolean | undefined;
   outputReport?: OutputReport | undefined;
   threads?: (number | boolean) | undefined;
@@ -57,6 +58,7 @@ export type Options = PluginOptions & ESLintOptions;
  * @property {boolean=} fix
  * @property {string|FormatterFunction=} formatter
  * @property {boolean=} lintDirtyModulesOnly
+ * @property {boolean=} lintAllFiles
  * @property {boolean=} quiet
  * @property {OutputReport=} outputReport
  * @property {number|boolean=} threads

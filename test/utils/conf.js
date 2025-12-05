@@ -5,9 +5,18 @@ import ESLintPlugin from '../../src';
 export default (entry, pluginConf = {}, webpackConf = {}) => {
   const testDir = join(__dirname, '..');
 
+  /**
+   * Entry supports two formats:
+   * - Simple: 'error' -> './error-entry.js' in 'fixtures/'
+   * - Subdirectory: 'lint-all-files/entry' -> './entry.js' in 'fixtures/lint-all-files/'
+   */
+  const [dirOrEntry, file] = entry.split('/');
+  const entryFile = file ? `./${file}.js` : `./${dirOrEntry}-entry.js`;
+  const contextPath = join(testDir, 'fixtures', file ? dirOrEntry : '');
+
   return {
-    entry: `./${entry}-entry.js`,
-    context: join(testDir, 'fixtures'),
+    entry: entryFile,
+    context: contextPath,
     mode: 'development',
     output: {
       path: join(testDir, 'output'),

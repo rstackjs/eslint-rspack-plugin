@@ -58,6 +58,10 @@
       "description": "Lint only changed files, skip lint on start.",
       "type": "boolean"
     },
+    "lintAllFiles": {
+      "description": "Lint all files matching the `files` and `extensions` patterns, regardless of whether they are part of the compilation. Useful for multi-environment builds where you want to check the entire codebase.",
+      "type": "boolean"
+    },
     "quiet": {
       "description": "Will process and report errors only and ignore warnings, if set to `true`.",
       "type": "boolean"

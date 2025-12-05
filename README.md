@@ -241,6 +241,23 @@ type lintDirtyModulesOnly = boolean;
 
 Lint only changed files, skip lint on start.
 
+### `lintAllFiles`
+
+- Type:
+
+```ts
+type lintAllFiles = boolean;
+```
+
+- Default: `false`
+
+Lint all files matching the `files` and `extensions` patterns, regardless of whether they are part of the compilation.
+
+> [!TIP]
+> This option is particularly useful for multi-environment builds (e.g., Rsbuild/Rspack with separate client and server environments) where you want to ensure all files in your codebase are linted, not just the ones included in each environment's dependency graph.
+>
+> Enabling this option will run a single ESLint instance to check all files rather than running separate ESLint instances for each environment.
+
 ### `threads`
 
 - Type:

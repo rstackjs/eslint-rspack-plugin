@@ -33,6 +33,7 @@ const schema = require('./options.json');
  * @property {boolean=} fix
  * @property {string|FormatterFunction=} formatter
  * @property {boolean=} lintDirtyModulesOnly
+ * @property {boolean=} lintAllFiles
  * @property {boolean=} quiet
  * @property {OutputReport=} outputReport
  * @property {number|boolean=} threads
