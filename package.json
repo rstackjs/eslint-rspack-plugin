@@ -39,7 +39,7 @@
     "pretest": "npm run lint",
     "test": "npm run test:coverage",
     "prepare": "npm run build",
-    "release": "standard-version"
+    "bump": "npx bumpp"
   },
   "files": [
     "dist",
