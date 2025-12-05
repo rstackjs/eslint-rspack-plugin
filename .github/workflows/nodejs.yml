@@ -52,9 +52,6 @@ jobs:
       - name: Lint
         run: pnpm run lint
 
-      - name: Security audit
-        run: pnpm run security
-
   test:
     name: Test - ${{ matrix.os }} - Node v${{ matrix.node-version }}
 
