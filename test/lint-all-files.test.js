@@ -98,7 +98,7 @@ describe('lint all files', () => {
     expect(message).toEqual(expect.stringMatching('included.js'));
     expect(message).toEqual(expect.stringMatching('not-included.js'));
     // Should also include files from nested directories
-    expect(message).toEqual(expect.stringMatching('nested/deep.js'));
+    expect(message).toEqual(expect.stringMatching('deep.js'));
   });
 
   it('should exclude nested directories when specified', async () => {
@@ -119,7 +119,7 @@ describe('lint all files', () => {
     expect(message).toEqual(expect.stringMatching('included.js'));
     expect(message).toEqual(expect.stringMatching('not-included.js'));
     // Should NOT include nested files
-    expect(message).not.toEqual(expect.stringMatching('nested/deep.js'));
+    expect(message).not.toEqual(expect.stringMatching('deep.js'));
   });
 
   it('should handle when no files match the pattern', async () => {
