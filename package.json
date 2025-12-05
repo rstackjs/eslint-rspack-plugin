@@ -39,7 +39,7 @@
     "pretest": "pnpm run lint",
     "test": "pnpm run test:coverage",
     "prepare": "pnpm run build",
-    "release": "standard-version"
+    "bump": "npx bumpp"
   },
   "packageManager": "pnpm@10.17.1",
   "files": [

@@ -12,7 +12,7 @@
 
 # eslint-rspack-plugin
 
-> This is eslint-rspack-plugin which works only with rspack . Fork from the [eslint-webpack-plugin](https://github.com/webpack-contrib/eslint-webpack-plugin/).
+> This is eslint-rspack-plugin which works only with Rspack. Forked from the [eslint-webpack-plugin](https://github.com/webpack-contrib/eslint-webpack-plugin/).
 
 This plugin uses [`eslint`](https://eslint.org/) to find and fix problems in your JavaScript code
 
