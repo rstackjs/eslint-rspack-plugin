@@ -1,20 +1,18 @@
-<div align="center">
-  <a href="https://github.com/eslint/eslint"><img width="200" height="200" src="https://cdn.worldvectorlogo.com/logos/eslint.svg"></a>
-  <a href="https://github.com/webpack/webpack"><img width="200" height="200" src="https://webpack.js.org/assets/icon-square-big.svg"></a>
-</div>
-
-[![npm][npm]][npm-url]
-[![node][node]][node-url]
-[![tests][tests]][tests-url]
-[![coverage][cover]][cover-url]
-[![discussion][discussion]][discussion-url]
-[![size][size]][size-url]
-
 # eslint-rspack-plugin
 
-> This is eslint-rspack-plugin which works only with Rspack. Forked from the [eslint-webpack-plugin](https://github.com/webpack-contrib/eslint-webpack-plugin/).
+<p>
+  <a href="https://npmjs.com/package/eslint-rspack-plugin">
+   <img src="https://img.shields.io/npm/v/eslint-rspack-plugin?style=flat-square&colorA=564341&colorB=EDED91" alt="npm version" />
+  </a>
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square&colorA=564341&colorB=EDED91" alt="license" />
+  <a href="https://npmcharts.com/compare/eslint-rspack-plugin?minimal=true"><img src="https://img.shields.io/npm/dm/eslint-rspack-plugin.svg?style=flat-square&colorA=564341&colorB=EDED91" alt="downloads" /></a>
+</p>
 
-This plugin uses [`eslint`](https://eslint.org/) to find and fix problems in your JavaScript code
+> This plugin was forked from the excellent [eslint-webpack-plugin](https://github.com/webpack-contrib/eslint-webpack-plugin/). Many thanks to the original authors for their great work.
+
+This plugin uses [ESLint](https://eslint.org/) to find and fix problems in your JavaScript code.
+
+> You may find it more efficient to avoid using the `eslint-rspack-plugin`, as running ESLint during the build can lead to longer build times. A separate lint command usually offers a better workflow.
 
 ## Getting Started
 
@@ -56,7 +54,7 @@ or
 pnpm add -D eslint
 ```
 
-Then add the plugin to your webpack config. For example:
+Then add the plugin to your Rspack config. For example:
 
 ```js
 const ESLintPlugin = require('eslint-rspack-plugin');
@@ -77,10 +75,6 @@ You can pass [eslint options](https://eslint.org/docs/developer-guide/nodejs-api
 > The config option you provide will be passed to the `ESLint` class.
 > This is a different set of options than what you'd specify in `package.json` or `.eslintrc`.
 > See the [eslint docs](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions) for more details.
-
-> [!WARNING]
->
-> In eslint-webpack-plugin version 1 the options were passed to the now deprecated [CLIEngine](https://eslint.org/docs/developer-guide/nodejs-api#cliengine).
 
 ### `cache`
 
@@ -360,7 +354,7 @@ type outputReport =
 
 Write the output of the errors to a file, for example a checkstyle xml file for use for reporting on Jenkins CI.
 
-The `filePath` is an absolute path or relative to the webpack config: `output.path`.
+The `filePath` is an absolute path or relative to the Rspack config: `output.path`.
 You can pass in a different `formatter` for the output file,
 if none is passed in the default/configured formatter will be used.
 
@@ -372,15 +366,7 @@ if none is passed in the default/configured formatter will be used.
 
 [MIT](./LICENSE)
 
-[npm]: https://img.shields.io/npm/v/eslint-webpack-plugin.svg
-[npm-url]: https://npmjs.com/package/eslint-webpack-plugin
-[node]: https://img.shields.io/node/v/eslint-webpack-plugin.svg
+[npm]: https://img.shields.io/npm/v/eslint-rspack-plugin.svg
+[npm-url]: https://npmjs.com/package/eslint-rspack-plugin
+[node]: https://img.shields.io/node/v/eslint-rspack-plugin.svg
 [node-url]: https://nodejs.org
-[tests]: https://github.com/webpack-contrib/eslint-webpack-plugin/workflows/eslint-webpack-plugin/badge.svg
-[tests-url]: https://github.com/webpack-contrib/eslint-webpack-plugin/actions
-[cover]: https://codecov.io/gh/webpack-contrib/eslint-webpack-plugin/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/webpack-contrib/eslint-webpack-plugin
-[discussion]: https://img.shields.io/github/discussions/webpack/webpack
-[discussion-url]: https://github.com/webpack/webpack/discussions
-[size]: https://packagephobia.now.sh/badge?p=eslint-webpack-plugin
-[size-url]: https://packagephobia.now.sh/result?p=eslint-webpack-plugin
