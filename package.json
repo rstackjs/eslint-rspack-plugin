@@ -17,9 +17,9 @@
     "node": ">= 16.0.0"
   },
   "scripts": {
-    "start": "npm run build -- -w",
+    "start": "pnpm run build -- -w",
     "clean": "del-cli dist types",
-    "prebuild": "npm run clean",
+    "prebuild": "pnpm run clean",
     "build:types": "tsc --declaration --emitDeclarationOnly --outDir types && prettier \"types/**/*.ts\" --write",
     "build:code": "cross-env NODE_ENV=production babel src -d dist --copy-files",
     "build": "npm-run-all -p \"build:**\"",
@@ -30,17 +30,18 @@
     "lint:spelling": "cspell \"**/*.*\"",
     "lint:types": "tsc --pretty --noEmit",
     "lint": "npm-run-all -l -p \"lint:**\"",
-    "fix:js": "npm run lint:js -- --fix",
-    "fix:prettier": "npm run lint:prettier -- --write",
+    "fix:js": "pnpm run lint:js -- --fix",
+    "fix:prettier": "pnpm run lint:prettier -- --write",
     "fix": "npm-run-all -l fix:js fix:prettier",
     "test:only": "cross-env NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest --testTimeout=60000",
-    "test:watch": "npm run test:only -- --watch",
-    "test:coverage": "npm run test:only -- --collectCoverageFrom=\"src/**/*.js\" --coverage",
-    "pretest": "npm run lint",
-    "test": "npm run test:coverage",
-    "prepare": "npm run build",
+    "test:watch": "pnpm run test:only -- --watch",
+    "test:coverage": "pnpm run test:only -- --collectCoverageFrom=\"src/**/*.js\" --coverage",
+    "pretest": "pnpm run lint",
+    "test": "pnpm run test:coverage",
+    "prepare": "pnpm run build",
     "bump": "npx bumpp"
   },
+  "packageManager": "pnpm@10.17.1",
   "files": [
     "dist",
     "types"
@@ -85,7 +86,6 @@
     "lint-staged": "^15.2.8",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.3.3",
-    "standard-version": "^9.5.0",
     "typescript": "^5.5.4",
     "webpack": "^5.95.0"
   },
