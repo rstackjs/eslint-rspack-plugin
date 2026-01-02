@@ -3,10 +3,10 @@
   "version": "4.3.0",
   "description": "A ESLint plugin for rspack",
   "license": "MIT",
-  "repository": "https://github.com/rspack-contrib/eslint-rspack-plugin",
+  "repository": "https://github.com/rstackjs/eslint-rspack-plugin",
   "author": "Ricardo Gobbo de Souza <ricardogobbosouza@yahoo.com.br>",
-  "homepage": "https://github.com/rspack-contrib/eslint-rspack-plugin",
-  "bugs": "https://github.com/rspack-contrib/eslint-rspack-plugin/issues",
+  "homepage": "https://github.com/rstackjs/eslint-rspack-plugin",
+  "bugs": "https://github.com/rstackjs/eslint-rspack-plugin/issues",
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/webpack"
