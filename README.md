@@ -8,7 +8,7 @@
   <a href="https://npmcharts.com/compare/eslint-rspack-plugin?minimal=true"><img src="https://img.shields.io/npm/dm/eslint-rspack-plugin.svg?style=flat-square&colorA=564341&colorB=EDED91" alt="downloads" /></a>
 </p>
 
-> This plugin was forked from the excellent [eslint-webpack-plugin](https://github.com/webpack-contrib/eslint-webpack-plugin/). Many thanks to the original authors for their great work.
+> This plugin was forked from the excellent [eslint-webpack-plugin](https://github.com/webpack/eslint-webpack-plugin/). Many thanks to the original authors for their great work.
 
 This plugin uses [ESLint](https://eslint.org/) to find and fix problems in your JavaScript code.
 
@@ -18,19 +18,19 @@ This plugin uses [ESLint](https://eslint.org/) to find and fix problems in your 
 
 To begin, you'll need to install `eslint-rspack-plugin`:
 
-```console
+```bash
 npm install eslint-rspack-plugin --save-dev
 ```
 
 or
 
-```console
+```bash
 yarn add -D eslint-rspack-plugin
 ```
 
 or
 
-```console
+```bash
 pnpm add -D eslint-rspack-plugin
 ```
 
@@ -38,43 +38,41 @@ pnpm add -D eslint-rspack-plugin
 >
 > You also need to install `eslint >= 8` from npm, if you haven't already:
 
-```console
+```bash
 npm install eslint --save-dev
 ```
 
 or
 
-```console
+```bash
 yarn add -D eslint
 ```
 
 or
 
-```console
+```bash
 pnpm add -D eslint
 ```
 
 Then add the plugin to your Rspack config. For example:
 
 ```js
-const ESLintPlugin = require('eslint-rspack-plugin');
+import ESLintPlugin from 'eslint-rspack-plugin';
 
-module.exports = {
-  // ...
+export default {
   plugins: [new ESLintPlugin(options)],
-  // ...
 };
 ```
 
 ## Options
 
-You can pass [eslint options](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions).
+You can pass [ESLint options](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions).
 
 > [!NOTE]
 >
 > The config option you provide will be passed to the `ESLint` class.
 > This is a different set of options than what you'd specify in `package.json` or `.eslintrc`.
-> See the [eslint docs](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions) for more details.
+> See the [ESLint docs](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions) for more details.
 
 ### `cache`
 
