@@ -165,6 +165,8 @@ type extensions = string | Array<string>;
 
 Specify extensions that should be checked.
 
+Only works when `configType` is `eslintrc`. For flat config, use `files` option instead.
+
 ### `exclude`
 
 - Type:
