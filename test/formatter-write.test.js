@@ -1,9 +1,11 @@
 import { join } from 'path';
-
 import { readFileSync, removeSync } from 'fs-extra';
-import webpack from 'webpack';
-
+import { rspack } from '@rspack/core';
 import conf from './utils/conf';
+import { stripVTControlCharacters } from 'node:util';
+
+const cleanContents = (contents) =>
+  stripVTControlCharacters(contents.split('error.js')[1]);
 
 describe('formatter write', () => {
   it('should write results to relative file with a custom formatter', (done) => {
@@ -19,14 +21,15 @@ describe('formatter write', () => {
     const outputFilepath = join(config.output.path, outputFilename);
     removeSync(outputFilepath);
 
-    const compiler = webpack(config);
+    const compiler = rspack(config);
     compiler.run((err, stats) => {
       const contents = readFileSync(outputFilepath, 'utf8');
 
       expect(err).toBeNull();
       expect(stats.hasWarnings()).toBe(false);
       expect(stats.hasErrors()).toBe(true);
-      expect(stats.compilation.errors[0].message).toBe(`[eslint] ${contents}`);
+      expect(stats.compilation.errors[0].message).toContain(`× [eslint]`);
+      expect(cleanContents(contents)).toMatchSnapshot();
       done();
     });
   });
@@ -42,14 +45,15 @@ describe('formatter write', () => {
 
     removeSync(outputFilepath);
 
-    const compiler = webpack(config);
+    const compiler = rspack(config);
     compiler.run((err, stats) => {
       const contents = readFileSync(outputFilepath, 'utf8');
 
       expect(err).toBeNull();
       expect(stats.hasWarnings()).toBe(false);
       expect(stats.hasErrors()).toBe(true);
-      expect(stats.compilation.errors[0].message).toBe(`[eslint] ${contents}`);
+      expect(stats.compilation.errors[0].message).toContain(`× [eslint]`);
+      expect(cleanContents(contents)).toMatchSnapshot();
       done();
     });
   });
