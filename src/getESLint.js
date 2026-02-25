@@ -61,10 +61,10 @@ async function loadESLint(options) {
  * @returns {Promise<Linter>}
  */
 async function loadESLintThreaded(key, poolSize, options) {
-  const cacheKey = getCacheKey(key, options);
   const configType = getConfigType(options);
   const optionsWithConfigType = { ...options, configType };
-  const { eslintPath = 'eslint' } = options;
+  const cacheKey = getCacheKey(key, optionsWithConfigType);
+  const { eslintPath = 'eslint' } = optionsWithConfigType;
   const source = require.resolve('./worker');
   const workerOptions = {
     enableWorkerThreads: true,
