@@ -7,8 +7,8 @@ const { arrify } = require('./utils');
 /** @typedef {import('eslint').ESLint} ESLint */
 /** @typedef {import('eslint').ESLint.Formatter} Formatter */
 /** @typedef {import('eslint').ESLint.LintResult} LintResult */
-/** @typedef {import('webpack').Compiler} Compiler */
-/** @typedef {import('webpack').Compilation} Compilation */
+/** @typedef {import('@rspack/core').Compiler} Compiler */
+/** @typedef {import('@rspack/core').Compilation} Compilation */
 /** @typedef {import('./options').Options} Options */
 /** @typedef {import('./options').FormatterFunction} FormatterFunction */
 /** @typedef {(compilation: Compilation) => Promise<void>} GenerateReport */
