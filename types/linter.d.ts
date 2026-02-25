@@ -33,8 +33,8 @@ declare namespace linter {
 type ESLint = import('eslint').ESLint;
 type Formatter = import('eslint').ESLint.Formatter;
 type LintResult = import('eslint').ESLint.LintResult;
-type Compiler = import('webpack').Compiler;
-type Compilation = import('webpack').Compilation;
+type Compiler = import('@rspack/core').Compiler;
+type Compilation = import('@rspack/core').Compilation;
 type Options = import('./options').Options;
 type FormatterFunction = import('./options').FormatterFunction;
 type GenerateReport = (compilation: Compilation) => Promise<void>;

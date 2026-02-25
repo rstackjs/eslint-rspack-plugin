@@ -62,7 +62,7 @@
     "@babel/preset-env": "^7.25.3",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "@rspack/core": "^1.0.8",
+    "@rspack/core": "^1.7.6",
     "@types/fs-extra": "^11.0.4",
     "@types/micromatch": "^4.0.9",
     "@types/node": "^20.14.9",

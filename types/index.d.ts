@@ -1,5 +1,5 @@
-export = ESLintWebpackPlugin;
-declare class ESLintWebpackPlugin {
+export = ESLintRspackPlugin;
+declare class ESLintRspackPlugin {
   /**
    * @param {Options} options
    */
@@ -32,10 +32,10 @@ declare class ESLintWebpackPlugin {
    */
   getContext(compiler: Compiler): string;
 }
-declare namespace ESLintWebpackPlugin {
+declare namespace ESLintRspackPlugin {
   export { Compiler, Module, NormalModule, Options };
 }
-type Compiler = import('webpack').Compiler;
-type Module = import('webpack').Module;
-type NormalModule = import('webpack').NormalModule;
+type Compiler = import('@rspack/core').Compiler;
+type Module = import('@rspack/core').Module;
+type NormalModule = import('@rspack/core').NormalModule;
 type Options = import('./options').Options;

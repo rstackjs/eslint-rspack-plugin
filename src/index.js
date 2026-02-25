@@ -7,17 +7,17 @@ const { getOptions } = require('./options');
 const linter = require('./linter');
 const { arrify, parseFiles, parseFoldersToGlobs } = require('./utils');
 
-/** @typedef {import('webpack').Compiler} Compiler */
-/** @typedef {import('webpack').Module} Module */
-/** @typedef {import('webpack').NormalModule} NormalModule */
+/** @typedef {import('@rspack/core').Compiler} Compiler */
+/** @typedef {import('@rspack/core').Module} Module */
+/** @typedef {import('@rspack/core').NormalModule} NormalModule */
 /** @typedef {import('./options').Options} Options */
 
-const ESLINT_PLUGIN = 'ESLintWebpackPlugin';
+const ESLINT_PLUGIN = 'ESLintRspackPlugin';
 const DEFAULT_FOLDER_TO_EXCLUDE = '**/node_modules/**';
 
 let compilerId = 0;
 
-class ESLintWebpackPlugin {
+class ESLintRspackPlugin {
   /**
    * @param {Options} options
    */
@@ -232,4 +232,4 @@ class ESLintWebpackPlugin {
   }
 }
 
-module.exports = ESLintWebpackPlugin;
+module.exports = ESLintRspackPlugin;
