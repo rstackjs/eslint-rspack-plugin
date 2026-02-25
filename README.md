@@ -64,20 +64,6 @@ export default {
 };
 ```
 
-When using ESLint flat config, set the `configType` option to `flat`:
-
-```js
-import ESLintPlugin from 'eslint-rspack-plugin';
-
-export default {
-  plugins: [
-    new ESLintPlugin({
-      configType: 'flat',
-    }),
-  ],
-};
-```
-
 ## Options
 
 You can pass [ESLint options](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions).
@@ -120,7 +106,9 @@ Specify the path to the cache location. Can be a file or a directory.
 type configType = 'flat' | 'eslintrc';
 ```
 
-- Default: `eslintrc`
+- Default:
+  - For ESLint < 10.0.0: `eslintrc`
+  - For ESLint >= 10.0.0: `flat`
 
 Specify the type of configuration to use with ESLint.
 
