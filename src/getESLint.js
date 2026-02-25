@@ -20,14 +20,29 @@ const cache = {};
 
 /**
  * @param {Options} options
+ * @returns {string}
+ */
+function getConfigType(options) {
+  if (options.configType) return options.configType;
+
+  const eslintModule = require(options.eslintPath || 'eslint');
+  const eslintVersion =
+    eslintModule.ESLint && parseFloat(eslintModule.ESLint.version);
+
+  return eslintVersion >= 10 ? 'flat' : 'eslintrc';
+}
+
+/**
+ * @param {Options} options
  * @returns {Promise<Linter>}
  */
 async function loadESLint(options) {
   const { eslintPath } = options;
+  const configType = getConfigType(options);
   const eslint = await setup({
     eslintPath,
-    configType: options.configType,
-    eslintOptions: getESLintOptions(options),
+    configType,
+    eslintOptions: getESLintOptions({ ...options, configType }),
   });
 
   return {
@@ -47,6 +62,8 @@ async function loadESLint(options) {
  */
 async function loadESLintThreaded(key, poolSize, options) {
   const cacheKey = getCacheKey(key, options);
+  const configType = getConfigType(options);
+  const optionsWithConfigType = { ...options, configType };
   const { eslintPath = 'eslint' } = options;
   const source = require.resolve('./worker');
   const workerOptions = {
@@ -55,13 +72,13 @@ async function loadESLintThreaded(key, poolSize, options) {
     setupArgs: [
       {
         eslintPath,
-        configType: options.configType,
-        eslintOptions: getESLintOptions(options),
+        configType,
+        eslintOptions: getESLintOptions(optionsWithConfigType),
       },
     ],
   };
 
-  const local = await loadESLint(options);
+  const local = await loadESLint(optionsWithConfigType);
 
   let worker = /** @type {Worker?} */ (new JestWorker(source, workerOptions));
 
