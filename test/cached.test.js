@@ -1,9 +1,6 @@
 import { join } from 'path';
-
 import { removeSync } from 'fs-extra';
-
-import webpack from 'webpack';
-
+import { rspack } from '@rspack/core';
 import conf from './utils/conf';
 
 describe('error (cached module)', () => {
@@ -27,7 +24,7 @@ describe('error (cached module)', () => {
       cacheLocation,
     };
 
-    const c1 = webpack(config);
+    const c1 = rspack(config);
 
     c1.run((err1, stats1) => {
       expect(err1).toBeNull();
@@ -35,7 +32,7 @@ describe('error (cached module)', () => {
       expect(stats1.hasErrors()).toBe(true);
 
       c1.close(() => {
-        const c2 = webpack(config);
+        const c2 = rspack(config);
         c2.run((err2, stats2) => {
           expect(err2).toBeNull();
           expect(stats2.hasWarnings()).toBe(false);

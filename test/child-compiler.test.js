@@ -1,17 +1,16 @@
-import webpack from 'webpack';
-
+import { rspack } from '@rspack/core';
 import conf from './utils/conf';
 
 const PLUGIN_NAME = 'ChildPlugin';
 class ChildPlugin {
   constructor(options) {
-    this.options = webpack.config.getNormalizedWebpackOptions(options);
+    this.options = rspack.config.getNormalizedRspackOptions(options);
   }
 
   apply(compiler) {
     compiler.hooks.make.tapAsync(PLUGIN_NAME, (compilation, callback) => {
       const childCompiler = compilation.createChildCompiler(PLUGIN_NAME);
-      webpack.EntryOptionPlugin.applyEntryOption(
+      rspack.EntryOptionPlugin.applyEntryOption(
         childCompiler,
         compilation.compiler.context,
         this.options.entry,
@@ -33,7 +32,7 @@ describe('child compiler', () => {
         },
       }),
     );
-    webpack(config).run((err, stats) => {
+    rspack(config).run((err, stats) => {
       expect(err).toBeNull();
       expect(stats.hasErrors()).toBe(false);
       expect(stats.hasWarnings()).toBe(true);
