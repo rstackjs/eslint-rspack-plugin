@@ -60,7 +60,21 @@ Then add the plugin to your Rspack config. For example:
 import ESLintPlugin from 'eslint-rspack-plugin';
 
 export default {
-  plugins: [new ESLintPlugin(options)],
+  plugins: [new ESLintPlugin()],
+};
+```
+
+When using ESLint flat config, set the `configType` option to `flat`:
+
+```js
+import ESLintPlugin from 'eslint-rspack-plugin';
+
+export default {
+  plugins: [
+    new ESLintPlugin({
+      configType: 'flat',
+    }),
+  ],
 };
 ```
 
@@ -113,10 +127,7 @@ Specify the type of configuration to use with ESLint.
 - `eslintrc` is the classic configuration format available in most ESLint versions.
 - `flat` is the new format introduced in ESLint 8.21.0.
 
-The new configuration format is explained in its [own documentation](https://eslint.org/docs/latest/use/configure/configuration-files-new).
-
-> This configuration format being considered as experimental, it is not exported in the main ESLint module in ESLint 8.
-> You need to set your `eslintPath` to `eslint/use-at-your-own-risk` for this config format to work.
+The flat configuration format is explained in its [own documentation](https://eslint.org/docs/latest/use/configure/configuration-files).
 
 ### `context`
 
