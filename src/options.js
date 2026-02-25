@@ -1,5 +1,3 @@
-const { validate } = require('schema-utils');
-
 const schema = require('./options.json');
 
 /** @typedef {import("eslint").ESLint.Options} ESLintOptions */
@@ -59,12 +57,6 @@ function getOptions(pluginOptions) {
     ...pluginOptions,
     ...(pluginOptions.quiet ? { emitError: true, emitWarning: false } : {}),
   };
-
-  // @ts-ignore
-  validate(schema, options, {
-    name: 'ESLint Webpack Plugin',
-    baseDataPath: 'options',
-  });
 
   return options;
 }
