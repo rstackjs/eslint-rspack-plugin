@@ -62,9 +62,9 @@ async function loadESLint(options) {
  */
 async function loadESLintThreaded(key, poolSize, options) {
   const configType = getConfigType(options);
-  const optionsWithConfigType = { ...options, configType };
-  const cacheKey = getCacheKey(key, optionsWithConfigType);
-  const { eslintPath = 'eslint' } = optionsWithConfigType;
+  const resolvedOptions = { ...options, configType };
+  const cacheKey = getCacheKey(key, resolvedOptions);
+  const { eslintPath = 'eslint' } = resolvedOptions;
   const source = require.resolve('./worker');
   const workerOptions = {
     enableWorkerThreads: true,
@@ -73,12 +73,12 @@ async function loadESLintThreaded(key, poolSize, options) {
       {
         eslintPath,
         configType,
-        eslintOptions: getESLintOptions(optionsWithConfigType),
+        eslintOptions: getESLintOptions(resolvedOptions),
       },
     ],
   };
 
-  const local = await loadESLint(optionsWithConfigType);
+  const local = await loadESLint(resolvedOptions);
 
   let worker = /** @type {Worker?} */ (new JestWorker(source, workerOptions));
 
