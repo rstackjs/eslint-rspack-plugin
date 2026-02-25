@@ -5,10 +5,9 @@ import conf from './utils/conf';
 import { stripVTControlCharacters } from 'node:util';
 
 const cleanContents = (contents) =>
-  stripVTControlCharacters(contents.split('error.js')[1]).replace(
-    /\r\n/g,
-    '\n',
-  );
+  stripVTControlCharacters(contents.split('error.js')[1])
+    .replace(/\r\n/g, '\n')
+    .replace(/\\r\\n/g, '\\n');
 
 describe('formatter write', () => {
   it('should write results to relative file with a custom formatter', (done) => {
