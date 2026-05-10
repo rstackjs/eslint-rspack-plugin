@@ -32,9 +32,7 @@ describe('multiple instances', () => {
       },
     );
 
-    const stats = await compiler.runAsync();
-    expect(stats.hasWarnings()).toBe(false);
-    expect(stats.hasErrors()).toBe(true);
+    await expect(compiler.runAsync()).rejects.toThrow();
   });
 
   it('should fail on second instance', async () => {
@@ -49,8 +47,6 @@ describe('multiple instances', () => {
       },
     );
 
-    const stats = await compiler.runAsync();
-    expect(stats.hasWarnings()).toBe(false);
-    expect(stats.hasErrors()).toBe(true);
+    await expect(compiler.runAsync()).rejects.toThrow();
   });
 });

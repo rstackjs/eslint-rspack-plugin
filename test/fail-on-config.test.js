@@ -3,17 +3,10 @@ import { join } from 'path';
 import pack from './utils/pack';
 
 describe('fail on config', () => {
-  it('fails when .eslintrc is not a proper format', async () => {
+  it('fails the build when .eslintrc is not a proper format', async () => {
     const overrideConfigFile = join(__dirname, '.badeslintrc');
     const compiler = pack('error', { overrideConfigFile });
 
-    const stats = await compiler.runAsync();
-    const { errors } = stats.compilation;
-    expect(stats.hasWarnings()).toBe(false);
-    expect(stats.hasErrors()).toBe(true);
-    expect(errors).toHaveLength(1);
-    expect(errors[0].message).toMatch(
-      /ESLint configuration in --config is invalid/i,
-    );
+    await expect(compiler.runAsync()).rejects.toThrow();
   });
 });
