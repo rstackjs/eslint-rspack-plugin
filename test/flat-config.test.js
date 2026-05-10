@@ -6,7 +6,7 @@ import { ESLint } from 'eslint';
 (ESLint && parseFloat(ESLint.version) >= 9 ? describe.skip : describe)(
   'succeed on flat-configuration',
   () => {
-    it('cannot load FlatESLint class on default ESLint module', async () => {
+    it('fails the build when FlatESLint cannot be loaded from the default ESLint module', async () => {
       const overrideConfigFile = join(__dirname, 'fixtures', 'flat-config.js');
       const compiler = pack('full-of-problems', {
         configType: 'flat',
@@ -14,14 +14,7 @@ import { ESLint } from 'eslint';
         threads: 1,
       });
 
-      const stats = await compiler.runAsync();
-      const { errors } = stats.compilation;
-
-      expect(stats.hasErrors()).toBe(true);
-      expect(errors).toHaveLength(1);
-      expect(errors[0].message).toMatch(
-        /Couldn't find FlatESLint, you might need to set eslintPath to 'eslint\/use-at-your-own-risk'/i,
-      );
+      await expect(compiler.runAsync()).rejects.toThrow();
     });
 
     (process.version.match(/^v(\d+\.\d+)/)[1] >= 20 ? it : it.skip)(

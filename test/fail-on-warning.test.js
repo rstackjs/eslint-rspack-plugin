@@ -1,7 +1,7 @@
 import pack from './utils/pack';
 
 describe('fail on warning', () => {
-  it('should emits errors', async () => {
+  it('should fail the build when failOnWarning is enabled', async () => {
     const compiler = pack('warn', { failOnWarning: true });
 
     await expect(compiler.runAsync()).rejects.toThrow();

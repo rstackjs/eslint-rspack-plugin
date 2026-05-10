@@ -104,6 +104,9 @@ class ESLintRspackPlugin {
       /** @type {string[]} */
       const files = [];
 
+      /** @type {Error | null} */
+      let linterError = null;
+
       const shouldLintAllFiles = this.options.lintAllFiles;
       const allMatchingFiles = shouldLintAllFiles
         ? globSync(wanted, { dot: true, ignore: exclude })
@@ -120,6 +123,20 @@ class ESLintRspackPlugin {
         }
       });
 
+      // await and interpret results
+      compilation.hooks.additionalAssets.tapAsync(
+        this.key,
+        /**
+         * @param {(error?: Error | null) => void} callback
+         */
+        (callback) => {
+          processResults().then(
+            (error) => callback(error),
+            (error) => callback(error),
+          );
+        },
+      );
+
       try {
         ({ lint, report, threads } = await linter(
           this.key,
@@ -127,6 +144,7 @@ class ESLintRspackPlugin {
           compilation,
         ));
       } catch (e) {
+        linterError = e;
         compilation.errors.push(e);
         return;
       }
@@ -187,22 +205,11 @@ class ESLintRspackPlugin {
         }
         if (files.length > 0 && threads <= 1) lint(files);
       });
-
-      // await and interpret results
-      compilation.hooks.additionalAssets.tapAsync(
-        this.key,
-        /**
-         * @param {(error?: Error | null) => void} callback
-         */
-        (callback) => {
-          processResults().then(
-            (error) => callback(error),
-            (error) => callback(error),
-          );
-        },
-      );
-
       async function processResults() {
+        if (linterError) {
+          return linterError;
+        }
+
         const { errors, warnings, generateReportAsset } = await report();
 
         if (warnings) {
