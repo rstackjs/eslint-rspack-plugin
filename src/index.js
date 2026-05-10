@@ -189,28 +189,43 @@ class ESLintRspackPlugin {
       });
 
       // await and interpret results
-      compilation.hooks.additionalAssets.tapPromise(this.key, processResults);
+      compilation.hooks.additionalAssets.tapAsync(
+        this.key,
+        /**
+         * @param {(error?: Error | null) => void} callback
+         */
+        (callback) => {
+          processResults().then(
+            (error) => callback(error),
+            (error) => callback(error),
+          );
+        },
+      );
 
       async function processResults() {
         const { errors, warnings, generateReportAsset } = await report();
 
-        if (warnings && !options.failOnWarning) {
+        if (warnings) {
           // @ts-ignore
           compilation.warnings.push(warnings);
-        } else if (warnings) {
-          // @ts-ignore
-          compilation.errors.push(warnings);
         }
 
-        if (errors && !options.failOnError) {
-          // @ts-ignore
-          compilation.warnings.push(errors);
-        } else if (errors) {
+        if (errors) {
           // @ts-ignore
           compilation.errors.push(errors);
         }
 
         if (generateReportAsset) await generateReportAsset(compilation);
+
+        if (errors && options.failOnError) {
+          return errors;
+        }
+
+        if (warnings && options.failOnWarning) {
+          return warnings;
+        }
+
+        return null;
       }
     });
   }
