@@ -10,53 +10,63 @@ const cleanContents = (contents) =>
     .replace(/\\r\\n/g, '\\n');
 
 describe('formatter write', () => {
-  it('should write results to relative file with a custom formatter', (done) => {
-    const outputFilename = 'outputReport-relative.txt';
-    const config = conf('error', {
-      formatter: 'json',
-      outputReport: {
+  it('should write results to relative file with a custom formatter', () =>
+    new Promise((resolve, reject) => {
+      const outputFilename = 'outputReport-relative.txt';
+      const config = conf('error', {
         formatter: 'json',
-        filePath: outputFilename,
-      },
-    });
+        outputReport: {
+          formatter: 'json',
+          filePath: outputFilename,
+        },
+      });
 
-    const outputFilepath = join(config.output.path, outputFilename);
-    removeSync(outputFilepath);
+      const outputFilepath = join(config.output.path, outputFilename);
+      removeSync(outputFilepath);
 
-    const compiler = rspack(config);
-    compiler.run((err, stats) => {
-      const contents = readFileSync(outputFilepath, 'utf8');
+      const compiler = rspack(config);
+      compiler.run((err, stats) => {
+        try {
+          const contents = readFileSync(outputFilepath, 'utf8');
 
-      expect(err).toBeNull();
-      expect(stats.hasWarnings()).toBe(false);
-      expect(stats.hasErrors()).toBe(true);
-      expect(stats.compilation.errors[0].message).toContain(`× [eslint]`);
-      expect(cleanContents(contents)).toMatchSnapshot();
-      done();
-    });
-  });
+          expect(err).toBeNull();
+          expect(stats.hasWarnings()).toBe(false);
+          expect(stats.hasErrors()).toBe(true);
+          expect(stats.compilation.errors[0].message).toContain(`× [eslint]`);
+          expect(cleanContents(contents)).toMatchSnapshot();
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }));
 
-  it('should write results to absolute file with a same formatter', (done) => {
-    const outputFilename = 'outputReport-absolute.txt';
-    const outputFilepath = join(__dirname, 'output', outputFilename);
-    const config = conf('error', {
-      outputReport: {
-        filePath: outputFilepath,
-      },
-    });
+  it('should write results to absolute file with a same formatter', () =>
+    new Promise((resolve, reject) => {
+      const outputFilename = 'outputReport-absolute.txt';
+      const outputFilepath = join(__dirname, 'output', outputFilename);
+      const config = conf('error', {
+        outputReport: {
+          filePath: outputFilepath,
+        },
+      });
 
-    removeSync(outputFilepath);
+      removeSync(outputFilepath);
 
-    const compiler = rspack(config);
-    compiler.run((err, stats) => {
-      const contents = readFileSync(outputFilepath, 'utf8');
+      const compiler = rspack(config);
+      compiler.run((err, stats) => {
+        try {
+          const contents = readFileSync(outputFilepath, 'utf8');
 
-      expect(err).toBeNull();
-      expect(stats.hasWarnings()).toBe(false);
-      expect(stats.hasErrors()).toBe(true);
-      expect(stats.compilation.errors[0].message).toContain(`× [eslint]`);
-      expect(cleanContents(contents)).toMatchSnapshot();
-      done();
-    });
-  });
+          expect(err).toBeNull();
+          expect(stats.hasWarnings()).toBe(false);
+          expect(stats.hasErrors()).toBe(true);
+          expect(stats.compilation.errors[0].message).toContain(`× [eslint]`);
+          expect(cleanContents(contents)).toMatchSnapshot();
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }));
 });

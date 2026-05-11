@@ -16,34 +16,41 @@ describe('lint dirty modules only', () => {
     removeSync(target);
   });
 
-  it('skips linting on initial run', (done) => {
-    writeFileSync(target, 'const foo = false\n');
+  it('skips linting on initial run', () =>
+    new Promise((resolve, reject) => {
+      writeFileSync(target, 'const foo = false\n');
 
-    let next = firstPass;
-    const compiler = pack('lint-dirty-modules-only', {
-      lintDirtyModulesOnly: true,
-    });
-    watch = compiler.watch({}, (err, stats) => next(err, stats));
+      let next = firstPass;
+      const compiler = pack('lint-dirty-modules-only', {
+        lintDirtyModulesOnly: true,
+      });
+      watch = compiler.watch({}, (err, stats) => {
+        try {
+          next(err, stats);
+        } catch (error) {
+          reject(error);
+        }
+      });
 
-    function firstPass(err, stats) {
-      expect(err).toBeNull();
-      expect(stats.hasWarnings()).toBe(false);
-      expect(stats.hasErrors()).toBe(false);
+      function firstPass(err, stats) {
+        expect(err).toBeNull();
+        expect(stats.hasWarnings()).toBe(false);
+        expect(stats.hasErrors()).toBe(false);
 
-      next = secondPass;
+        next = secondPass;
 
-      writeFileSync(target, 'const bar = false;\n');
-    }
+        writeFileSync(target, 'const bar = false;\n');
+      }
 
-    function secondPass(err, stats) {
-      expect(err).toBeNull();
-      expect(stats.hasWarnings()).toBe(false);
-      expect(stats.hasErrors()).toBe(true);
-      const { errors } = stats.compilation;
-      expect(errors.length).toBe(1);
-      const [{ message }] = errors;
-      expect(message).toEqual(expect.stringMatching('no-unused-vars'));
-      done();
-    }
-  });
+      function secondPass(err, stats) {
+        expect(err).toBeNull();
+        expect(stats.hasWarnings()).toBe(false);
+        expect(stats.hasErrors()).toBe(true);
+        const { errors } = stats.compilation;
+        expect(errors.length).toBe(1);
+        const [{ message }] = errors;
+        expect(message).toEqual(expect.stringMatching('no-unused-vars'));
+        resolve();
+      }
+    }));
 });

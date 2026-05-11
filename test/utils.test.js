@@ -1,4 +1,5 @@
 import { stringify } from 'flatted';
+import { rs } from '@rstest/core';
 
 import {
   jsonStringifyReplacerSortKeys,
@@ -6,7 +7,7 @@ import {
   parseFiles,
 } from '../src/utils';
 
-jest.mock('fs', () => {
+rs.mockRequire('fs', () => {
   return {
     statSync(pattern) {
       return {

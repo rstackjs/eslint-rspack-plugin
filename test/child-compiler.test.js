@@ -23,20 +23,25 @@ class ChildPlugin {
 }
 
 describe('child compiler', () => {
-  it('should have linting process', (done) => {
-    const config = conf('good', { threads: false });
-    config.plugins.push(
-      new ChildPlugin({
-        entry: {
-          child: './child-entry',
-        },
-      }),
-    );
-    rspack(config).run((err, stats) => {
-      expect(err).toBeNull();
-      expect(stats.hasErrors()).toBe(false);
-      expect(stats.hasWarnings()).toBe(true);
-      done();
-    });
-  });
+  it('should have linting process', () =>
+    new Promise((resolve, reject) => {
+      const config = conf('good', { threads: false });
+      config.plugins.push(
+        new ChildPlugin({
+          entry: {
+            child: './child-entry',
+          },
+        }),
+      );
+      rspack(config).run((err, stats) => {
+        try {
+          expect(err).toBeNull();
+          expect(stats.hasErrors()).toBe(false);
+          expect(stats.hasWarnings()).toBe(true);
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }));
 });

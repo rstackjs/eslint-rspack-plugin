@@ -1,48 +1,40 @@
+import { join } from 'path';
+
 import pack from './utils/pack';
 
-const ignoreOrder = (mockLintFiles) =>
-  mockLintFiles.mock.calls[0][0].sort((a1, a2) =>
+const eslintPath = join(__dirname, 'mock/eslint-recording');
+const eslintMock = require('./mock/eslint-recording');
+
+const ignoreOrder = () =>
+  eslintMock.state.calls[0].sort((a1, a2) =>
     a1.length - a2.length > 0 ? -1 : 1,
   );
 
 describe('eslint lint', () => {
-  const mockLintFiles = jest.fn().mockReturnValue([]);
-
-  beforeAll(() => {
-    jest.mock('eslint', () => {
-      return {
-        loadESLint: async () =>
-          function ESLint() {
-            this.lintFiles = mockLintFiles;
-          },
-      };
-    });
-  });
-
   beforeEach(() => {
-    mockLintFiles.mockClear();
+    eslintMock.reset();
   });
 
   it('should lint one file', async () => {
-    const compiler = pack('lint-one', { threads: false });
+    const compiler = pack('lint-one', { eslintPath, threads: false });
 
     await compiler.runAsync();
-    expect(mockLintFiles).toHaveBeenCalledTimes(1);
+    expect(eslintMock.state.calls).toHaveLength(1);
   });
 
   it('should lint two files', async () => {
-    const compiler = pack('lint-two', { threads: false });
+    const compiler = pack('lint-two', { eslintPath, threads: false });
 
     await compiler.runAsync();
     const files = [
       expect.stringMatching('lint-two-entry.js'),
       expect.stringMatching('lint.js'),
     ];
-    expect(ignoreOrder(mockLintFiles)).toEqual(files);
+    expect(ignoreOrder()).toEqual(files);
   });
 
   it('should lint more files', async () => {
-    const compiler = pack('lint-more', { threads: false });
+    const compiler = pack('lint-more', { eslintPath, threads: false });
 
     await compiler.runAsync();
     const files = [
@@ -51,6 +43,6 @@ describe('eslint lint', () => {
       expect.stringMatching('lint.js'),
     ];
 
-    expect(ignoreOrder(mockLintFiles)).toEqual(files);
+    expect(ignoreOrder()).toEqual(files);
   });
 });

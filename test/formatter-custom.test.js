@@ -19,7 +19,7 @@ describe('formatter eslint', () => {
   });
 
   it('should use custom formatter as string', async () => {
-    const formatter = './test/mock/formatter';
+    const formatter = './test/mock/formatter/index.js';
     const compiler = pack('error', { formatter });
 
     const stats = await compiler.runAsync();

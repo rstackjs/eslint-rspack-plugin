@@ -2,6 +2,9 @@ import { join } from 'path';
 
 import { loadESLint, loadESLintThreaded } from '../src/getESLint';
 
+const eslintPath = join(__dirname, 'mock/eslint-recording');
+const eslintMock = require('./mock/eslint-recording');
+
 describe('Threading', () => {
   test('Threaded interface should look like non-threaded interface', async () => {
     const options = { overrideConfigFile: true };
@@ -46,33 +49,19 @@ describe('Threading', () => {
 
   describe('worker coverage', () => {
     beforeEach(() => {
-      jest.resetModules();
+      eslintMock.reset();
     });
 
     test('worker can start', async () => {
-      const mockThread = { parentPort: { on: jest.fn() }, workerData: {} };
-      const mockLintFiles = jest.fn();
-      jest.mock('eslint', () => {
-        return {
-          loadESLint: async () =>
-            Object.assign(
-              function ESLint() {
-                this.lintFiles = mockLintFiles;
-              },
-              {
-                outputFixes: jest.fn(),
-              },
-            ),
-        };
-      });
-      jest.mock('worker_threads', () => mockThread);
       const { setup, lintFiles } = require('../src/worker');
 
-      await setup({});
+      await setup({ eslintPath });
       await lintFiles('foo');
-      expect(mockLintFiles).toHaveBeenCalledWith('foo');
-      await setup({ eslintOptions: { fix: true } });
+      expect(eslintMock.state.calls).toContain('foo');
+
+      await setup({ eslintPath, eslintOptions: { fix: true } });
       await lintFiles('foo');
+      expect(eslintMock.state.outputFixesCalls).toHaveLength(1);
     });
   });
 });

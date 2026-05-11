@@ -12,6 +12,7 @@
     "checkstyle",
     "commitlint",
     "indentifiers",
+    "rstest",
     "rspack",
     "rsbuild",
     "tinyglobby"

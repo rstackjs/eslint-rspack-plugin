@@ -1,10 +1,11 @@
 import { join } from 'path';
+import { rs } from '@rstest/core';
 
 import pack from './utils/pack';
 
 describe('symbols', () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    rs.restoreAllMocks();
   });
 
   it('should return error', async () => {
