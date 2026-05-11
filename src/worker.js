@@ -29,6 +29,12 @@ function setup({ eslintPath, configType, eslintOptions }) {
   fix = !!(eslintOptions && eslintOptions.fix);
   const eslintModule = require(eslintPath || 'eslint');
 
+  if (typeof eslintModule.loadESLint !== 'function') {
+    throw new Error(
+      'eslint-rspack-plugin requires ESLint 9 or later. Make sure eslintPath resolves to an ESLint 9+ module that exports loadESLint().',
+    );
+  }
+
   return eslintModule
     .loadESLint({ useFlatConfig: configType === 'flat' })
     .then((/** @type {ESLintClass} */ classESLint) => {
