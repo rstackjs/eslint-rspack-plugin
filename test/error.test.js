@@ -1,10 +1,11 @@
+import { join } from 'path';
+
 import pack from './utils/pack';
 
-describe('error', () => {
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
+const eslintPath = join(__dirname, 'mock/eslint-recording');
+const eslintMock = require('./mock/eslint-recording');
 
+describe('error', () => {
   it('should return error if file is bad', async () => {
     const compiler = pack('error');
 
@@ -14,16 +15,9 @@ describe('error', () => {
   });
 
   it('should propagate eslint exceptions as errors', async () => {
-    jest.mock('eslint', () => {
-      return {
-        loadESLint: async () =>
-          function ESLint() {
-            this.lintFiles = async () => Promise.reject(new Error('Oh no!'));
-          },
-      };
-    });
+    eslintMock.reset({ shouldReject: true });
 
-    const compiler = pack('good', { threads: false });
+    const compiler = pack('good', { eslintPath, threads: false });
 
     const stats = await compiler.runAsync();
     expect(stats.hasWarnings()).toBe(false);

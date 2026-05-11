@@ -1,4 +1,5 @@
 const { cpus } = require('os');
+const { join } = require('path');
 
 const { stringify } = require('flatted');
 const { Worker: JestWorker } = require('jest-worker');
@@ -60,7 +61,7 @@ async function loadESLintThreaded(key, poolSize, options) {
   const resolvedOptions = { ...options, configType };
   const cacheKey = getCacheKey(key, resolvedOptions);
   const { eslintPath = 'eslint' } = resolvedOptions;
-  const source = require.resolve('./worker');
+  const source = join(__dirname, 'worker.js');
   const workerOptions = {
     enableWorkerThreads: true,
     numWorkers: poolSize,
