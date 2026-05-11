@@ -76,7 +76,6 @@
     "del": "^7.1.0",
     "del-cli": "^5.1.0",
     "eslint": "^9.39.4",
-    "eslint-config-prettier": "^9.1.0",
     "fs-extra": "^11.2.0",
     "globals": "^16.5.0",
     "husky": "^8.0.3",
