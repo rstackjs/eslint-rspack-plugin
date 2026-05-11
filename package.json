@@ -1,7 +1,7 @@
 {
   "name": "eslint-rspack-plugin",
-  "version": "4.4.1",
-  "description": "A ESLint plugin for rspack",
+  "version": "5.0.0-beta.0",
+  "description": "A ESLint plugin for Rspack",
   "keywords": [
     "eslint",
     "lint",
