@@ -1,1 +1,1 @@
-require('./ignore');
+import './ignore.js';

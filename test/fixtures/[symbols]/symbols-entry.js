@@ -1,1 +1,1 @@
-require('./error');
+import './error.js';

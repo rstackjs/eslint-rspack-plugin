@@ -1,4 +1,4 @@
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('warning', () => {
   it('should emit warnings', async () => {

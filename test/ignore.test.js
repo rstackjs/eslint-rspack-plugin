@@ -1,6 +1,6 @@
-import ESLintError from '../src/ESLintError';
+import ESLintError from '../src/ESLintError.js';
 
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('ignore patterns', () => {
   it('should ignore files matching ignore patterns', async () => {

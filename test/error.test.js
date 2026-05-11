@@ -1,9 +1,8 @@
 import { join } from 'path';
 
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
-const eslintPath = join(__dirname, 'mock/eslint-recording');
-const eslintMock = require('./mock/eslint-recording');
+const eslintPath = join(import.meta.dirname, 'mock/eslint-rejecting');
 
 describe('error', () => {
   it('should return error if file is bad', async () => {
@@ -15,8 +14,6 @@ describe('error', () => {
   });
 
   it('should propagate eslint exceptions as errors', async () => {
-    eslintMock.reset({ shouldReject: true });
-
     const compiler = pack('good', { eslintPath });
 
     const stats = await compiler.runAsync();

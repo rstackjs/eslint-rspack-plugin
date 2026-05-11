@@ -1,5 +1,4 @@
-export = ESLintError;
-declare class ESLintError extends Error {
+export default class ESLintError extends Error {
   /**
    * @param {string=} messages
    */

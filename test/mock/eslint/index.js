@@ -29,7 +29,8 @@ class ESLintMock {
   }
 }
 
-module.exports = {
-  ESLint: ESLintMock,
-  loadESLint: async () => ESLintMock,
-};
+export { ESLintMock as ESLint };
+
+export async function loadESLint() {
+  return ESLintMock;
+}

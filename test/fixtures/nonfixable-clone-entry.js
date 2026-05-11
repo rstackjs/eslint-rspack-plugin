@@ -1,1 +1,1 @@
-require('./nonfixable-clone');
+import './nonfixable-clone.js';

@@ -16,6 +16,21 @@ Node.js 18 is no longer supported in v5.
 
 The minimum supported Node.js version is now `>=20.19.0`.
 
+### Native ESM Package
+
+`eslint-rspack-plugin` is now published as a native ES module package. Use ESM syntax when importing it from your Rspack config:
+
+```diff
+- const ESLintPlugin = require('eslint-rspack-plugin');
++ import ESLintPlugin from 'eslint-rspack-plugin';
+
+export default {
+  plugins: [new ESLintPlugin()],
+};
+```
+
+If your Rspack config is still CommonJS, migrate it to ESM first by using `export default` and either a `.mjs` config file or a `.js` config file in a package with `"type": "module"`.
+
 ### Flat Config is the Default
 
 In v4, `eslint-rspack-plugin` used `eslintrc` by default for ESLint 8 and ESLint 9. In v5, the default `configType` is `flat`.

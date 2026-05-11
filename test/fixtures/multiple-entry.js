@@ -1,2 +1,2 @@
-require('./good');
-require('./error');
+import './good.js';
+import './error.js';

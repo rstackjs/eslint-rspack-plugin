@@ -1,11 +1,11 @@
 import { join } from 'path';
 
-import { getESLint } from '../src/getESLint';
-import pack from './utils/pack';
+import { getESLint } from '../src/getESLint.js';
+import pack from './utils/pack.js';
 
 describe('eslint path', () => {
   it('should use another instance of eslint via eslintPath config', async () => {
-    const eslintPath = join(__dirname, 'mock/eslint');
+    const eslintPath = join(import.meta.dirname, 'mock/eslint');
     const compiler = pack('good', { eslintPath });
 
     const stats = await compiler.runAsync();
@@ -15,7 +15,7 @@ describe('eslint path', () => {
   });
 
   it('should fail with a clear error when eslintPath does not export loadESLint', async () => {
-    const eslintPath = join(__dirname, 'mock/eslint-no-load');
+    const eslintPath = join(import.meta.dirname, 'mock/eslint-no-load');
 
     await expect(
       getESLint({

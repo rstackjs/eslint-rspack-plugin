@@ -3,9 +3,13 @@ import { writeFileSync } from 'fs';
 
 import { removeSync } from 'fs-extra';
 
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
-const target = join(__dirname, 'fixtures', 'lint-dirty-modules-only-entry.js');
+const target = join(
+  import.meta.dirname,
+  'fixtures',
+  'lint-dirty-modules-only-entry.js',
+);
 
 describe('lint dirty modules only', () => {
   let watch;

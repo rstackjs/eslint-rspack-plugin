@@ -3,16 +3,16 @@ import { join } from 'path';
 import { copySync, removeSync } from 'fs-extra';
 import chokidar from 'chokidar';
 
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('autofix stop', () => {
-  const entry = join(__dirname, 'fixtures/nonfixable-clone.js');
+  const entry = join(import.meta.dirname, 'fixtures/nonfixable-clone.js');
 
   let changed = false;
   let watcher;
 
   beforeAll(() => {
-    copySync(join(__dirname, 'fixtures/nonfixable.js'), entry);
+    copySync(join(import.meta.dirname, 'fixtures/nonfixable.js'), entry);
 
     watcher = chokidar.watch(entry);
     watcher.on('change', () => {

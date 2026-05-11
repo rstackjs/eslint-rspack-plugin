@@ -1,1 +1,1 @@
-require("./folder/error")
+import "./folder/error.js"

@@ -1,6 +1,6 @@
-import ESLintPlugin from '../src';
+import ESLintPlugin from '../src/index.js';
 
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('multiple instances', () => {
   it("should don't fail", async () => {

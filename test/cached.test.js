@@ -1,10 +1,10 @@
 import { join } from 'path';
 import { removeSync } from 'fs-extra';
 import { rspack } from '@rspack/core';
-import conf from './utils/conf';
+import conf from './utils/conf.js';
 
 describe('error (cached module)', () => {
-  const cacheLocation = join(__dirname, 'cache');
+  const cacheLocation = join(import.meta.dirname, 'cache');
 
   beforeEach(() => {
     removeSync(cacheLocation);

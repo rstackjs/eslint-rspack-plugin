@@ -1,4 +1,4 @@
-class ESLintError extends Error {
+export default class ESLintError extends Error {
   /**
    * @param {string=} messages
    */
@@ -8,5 +8,3 @@ class ESLintError extends Error {
     this.stack = '';
   }
 }
-
-module.exports = ESLintError;

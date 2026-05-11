@@ -1,4 +1,4 @@
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('lint all files', () => {
   it('should only lint files in compilation when lintAllFiles is false', async () => {

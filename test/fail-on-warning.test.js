@@ -1,4 +1,4 @@
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('fail on warning', () => {
   it('should fail the build when failOnWarning is enabled', async () => {

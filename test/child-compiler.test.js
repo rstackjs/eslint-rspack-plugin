@@ -1,5 +1,5 @@
 import { rspack } from '@rspack/core';
-import conf from './utils/conf';
+import conf from './utils/conf.js';
 
 const PLUGIN_NAME = 'ChildPlugin';
 class ChildPlugin {

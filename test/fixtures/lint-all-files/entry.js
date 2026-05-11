@@ -1,1 +1,1 @@
-require('./included');
+import './included.js';

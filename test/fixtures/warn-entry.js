@@ -1,1 +1,1 @@
-require('./warn');
+import './warn.js';

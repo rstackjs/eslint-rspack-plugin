@@ -1,2 +1,2 @@
 // disable: eslint-disable-next-line import/no-unresolved
-require('./media/some-video.ts?media');
+import './media/some-video.ts?media';

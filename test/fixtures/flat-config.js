@@ -1,7 +1,6 @@
-
-module.exports = [
-    {
-        files: ["*.js"],
-        rules: {}
-    }
+export default [
+  {
+    files: ['*.js'],
+    rules: {},
+  },
 ];

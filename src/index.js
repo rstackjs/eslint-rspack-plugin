@@ -1,16 +1,18 @@
-const { isAbsolute, join } = require('path');
+import { isAbsolute, join } from 'node:path';
 
-const { globSync } = require('tinyglobby');
-const { isMatch } = require('micromatch');
+import micromatch from 'micromatch';
+import { globSync } from 'tinyglobby';
 
-const { getOptions } = require('./options');
-const linter = require('./linter');
-const { arrify, parseFiles, parseFoldersToGlobs } = require('./utils');
+import linter from './linter.js';
+import { getOptions } from './options.js';
+import { arrify, parseFiles, parseFoldersToGlobs } from './utils.js';
+
+const { isMatch } = micromatch;
 
 /** @typedef {import('@rspack/core').Compiler} Compiler */
 /** @typedef {import('@rspack/core').Module} Module */
 /** @typedef {import('@rspack/core').NormalModule} NormalModule */
-/** @typedef {import('./options').Options} Options */
+/** @typedef {import('./options.js').Options} Options */
 
 const ESLINT_PLUGIN = 'ESLintRspackPlugin';
 const DEFAULT_FOLDER_TO_EXCLUDE = '**/node_modules/**';
@@ -97,9 +99,9 @@ class ESLintRspackPlugin {
     if (isCompilerHooked) return;
 
     compiler.hooks.compilation.tap(this.key, async (compilation) => {
-      /** @type {import('./linter').Linter} */
+      /** @type {import('./linter.js').Linter} */
       let lint;
-      /** @type {import('./linter').Reporter} */
+      /** @type {import('./linter.js').Reporter} */
       let report;
 
       /** @type {string[]} */
@@ -107,15 +109,24 @@ class ESLintRspackPlugin {
 
       /** @type {Error | null} */
       let linterError = null;
+      let hasLinted = false;
 
       const shouldLintAllFiles = this.options.lintAllFiles;
       const allMatchingFiles = shouldLintAllFiles
         ? globSync(wanted, { dot: true, ignore: exclude })
         : [];
 
-      // Need to register a finishModules hook first.
-      // The linter is an asynchronous operation, which will cause subsequent hooks to fail to be registered.
-      // Maybe this is caused by the call optimization of rspack?
+      const setupLinter = linter(options, compilation)
+        .then((result) => {
+          ({ lint, report } = result);
+        })
+        .catch((e) => {
+          linterError = e;
+          compilation.errors.push(e);
+        });
+
+      // Register compilation hooks before waiting for linter setup.
+      // Awaiting linter setup here can make later hooks register too late in Rspack.
       compilation.hooks.finishModules.tap(this.key, (modules) => {
         if (!this.options.lintDirtyModulesOnly && !shouldLintAllFiles) {
           for (const m of modules) {
@@ -138,14 +149,6 @@ class ESLintRspackPlugin {
           );
         },
       );
-
-      try {
-        ({ lint, report } = await linter(options, compilation));
-      } catch (e) {
-        linterError = e;
-        compilation.errors.push(e);
-        return;
-      }
 
       /**
        * This two hooks will cause performance problem for rspack
@@ -191,12 +194,24 @@ class ESLintRspackPlugin {
             addFile(m);
           }
         }
-        if (files.length > 0) lint(files);
+        setupLinter.then(scheduleLint);
       });
+
+      function scheduleLint() {
+        if (linterError || hasLinted || files.length < 1) return;
+
+        hasLinted = true;
+        lint(files);
+      }
+
       async function processResults() {
+        await setupLinter;
+
         if (linterError) {
           return linterError;
         }
+
+        scheduleLint();
 
         const { errors, warnings, generateReportAsset } = await report();
 
@@ -242,4 +257,4 @@ class ESLintRspackPlugin {
   }
 }
 
-module.exports = ESLintRspackPlugin;
+export default ESLintRspackPlugin;

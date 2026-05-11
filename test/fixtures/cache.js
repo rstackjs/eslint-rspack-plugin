@@ -1,6 +1,6 @@
 "use strict"
 
-require("./require")
+import "./require.js"
 
 function cacheIt() {
   return "cache"

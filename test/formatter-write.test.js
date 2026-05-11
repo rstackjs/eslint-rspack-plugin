@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { readFileSync, removeSync } from 'fs-extra';
 import { rspack } from '@rspack/core';
-import conf from './utils/conf';
+import conf from './utils/conf.js';
 import { stripVTControlCharacters } from 'node:util';
 
 const cleanContents = (contents) =>
@@ -44,7 +44,11 @@ describe('formatter write', () => {
   it('should write results to absolute file with a same formatter', () =>
     new Promise((resolve, reject) => {
       const outputFilename = 'outputReport-absolute.txt';
-      const outputFilepath = join(__dirname, 'output', outputFilename);
+      const outputFilepath = join(
+        import.meta.dirname,
+        'output',
+        outputFilename,
+      );
       const config = conf('error', {
         outputReport: {
           filePath: outputFilepath,

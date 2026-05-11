@@ -1,4 +1,4 @@
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('fail on error', () => {
   it('should fail the build by default outside development mode', async () => {

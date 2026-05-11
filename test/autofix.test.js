@@ -2,13 +2,13 @@ import { join } from 'path';
 
 import { copySync, removeSync, readFileSync } from 'fs-extra';
 
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('autofix stop', () => {
-  const entry = join(__dirname, 'fixtures/fixable-clone.js');
+  const entry = join(import.meta.dirname, 'fixtures/fixable-clone.js');
 
   beforeAll(() => {
-    copySync(join(__dirname, 'fixtures/fixable.js'), entry);
+    copySync(join(import.meta.dirname, 'fixtures/fixable.js'), entry);
   });
 
   afterAll(() => {

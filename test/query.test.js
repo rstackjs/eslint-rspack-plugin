@@ -1,4 +1,4 @@
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('query', () => {
   it('should correctly resolve file despite query path', async () => {

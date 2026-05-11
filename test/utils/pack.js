@@ -1,5 +1,5 @@
 import { rspack } from '@rspack/core';
-import conf from './conf';
+import conf from './conf.js';
 
 /**
  * new a test webpack compiler

@@ -1,4 +1,4 @@
-const schema = require('./options.json');
+import schema from './options.json' with { type: 'json' };
 
 /** @typedef {import("eslint").ESLint.Options} ESLintOptions */
 /** @typedef {import('eslint').ESLint.LintResult} LintResult */
@@ -84,7 +84,4 @@ function getESLintOptions(loaderOptions) {
   return eslintOptions;
 }
 
-module.exports = {
-  getOptions,
-  getESLintOptions,
-};
+export { getOptions, getESLintOptions };

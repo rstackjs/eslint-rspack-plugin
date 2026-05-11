@@ -1,10 +1,24 @@
-export = linter;
+export default linter;
+export type ESLint = import('eslint').ESLint;
+export type Formatter = import('eslint').ESLint.Formatter;
+export type LintResult = import('eslint').ESLint.LintResult;
+export type Compilation = import('@rspack/core').Compilation;
+export type Options = import('./options.js').Options;
+export type FormatterFunction = import('./options.js').FormatterFunction;
+export type GenerateReport = (compilation: Compilation) => Promise<void>;
+export type Report = {
+  errors?: ESLintError;
+  warnings?: ESLintError;
+  generateReportAsset?: GenerateReport;
+};
+export type Reporter = () => Promise<Report>;
+export type Linter = (files: string | string[]) => void;
 /** @typedef {import('eslint').ESLint} ESLint */
 /** @typedef {import('eslint').ESLint.Formatter} Formatter */
 /** @typedef {import('eslint').ESLint.LintResult} LintResult */
 /** @typedef {import('@rspack/core').Compilation} Compilation */
-/** @typedef {import('./options').Options} Options */
-/** @typedef {import('./options').FormatterFunction} FormatterFunction */
+/** @typedef {import('./options.js').Options} Options */
+/** @typedef {import('./options.js').FormatterFunction} FormatterFunction */
 /** @typedef {(compilation: Compilation) => Promise<void>} GenerateReport */
 /** @typedef {{errors?: ESLintError, warnings?: ESLintError, generateReportAsset?: GenerateReport}} Report */
 /** @typedef {() => Promise<Report>} Reporter */
@@ -21,32 +35,4 @@ declare function linter(
   lint: Linter;
   report: Reporter;
 }>;
-declare namespace linter {
-  export {
-    ESLint,
-    Formatter,
-    LintResult,
-    Compilation,
-    Options,
-    FormatterFunction,
-    GenerateReport,
-    Report,
-    Reporter,
-    Linter,
-  };
-}
-type ESLint = import('eslint').ESLint;
-type Formatter = import('eslint').ESLint.Formatter;
-type LintResult = import('eslint').ESLint.LintResult;
-type Compilation = import('@rspack/core').Compilation;
-type Options = import('./options').Options;
-type FormatterFunction = import('./options').FormatterFunction;
-type GenerateReport = (compilation: Compilation) => Promise<void>;
-type Report = {
-  errors?: ESLintError;
-  warnings?: ESLintError;
-  generateReportAsset?: GenerateReport;
-};
-type Reporter = () => Promise<Report>;
-type Linter = (files: string | string[]) => void;
-import ESLintError = require('./ESLintError');
+import ESLintError from './ESLintError.js';

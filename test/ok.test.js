@@ -1,4 +1,4 @@
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('ok', () => {
   it("should don't throw error if file is ok", async () => {

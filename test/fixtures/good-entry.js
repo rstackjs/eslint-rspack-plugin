@@ -1,1 +1,1 @@
-require('./good');
+import './good.js';

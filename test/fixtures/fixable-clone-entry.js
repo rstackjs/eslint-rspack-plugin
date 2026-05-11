@@ -1,1 +1,1 @@
-require('./fixable-clone');
+import './fixable-clone.js';
