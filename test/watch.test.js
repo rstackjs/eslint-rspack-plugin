@@ -102,6 +102,7 @@ describe('watch', () => {
         expect(message).toEqual(expect.stringMatching('no-unused-vars'));
         // `prefer-const` fails here
         expect(message).toEqual(expect.stringMatching('prefer-const'));
+        expect(message).toEqual(expect.stringMatching('\\(4 errors,'));
 
         next = finish;
 
@@ -114,10 +115,7 @@ describe('watch', () => {
       function finish(err, stats) {
         expect(err).toBeNull();
         expect(stats.hasWarnings()).toBe(false);
-        const { errors } = stats.compilation;
-        const [{ message }] = errors;
-        expect(stats.hasErrors()).toBe(true);
-        expect(message).toEqual(expect.stringMatching('prefer-const'));
+        expect(stats.hasErrors()).toBe(false);
         resolve();
       }
     }));

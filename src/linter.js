@@ -2,12 +2,10 @@ const { dirname, isAbsolute, join } = require('path');
 
 const ESLintError = require('./ESLintError');
 const { getESLint } = require('./getESLint');
-const { arrify } = require('./utils');
 
 /** @typedef {import('eslint').ESLint} ESLint */
 /** @typedef {import('eslint').ESLint.Formatter} Formatter */
 /** @typedef {import('eslint').ESLint.LintResult} LintResult */
-/** @typedef {import('@rspack/core').Compiler} Compiler */
 /** @typedef {import('@rspack/core').Compilation} Compilation */
 /** @typedef {import('./options').Options} Options */
 /** @typedef {import('./options').FormatterFunction} FormatterFunction */
@@ -15,10 +13,6 @@ const { arrify } = require('./utils');
 /** @typedef {{errors?: ESLintError, warnings?: ESLintError, generateReportAsset?: GenerateReport}} Report */
 /** @typedef {() => Promise<Report>} Reporter */
 /** @typedef {(files: string|string[]) => void} Linter */
-/** @typedef {{[files: string]: LintResult}} LintResultMap */
-
-/** @type {WeakMap<Compiler, LintResultMap>} */
-const resultStorage = new WeakMap();
 
 /**
  * @param {string|undefined} key
@@ -42,8 +36,6 @@ async function linter(key, options, compilation) {
   /** @type {Promise<LintResult[]>[]} */
   const rawResults = [];
 
-  const crossRunResultStorage = getResultStorage(compilation);
-
   try {
     ({ eslint, lintFiles, cleanup, threads } = await getESLint(key, options));
   } catch (e) {
@@ -60,9 +52,6 @@ async function linter(key, options, compilation) {
    * @param {string | string[]} files
    */
   function lint(files) {
-    for (const file of arrify(files)) {
-      delete crossRunResultStorage[file];
-    }
     rawResults.push(
       lintFiles(files).catch((e) => {
         // @ts-ignore
@@ -74,19 +63,13 @@ async function linter(key, options, compilation) {
 
   async function report() {
     // Filter out ignored files.
-    let results = await removeIgnoredWarnings(
+    const results = await removeIgnoredWarnings(
       eslint,
       // Get the current results, resetting the rawResults to empty
       await flatten(rawResults.splice(0, rawResults.length)),
     );
 
     await cleanup();
-
-    for (const result of results) {
-      crossRunResultStorage[result.filePath] = result;
-    }
-
-    results = Object.values(crossRunResultStorage);
 
     // do not analyze if there are no results or eslint config
     if (!results || results.length < 1) {
@@ -291,18 +274,6 @@ async function flatten(results) {
    */
   const flat = (acc, list) => [...acc, ...list];
   return (await Promise.all(results)).reduce(flat, []);
-}
-
-/**
- * @param {Compilation} compilation
- * @returns {LintResultMap}
- */
-function getResultStorage({ compiler }) {
-  let storage = resultStorage.get(compiler);
-  if (!storage) {
-    resultStorage.set(compiler, (storage = {}));
-  }
-  return storage;
 }
 
 module.exports = linter;
