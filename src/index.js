@@ -208,7 +208,7 @@ class ESLintRspackPlugin {
         await setupLinter;
 
         if (linterError) {
-          return linterError;
+          return options.failOnError ? linterError : null;
         }
 
         scheduleLint();

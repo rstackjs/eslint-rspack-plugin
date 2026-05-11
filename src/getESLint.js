@@ -63,11 +63,34 @@ async function getESLint(options) {
  */
 async function loadESLintModule(specifier) {
   try {
+    // Prefer native ESM resolution for package specifiers so conditional
+    // exports use the import-compatible entry.
     return normalizeModule(await import(specifier));
-  } catch (_) {
+  } catch (e) {
+    if (!isImportResolutionError(e)) {
+      throw e;
+    }
+
+    // Fall back to CommonJS resolution only for legacy path-style eslintPath
+    // values, such as directories that ESM import cannot resolve directly.
     const resolvedPath = moduleRequire.resolve(specifier);
     return normalizeModule(await import(pathToFileURL(resolvedPath).href));
   }
+}
+
+/**
+ * @param {unknown} error
+ * @returns {boolean}
+ */
+function isImportResolutionError(error) {
+  if (!error || typeof error !== 'object') return false;
+
+  const { code } = /** @type {{ code?: string }} */ (error);
+  return (
+    code === 'ERR_MODULE_NOT_FOUND' ||
+    code === 'ERR_UNSUPPORTED_DIR_IMPORT' ||
+    code === 'MODULE_NOT_FOUND'
+  );
 }
 
 /**
