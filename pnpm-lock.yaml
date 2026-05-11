@@ -61,6 +61,71 @@ importers:
         specifier: ^5.5.4
         version: 5.9.3
 
+  examples/rsbuild-react:
+    dependencies:
+      react:
+        specifier: ^19.2.5
+        version: 19.2.6
+      react-dom:
+        specifier: ^19.2.5
+        version: 19.2.6(react@19.2.6)
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.39.4
+        version: 9.39.4
+      '@rsbuild/core':
+        specifier: ^2.0.3
+        version: 2.0.5
+      '@rsbuild/plugin-react':
+        specifier: ^2.0.0
+        version: 2.0.0(@rsbuild/core@2.0.5)(@rspack/core@2.0.2(@swc/helpers@0.5.21))
+      eslint:
+        specifier: ^9.39.4
+        version: 9.39.4(jiti@2.6.1)
+      eslint-rspack-plugin:
+        specifier: workspace:*
+        version: link:../..
+      globals:
+        specifier: ^16.5.0
+        version: 16.5.0
+
+  examples/rspack-react:
+    dependencies:
+      react:
+        specifier: ^19.2.5
+        version: 19.2.6
+      react-dom:
+        specifier: ^19.2.5
+        version: 19.2.6(react@19.2.6)
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.39.4
+        version: 9.39.4
+      '@rspack/cli':
+        specifier: ^2.0.2
+        version: 2.0.2(@rspack/core@2.0.2(@swc/helpers@0.5.21))(@rspack/dev-server@2.0.1(@rspack/core@2.0.2(@swc/helpers@0.5.21)))
+      '@rspack/core':
+        specifier: ^2.0.2
+        version: 2.0.2(@swc/helpers@0.5.21)
+      '@rspack/dev-server':
+        specifier: ^2.0.1
+        version: 2.0.1(@rspack/core@2.0.2(@swc/helpers@0.5.21))
+      '@rspack/plugin-react-refresh':
+        specifier: ^2.0.0
+        version: 2.0.0(@rspack/core@2.0.2(@swc/helpers@0.5.21))(react-refresh@0.18.0)
+      eslint:
+        specifier: ^9.39.4
+        version: 9.39.4(jiti@2.6.1)
+      eslint-rspack-plugin:
+        specifier: workspace:*
+        version: link:../..
+      globals:
+        specifier: ^16.5.0
+        version: 16.5.0
+      react-refresh:
+        specifier: ^0.18.0
+        version: 0.18.0
+
 packages:
 
   '@ast-grep/napi-darwin-arm64@0.37.0':
@@ -204,6 +269,14 @@ packages:
       core-js:
         optional: true
 
+  '@rsbuild/plugin-react@2.0.0':
+    resolution: {integrity: sha512-/1gzt39EGUSFEqB83g46QoOwsgv172HI18i6au1b6lgIaX4sv9stuX4ijdHbHCp8PqYEq+MyQ99jIQMO6I+etg==}
+    peerDependencies:
+      '@rsbuild/core': ^2.0.0-0
+    peerDependenciesMeta:
+      '@rsbuild/core':
+        optional: true
+
   '@rslib/core@0.21.4':
     resolution: {integrity: sha512-lGQ3znngCmzYaIbPZcfEm4t+fGhSM4os1GKwXaLydUOB2mf3Q/MDffpEkuMtbzrW+PmAGJ8NIbjgipXd9mlcsg==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -269,6 +342,16 @@ packages:
   '@rspack/binding@2.0.2':
     resolution: {integrity: sha512-0kZPplW9GWx8mfC6DfsaRY3QBIYPuUs42JfmSM6aSb8tMHZAXQeLeMB8M+h8i4SeI+aFtCgO6UuYGtyWf7+L+A==}
 
+  '@rspack/cli@2.0.2':
+    resolution: {integrity: sha512-rwuzo/V59ck/ChNkxMEEjuXLFs8nPJ37K0PMuUeIMmzFJNdUcPLxSV3qaV9azDLGcyq4XwcyQvexH3okWbfUfQ==}
+    hasBin: true
+    peerDependencies:
+      '@rspack/core': ^2.0.0-0
+      '@rspack/dev-server': ^2.0.0-0
+    peerDependenciesMeta:
+      '@rspack/dev-server':
+        optional: true
+
   '@rspack/core@2.0.2':
     resolution: {integrity: sha512-VM3UHOo26uC+4QSqY5tU1ybI7KuXY5rTof8nhFOaBY9SYau0Smvr+hMSAPmrmHwknB6dXT8yaNVxrj7I+qxE1Q==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -279,6 +362,34 @@ packages:
       '@module-federation/runtime-tools':
         optional: true
       '@swc/helpers':
+        optional: true
+
+  '@rspack/dev-middleware@2.0.1':
+    resolution: {integrity: sha512-cXSubf5/C+dvkWV2/+rGTtiZ93wSLd3OlTQhwMvsmsmGDdPlkYqIvQ+BTkOk9UCXxKIaF0DDYYmCpBeRRYJfJw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      '@rspack/core': ^2.0.0-0
+    peerDependenciesMeta:
+      '@rspack/core':
+        optional: true
+
+  '@rspack/dev-server@2.0.1':
+    resolution: {integrity: sha512-N5sIdU9v6WhwPH6Ek8QCj4IMvGd8jA3ZW1NMAyHP1ezzKIr2/idcNV2zX5vbC6FJvOLRLww0rFjfKA+z4tshDA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      '@rspack/core': ^2.0.0-0
+      selfsigned: ^5.0.0
+    peerDependenciesMeta:
+      selfsigned:
+        optional: true
+
+  '@rspack/plugin-react-refresh@2.0.0':
+    resolution: {integrity: sha512-Cf6CxBStNDJbiXMc/GmsvG1G8PRlUpa0MSfWsMTI+e8npzuTN/p8nwLs3shriBZOLciqgkSZpBtPTd10BLpj1g==}
+    peerDependencies:
+      '@rspack/core': ^2.0.0-0
+      react-refresh: '>=0.10.0 <1.0.0'
+    peerDependenciesMeta:
+      '@rspack/core':
         optional: true
 
   '@rstest/core@0.9.10':
@@ -652,6 +763,19 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  react-dom@19.2.6:
+    resolution: {integrity: sha512-0prMI+hvBbPjsWnxDLxlCGyM8PN6UuWjEUCYmZhO67xIV9Xasa/r/vDnq+Xyq4Lo27g8QSbO5YzARu0D1Sps3g==}
+    peerDependencies:
+      react: ^19.2.6
+
+  react-refresh@0.18.0:
+    resolution: {integrity: sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==}
+    engines: {node: '>=0.10.0'}
+
+  react@19.2.6:
+    resolution: {integrity: sha512-sfWGGfavi0xr8Pg0sVsyHMAOziVYKgPLNrS7ig+ivMNb3wbCBw3KxtflsGBAwD3gYQlE/AEZsTLgToRrSCjb0Q==}
+    engines: {node: '>=0.10.0'}
+
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
@@ -675,6 +799,9 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  scheduler@0.27.0:
+    resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
 
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
@@ -872,6 +999,15 @@ snapshots:
     transitivePeerDependencies:
       - '@module-federation/runtime-tools'
 
+  '@rsbuild/plugin-react@2.0.0(@rsbuild/core@2.0.5)(@rspack/core@2.0.2(@swc/helpers@0.5.21))':
+    dependencies:
+      '@rspack/plugin-react-refresh': 2.0.0(@rspack/core@2.0.2(@swc/helpers@0.5.21))(react-refresh@0.18.0)
+      react-refresh: 0.18.0
+    optionalDependencies:
+      '@rsbuild/core': 2.0.5
+    transitivePeerDependencies:
+      - '@rspack/core'
+
   '@rslib/core@0.21.4(typescript@5.9.3)':
     dependencies:
       '@rsbuild/core': 2.0.5
@@ -930,11 +1066,32 @@ snapshots:
       '@rspack/binding-win32-ia32-msvc': 2.0.2
       '@rspack/binding-win32-x64-msvc': 2.0.2
 
+  '@rspack/cli@2.0.2(@rspack/core@2.0.2(@swc/helpers@0.5.21))(@rspack/dev-server@2.0.1(@rspack/core@2.0.2(@swc/helpers@0.5.21)))':
+    dependencies:
+      '@rspack/core': 2.0.2(@swc/helpers@0.5.21)
+    optionalDependencies:
+      '@rspack/dev-server': 2.0.1(@rspack/core@2.0.2(@swc/helpers@0.5.21))
+
   '@rspack/core@2.0.2(@swc/helpers@0.5.21)':
     dependencies:
       '@rspack/binding': 2.0.2
     optionalDependencies:
       '@swc/helpers': 0.5.21
+
+  '@rspack/dev-middleware@2.0.1(@rspack/core@2.0.2(@swc/helpers@0.5.21))':
+    optionalDependencies:
+      '@rspack/core': 2.0.2(@swc/helpers@0.5.21)
+
+  '@rspack/dev-server@2.0.1(@rspack/core@2.0.2(@swc/helpers@0.5.21))':
+    dependencies:
+      '@rspack/core': 2.0.2(@swc/helpers@0.5.21)
+      '@rspack/dev-middleware': 2.0.1(@rspack/core@2.0.2(@swc/helpers@0.5.21))
+
+  '@rspack/plugin-react-refresh@2.0.0(@rspack/core@2.0.2(@swc/helpers@0.5.21))(react-refresh@0.18.0)':
+    dependencies:
+      react-refresh: 0.18.0
+    optionalDependencies:
+      '@rspack/core': 2.0.2(@swc/helpers@0.5.21)
 
   '@rstest/core@0.9.10':
     dependencies:
@@ -1296,6 +1453,15 @@ snapshots:
 
   punycode@2.3.1: {}
 
+  react-dom@19.2.6(react@19.2.6):
+    dependencies:
+      react: 19.2.6
+      scheduler: 0.27.0
+
+  react-refresh@0.18.0: {}
+
+  react@19.2.6: {}
+
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
@@ -1308,6 +1474,8 @@ snapshots:
       '@rsbuild/core': 2.0.5
     optionalDependencies:
       typescript: 5.9.3
+
+  scheduler@0.27.0: {}
 
   shebang-command@2.0.0:
     dependencies:

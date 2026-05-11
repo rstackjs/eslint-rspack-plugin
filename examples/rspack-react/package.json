@@ -1,0 +1,27 @@
+{
+  "name": "rspack-react-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rspack build",
+    "dev": "rspack dev",
+    "lint": "eslint \"src/**/*.{js,jsx}\" \"*.config.js\"",
+    "preview": "rspack preview"
+  },
+  "dependencies": {
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@rspack/cli": "^2.0.2",
+    "@rspack/core": "^2.0.2",
+    "@rspack/dev-server": "^2.0.1",
+    "@rspack/plugin-react-refresh": "^2.0.0",
+    "eslint": "^9.39.4",
+    "eslint-rspack-plugin": "workspace:*",
+    "globals": "^16.5.0",
+    "react-refresh": "^0.18.0"
+  }
+}
