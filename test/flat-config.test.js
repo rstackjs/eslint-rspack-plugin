@@ -1,10 +1,14 @@
 import { join } from 'path';
 
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('succeed on flat-configuration', () => {
   it('uses flat config by default', async () => {
-    const overrideConfigFile = join(__dirname, 'fixtures', 'flat-config.js');
+    const overrideConfigFile = join(
+      import.meta.dirname,
+      'fixtures',
+      'flat-config.js',
+    );
     const compiler = pack('full-of-problems', {
       overrideConfigFile,
     });
@@ -19,7 +23,11 @@ describe('succeed on flat-configuration', () => {
   });
 
   it('finds errors on files with explicit flat config type', async () => {
-    const overrideConfigFile = join(__dirname, 'fixtures', 'flat-config.js');
+    const overrideConfigFile = join(
+      import.meta.dirname,
+      'fixtures',
+      'flat-config.js',
+    );
     const compiler = pack('full-of-problems', {
       configType: 'flat',
       overrideConfigFile,

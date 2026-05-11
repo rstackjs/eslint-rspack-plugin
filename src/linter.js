@@ -1,14 +1,14 @@
-const { dirname, isAbsolute, join } = require('path');
+import { dirname, isAbsolute, join } from 'node:path';
 
-const ESLintError = require('./ESLintError');
-const { getESLint } = require('./getESLint');
+import ESLintError from './ESLintError.js';
+import { getESLint } from './getESLint.js';
 
 /** @typedef {import('eslint').ESLint} ESLint */
 /** @typedef {import('eslint').ESLint.Formatter} Formatter */
 /** @typedef {import('eslint').ESLint.LintResult} LintResult */
 /** @typedef {import('@rspack/core').Compilation} Compilation */
-/** @typedef {import('./options').Options} Options */
-/** @typedef {import('./options').FormatterFunction} FormatterFunction */
+/** @typedef {import('./options.js').Options} Options */
+/** @typedef {import('./options.js').FormatterFunction} FormatterFunction */
 /** @typedef {(compilation: Compilation) => Promise<void>} GenerateReport */
 /** @typedef {{errors?: ESLintError, warnings?: ESLintError, generateReportAsset?: GenerateReport}} Report */
 /** @typedef {() => Promise<Report>} Reporter */
@@ -266,4 +266,4 @@ async function flatten(results) {
   return (await Promise.all(results)).reduce(flat, []);
 }
 
-module.exports = linter;
+export default linter;

@@ -1,9 +1,9 @@
 import { join } from 'path';
 
-import ESLintPlugin from '../../src';
+import ESLintPlugin from '../../src/index.js';
 
 export default (entry, pluginConf = {}, webpackConf = {}) => {
-  const testDir = join(__dirname, '..');
+  const testDir = join(import.meta.dirname, '..');
 
   /**
    * Entry supports two formats:
@@ -16,7 +16,7 @@ export default (entry, pluginConf = {}, webpackConf = {}) => {
   const overrideConfigFile = join(
     testDir,
     'config-for-tests',
-    'eslint.config.mjs',
+    'eslint.config.js',
   );
 
   return {

@@ -1,5 +1,5 @@
 const stateKey = Symbol.for('eslint-rspack-plugin.eslint-recording');
-const state =
+export const state =
   global[stateKey] ||
   (global[stateKey] = {
     calls: [],
@@ -29,7 +29,7 @@ ESLintMock.outputFixes = async (results) => {
   state.outputFixesCalls.push(results);
 };
 
-function reset({ shouldReject = false } = {}) {
+export function reset({ shouldReject = false } = {}) {
   state.calls = [];
   state.constructorOptions = [];
   state.loadOptions = [];
@@ -37,11 +37,7 @@ function reset({ shouldReject = false } = {}) {
   state.shouldReject = shouldReject;
 }
 
-module.exports = {
-  loadESLint: async (options) => {
-    state.loadOptions.push(options);
-    return ESLintMock;
-  },
-  reset,
-  state,
-};
+export async function loadESLint(options) {
+  state.loadOptions.push(options);
+  return ESLintMock;
+}

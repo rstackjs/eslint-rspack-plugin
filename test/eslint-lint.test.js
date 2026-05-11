@@ -1,9 +1,9 @@
 import { join } from 'path';
 
-import pack from './utils/pack';
+import * as eslintMock from './mock/eslint-recording/index.js';
+import pack from './utils/pack.js';
 
-const eslintPath = join(__dirname, 'mock/eslint-recording');
-const eslintMock = require('./mock/eslint-recording');
+const eslintPath = join(import.meta.dirname, 'mock/eslint-recording');
 
 const ignoreOrder = () =>
   eslintMock.state.calls[0].sort((a1, a2) =>

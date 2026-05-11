@@ -1,1 +1,1 @@
-require('./lint-more')
+import './lint-more.js'

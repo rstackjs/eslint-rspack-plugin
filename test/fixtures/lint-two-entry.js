@@ -1,2 +1,2 @@
-require('./lint')
-require('./lint?foo=bar')
+import './lint.js'
+import './lint.js?foo=bar'

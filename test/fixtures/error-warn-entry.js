@@ -1,2 +1,2 @@
-require('./error');
-require('./warn');
+import './error.js';
+import './warn.js';

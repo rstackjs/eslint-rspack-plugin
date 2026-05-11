@@ -3,10 +3,10 @@ import { writeFileSync } from 'fs';
 
 import { removeSync } from 'fs-extra';
 
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
-const target = join(__dirname, 'fixtures', 'watch-entry.js');
-const target2 = join(__dirname, 'fixtures', 'watch-leaf.js');
+const target = join(import.meta.dirname, 'fixtures', 'watch-entry.js');
+const target2 = join(import.meta.dirname, 'fixtures', 'watch-leaf.js');
 const targetExpectedPattern = expect.stringMatching(
   target.replace(/\\/g, '\\\\'),
 );
@@ -66,7 +66,7 @@ describe('watch', () => {
         writeFileSync(target2, 'let bar = false;\n');
         writeFileSync(
           target,
-          "const x = require('./watch-leaf')\n\nconst foo = false;\n",
+          "import * as x from './watch-leaf.js'\n\nconst foo = false;\n",
         );
       }
 
@@ -87,7 +87,7 @@ describe('watch', () => {
 
         writeFileSync(
           target,
-          "const x = require('./watch-leaf')\nconst foo = 0\n",
+          "import * as x from './watch-leaf.js'\nconst foo = 0\n",
         );
       }
 

@@ -1,6 +1,6 @@
 const MIN_BABEL_VERSION = 7;
 
-module.exports = (api) => {
+export default (api) => {
   api.assertVersion(MIN_BABEL_VERSION);
   api.cache(true);
 
@@ -12,6 +12,7 @@ module.exports = (api) => {
           targets: {
             node: '20.19.0',
           },
+          modules: false,
         },
       ],
     ],

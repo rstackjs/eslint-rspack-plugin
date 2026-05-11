@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "allowJs": true,
     "checkJs": true,
     "strict": true,
+    "allowSyntheticDefaultImports": true,
     "useUnknownInCatchVariables": false,
     "types": ["node"],
     "resolveJsonModule": true,

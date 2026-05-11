@@ -1,4 +1,4 @@
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('circular plugin', () => {
   it('should support plugins with circular configs', async () => {

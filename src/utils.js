@@ -1,7 +1,7 @@
-const { resolve } = require('path');
-const { statSync } = require('fs');
+import { statSync } from 'node:fs';
+import { resolve } from 'node:path';
 
-const normalizePath = require('normalize-path');
+import normalizePath from 'normalize-path';
 
 /**
  * @template T
@@ -88,8 +88,4 @@ function parseFoldersToGlobs(patterns, extensions = []) {
   });
 }
 
-module.exports = {
-  arrify,
-  parseFiles,
-  parseFoldersToGlobs,
-};
+export { arrify, parseFiles, parseFoldersToGlobs };

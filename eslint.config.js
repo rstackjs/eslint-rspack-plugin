@@ -14,9 +14,9 @@ export default [
   },
   js.configs.recommended,
   {
-    files: ['**/*.js', '**/*.mjs'],
+    files: ['**/*.js', '**/*.ts'],
     languageOptions: {
-      ecmaVersion: 2018,
+      ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
         ...globals.node,

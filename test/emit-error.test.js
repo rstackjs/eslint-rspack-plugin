@@ -1,4 +1,4 @@
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('emit error', () => {
   it('should not emit errors if emitError is false', async () => {

@@ -1,6 +1,6 @@
 import workerThreads from 'node:worker_threads';
 
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('Concurrency', () => {
   let workerCount;

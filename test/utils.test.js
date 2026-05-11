@@ -1,8 +1,8 @@
 import { rs } from '@rstest/core';
 
-import { parseFoldersToGlobs, parseFiles } from '../src/utils';
+import { parseFoldersToGlobs, parseFiles } from '../src/utils.js';
 
-rs.mockRequire('fs', () => {
+rs.mock('node:fs', () => {
   return {
     statSync(pattern) {
       return {

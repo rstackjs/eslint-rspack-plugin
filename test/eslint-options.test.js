@@ -1,4 +1,4 @@
-import { getESLintOptions } from '../src/options';
+import { getESLintOptions } from '../src/options.js';
 
 describe('eslint options', () => {
   it('should filter loader options', () => {

@@ -7,6 +7,7 @@
   "author": "Ricardo Gobbo de Souza <ricardogobbosouza@yahoo.com.br>",
   "homepage": "https://github.com/rstackjs/eslint-rspack-plugin",
   "bugs": "https://github.com/rstackjs/eslint-rspack-plugin/issues",
+  "type": "module",
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/webpack"

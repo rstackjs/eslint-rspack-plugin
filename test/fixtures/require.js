@@ -1,3 +1,3 @@
 "use strict"
 
-require("./good")
+import "./good.js"

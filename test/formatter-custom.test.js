@@ -1,8 +1,8 @@
-import pack from './utils/pack';
+import formatter from './mock/formatter/index.js';
+import pack from './utils/pack.js';
 
 describe('formatter eslint', () => {
   it('should use custom formatter as function', async () => {
-    const formatter = require('./mock/formatter');
     const compiler = pack('error', { formatter });
 
     const stats = await compiler.runAsync();

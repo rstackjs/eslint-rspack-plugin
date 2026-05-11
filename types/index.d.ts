@@ -1,11 +1,15 @@
-export = ESLintRspackPlugin;
+export default ESLintRspackPlugin;
+export type Compiler = import('@rspack/core').Compiler;
+export type Module = import('@rspack/core').Module;
+export type NormalModule = import('@rspack/core').NormalModule;
+export type Options = import('./options.js').Options;
 declare class ESLintRspackPlugin {
   /**
    * @param {Options} options
    */
   constructor(options?: Options);
   key: string;
-  options: import('./options').PluginOptions;
+  options: import('./options.js').PluginOptions;
   /**
    * @param {Compiler} compiler
    * @param {Omit<Options, 'resourceQueryExclude'> & {resourceQueryExclude: RegExp[]}} options
@@ -32,10 +36,3 @@ declare class ESLintRspackPlugin {
    */
   getContext(compiler: Compiler): string;
 }
-declare namespace ESLintRspackPlugin {
-  export { Compiler, Module, NormalModule, Options };
-}
-type Compiler = import('@rspack/core').Compiler;
-type Module = import('@rspack/core').Module;
-type NormalModule = import('@rspack/core').NormalModule;
-type Options = import('./options').Options;

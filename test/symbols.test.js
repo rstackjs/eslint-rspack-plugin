@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { rs } from '@rstest/core';
 
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('symbols', () => {
   afterEach(() => {
@@ -12,7 +12,7 @@ describe('symbols', () => {
     const compiler = pack(
       'symbols',
       {},
-      { context: join(__dirname, 'fixtures/[symbols]') },
+      { context: join(import.meta.dirname, 'fixtures/[symbols]') },
     );
 
     const stats = await compiler.runAsync();

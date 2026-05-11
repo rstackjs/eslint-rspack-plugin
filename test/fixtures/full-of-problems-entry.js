@@ -1,1 +1,1 @@
-require('./full-of-problems');
+import './full-of-problems.js';

@@ -1,16 +1,18 @@
-const { isAbsolute, join } = require('path');
+import { isAbsolute, join } from 'node:path';
 
-const { globSync } = require('tinyglobby');
-const { isMatch } = require('micromatch');
+import micromatch from 'micromatch';
+import { globSync } from 'tinyglobby';
 
-const { getOptions } = require('./options');
-const linter = require('./linter');
-const { arrify, parseFiles, parseFoldersToGlobs } = require('./utils');
+import linter from './linter.js';
+import { getOptions } from './options.js';
+import { arrify, parseFiles, parseFoldersToGlobs } from './utils.js';
+
+const { isMatch } = micromatch;
 
 /** @typedef {import('@rspack/core').Compiler} Compiler */
 /** @typedef {import('@rspack/core').Module} Module */
 /** @typedef {import('@rspack/core').NormalModule} NormalModule */
-/** @typedef {import('./options').Options} Options */
+/** @typedef {import('./options.js').Options} Options */
 
 const ESLINT_PLUGIN = 'ESLintRspackPlugin';
 const DEFAULT_FOLDER_TO_EXCLUDE = '**/node_modules/**';
@@ -97,9 +99,9 @@ class ESLintRspackPlugin {
     if (isCompilerHooked) return;
 
     compiler.hooks.compilation.tap(this.key, async (compilation) => {
-      /** @type {import('./linter').Linter} */
+      /** @type {import('./linter.js').Linter} */
       let lint;
-      /** @type {import('./linter').Reporter} */
+      /** @type {import('./linter.js').Reporter} */
       let report;
 
       /** @type {string[]} */
@@ -242,4 +244,4 @@ class ESLintRspackPlugin {
   }
 }
 
-module.exports = ESLintRspackPlugin;
+export default ESLintRspackPlugin;

@@ -1,4 +1,4 @@
-import pack from './utils/pack';
+import pack from './utils/pack.js';
 
 describe('resource-query', () => {
   it('should exclude the match resource query', async () => {
