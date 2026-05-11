@@ -11,9 +11,10 @@ describe('eslint lint', () => {
   beforeAll(() => {
     jest.mock('eslint', () => {
       return {
-        ESLint: function ESLint() {
-          this.lintFiles = mockLintFiles;
-        },
+        loadESLint: async () =>
+          function ESLint() {
+            this.lintFiles = mockLintFiles;
+          },
       };
     });
   });

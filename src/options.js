@@ -49,6 +49,7 @@ function getOptions(pluginOptions) {
   const options = {
     cache: true,
     cacheLocation: 'node_modules/.cache/eslint-rspack-plugin/.eslintcache',
+    configType: 'flat',
     extensions: 'js',
     emitError: true,
     emitWarning: true,
@@ -72,7 +73,6 @@ function getESLintOptions(loaderOptions) {
   const { fix, extensions, ...eslintOnlyOptions } = schema.properties;
 
   // No need to guard the for-in because schema.properties has hardcoded keys.
-  // eslint-disable-next-line guard-for-in
   for (const option in eslintOnlyOptions) {
     // @ts-ignore
     delete eslintOptions[option];

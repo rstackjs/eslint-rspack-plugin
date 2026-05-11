@@ -20,7 +20,6 @@ const normalizePath = require('normalize-path');
  */
 /* istanbul ignore next */
 function arrify(value) {
-  // eslint-disable-next-line no-undefined
   if (value === null || value === undefined) {
     // @ts-ignore
     return [];
@@ -99,7 +98,6 @@ const jsonStringifyReplacerSortKeys = (_, value) => {
    * @param {string | number} key
    */
   const insert = (sorted, key) => {
-    // eslint-disable-next-line no-param-reassign
     sorted[key] = value[key];
     return sorted;
   };
@@ -108,7 +106,6 @@ const jsonStringifyReplacerSortKeys = (_, value) => {
     const sorted = Object.keys(value).sort().reduce(insert, {});
 
     for (const key of Object.keys(value)) {
-      // eslint-disable-next-line no-param-reassign
       delete value[key];
     }
 

@@ -16,9 +16,10 @@ describe('error', () => {
   it('should propagate eslint exceptions as errors', async () => {
     jest.mock('eslint', () => {
       return {
-        ESLint: function ESLint() {
-          this.lintFiles = async () => Promise.reject(new Error('Oh no!'));
-        },
+        loadESLint: async () =>
+          function ESLint() {
+            this.lintFiles = async () => Promise.reject(new Error('Oh no!'));
+          },
       };
     });
 

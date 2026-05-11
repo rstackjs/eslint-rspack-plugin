@@ -1,12 +1,12 @@
-/* eslint-env jest */
 import { join } from 'path';
 
 import { loadESLint, loadESLintThreaded } from '../src/getESLint';
 
 describe('Threading', () => {
   test('Threaded interface should look like non-threaded interface', async () => {
-    const single = await loadESLint({});
-    const threaded = await loadESLintThreaded('foo', 1, {});
+    const options = { overrideConfigFile: true };
+    const single = await loadESLint(options);
+    const threaded = await loadESLintThreaded('foo', 1, options);
     for (const key of Object.keys(single)) {
       expect(typeof single[key]).toEqual(typeof threaded[key]);
     }
@@ -21,7 +21,15 @@ describe('Threading', () => {
   });
 
   test('Threaded should lint files', async () => {
-    const threaded = await loadESLintThreaded('bar', 1, { ignore: false });
+    const overrideConfigFile = join(
+      __dirname,
+      'config-for-tests',
+      'eslint.config.mjs',
+    );
+    const threaded = await loadESLintThreaded('bar', 1, {
+      ignore: false,
+      overrideConfigFile,
+    });
     try {
       const [good, bad] = await Promise.all([
         threaded.lintFiles(join(__dirname, 'fixtures/good.js')),
@@ -46,14 +54,15 @@ describe('Threading', () => {
       const mockLintFiles = jest.fn();
       jest.mock('eslint', () => {
         return {
-          ESLint: Object.assign(
-            function ESLint() {
-              this.lintFiles = mockLintFiles;
-            },
-            {
-              outputFixes: jest.fn(),
-            },
-          ),
+          loadESLint: async () =>
+            Object.assign(
+              function ESLint() {
+                this.lintFiles = mockLintFiles;
+              },
+              {
+                outputFixes: jest.fn(),
+              },
+            ),
         };
       });
       jest.mock('worker_threads', () => mockThread);

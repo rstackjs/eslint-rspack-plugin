@@ -3,10 +3,11 @@ import { join } from 'path';
 import pack from './utils/pack';
 
 describe('fail on config', () => {
-  it('fails the build when .eslintrc is not a proper format', async () => {
-    const overrideConfigFile = join(__dirname, '.badeslintrc');
+  it('fails the build when ESLint config is not a proper format', async () => {
+    const overrideConfigFile = join(__dirname, 'bad-eslint.config.mjs');
     const compiler = pack('error', { overrideConfigFile });
 
-    await expect(compiler.runAsync()).rejects.toThrow();
+    const stats = await compiler.runAsync();
+    expect(stats.hasErrors()).toBe(true);
   });
 });

@@ -1,6 +1,4 @@
 class ESLintMock {
-  // Disabled because these are simplified mock methods.
-  // eslint-disable-next-line class-methods-use-this
   async lintFiles() {
     return [
       {
@@ -22,7 +20,6 @@ class ESLintMock {
       },
     ];
   }
-  // eslint-disable-next-line class-methods-use-this
   async loadFormatter() {
     return {
       format(results) {
@@ -34,4 +31,5 @@ class ESLintMock {
 
 module.exports = {
   ESLint: ESLintMock,
+  loadESLint: async () => ESLintMock,
 };
