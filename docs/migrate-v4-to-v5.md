@@ -54,6 +54,8 @@ export default {
 
 The plugin-specific `threads` option was removed in v5. The plugin no longer creates its own worker pool, and there is no replacement plugin option.
 
+If you use ESLint 9.34.0 or later and still want parallel linting, pass ESLint's native `concurrency` Node.js API option through the plugin options:
+
 ```diff
 import ESLintPlugin from 'eslint-rspack-plugin';
 
@@ -67,9 +69,9 @@ export default {
 };
 ```
 
-If you still want parallel linting, use ESLint's native `concurrency` Node.js API option. It is passed through to the `ESLint` constructor like other ESLint options. Use a number for an explicit worker count, or remove `threads: false` because ESLint's default `concurrency` value is `'off'`.
+Use a number for an explicit worker count. If you use ESLint 9.0-9.33, or if you previously used `threads: false`, remove the `threads` option instead. ESLint's default `concurrency` value is `'off'`.
 
-When `concurrency` is enabled, ESLint options must support structured cloning. If you pass functions or complex plugin objects through ESLint options, leave `concurrency` off or move that configuration into your ESLint config file.
+When you enable `concurrency`, ESLint options must support structured cloning. If you pass functions or complex plugin objects through ESLint options, leave `concurrency` off or move that configuration into your ESLint config file.
 
 ### `failOnError` Follows Compiler Mode
 
