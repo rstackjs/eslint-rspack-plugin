@@ -109,11 +109,21 @@ class ESLintRspackPlugin {
 
       /** @type {Error | null} */
       let linterError = null;
+      let hasLinted = false;
 
       const shouldLintAllFiles = this.options.lintAllFiles;
       const allMatchingFiles = shouldLintAllFiles
         ? globSync(wanted, { dot: true, ignore: exclude })
         : [];
+
+      const setupLinter = linter(options, compilation)
+        .then((result) => {
+          ({ lint, report } = result);
+        })
+        .catch((e) => {
+          linterError = e;
+          compilation.errors.push(e);
+        });
 
       // Need to register a finishModules hook first.
       // The linter is an asynchronous operation, which will cause subsequent hooks to fail to be registered.
@@ -140,14 +150,6 @@ class ESLintRspackPlugin {
           );
         },
       );
-
-      try {
-        ({ lint, report } = await linter(options, compilation));
-      } catch (e) {
-        linterError = e;
-        compilation.errors.push(e);
-        return;
-      }
 
       /**
        * This two hooks will cause performance problem for rspack
@@ -193,12 +195,24 @@ class ESLintRspackPlugin {
             addFile(m);
           }
         }
-        if (files.length > 0) lint(files);
+        setupLinter.then(scheduleLint);
       });
+
+      function scheduleLint() {
+        if (linterError || hasLinted || files.length < 1) return;
+
+        hasLinted = true;
+        lint(files);
+      }
+
       async function processResults() {
+        await setupLinter;
+
         if (linterError) {
           return linterError;
         }
+
+        scheduleLint();
 
         const { errors, warnings, generateReportAsset } = await report();
 
