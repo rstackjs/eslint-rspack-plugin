@@ -1,6 +1,19 @@
 import pack from './utils/pack';
 
 describe('fail on error', () => {
+  it('should fail the build by default outside development mode', async () => {
+    const compiler = pack('error', {}, { mode: 'production' });
+
+    await expect(compiler.runAsync()).rejects.toThrow();
+  });
+
+  it('should not fail the build by default in development mode', async () => {
+    const compiler = pack('error');
+
+    const stats = await compiler.runAsync();
+    expect(stats.hasErrors()).toBe(true);
+  });
+
   it('should fail the build when failOnError is enabled', async () => {
     const compiler = pack('error', { failOnError: true });
 

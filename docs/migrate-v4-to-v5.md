@@ -49,3 +49,9 @@ export default {
 ```
 
 `eslintrc` is deprecated by ESLint, so flat config is the recommended migration target.
+
+### `failOnError` Follows Compiler Mode
+
+In v4, `failOnError` defaulted to `true`. In v5, it defaults to `false` when [mode](https://rspack.rs/config/mode) is `development`, and `true` otherwise.
+
+Set `failOnError: true` explicitly if development builds should still fail on ESLint errors.
