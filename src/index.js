@@ -194,17 +194,10 @@ class ESLintRspackPlugin {
             }
           }
         } else if (this.options.lintDirtyModulesOnly) {
-          // compatible with old rspack which not support built modules
-          if (compilation.builtModules) {
-            for (const m of /** @type {Set<Module>} */ (
-              compilation.builtModules
-            )) {
-              addFile(m);
-            }
-          } else {
-            for (const m of compilation.modules) {
-              addFile(m);
-            }
+          for (const m of /** @type {Set<Module>} */ (
+            compilation.builtModules
+          )) {
+            addFile(m);
           }
         }
         if (files.length > 0 && threads <= 1) lint(files);
