@@ -1,5 +1,6 @@
 const { cpus } = require('os');
 
+const { stringify } = require('flatted');
 const { Worker: JestWorker } = require('jest-worker');
 
 // @ts-ignore
@@ -132,7 +133,7 @@ async function getESLint(key, { threads, ...options }) {
  * @returns {string}
  */
 function getCacheKey(key, options) {
-  return JSON.stringify({ key, options }, jsonStringifyReplacerSortKeys);
+  return stringify({ key, options }, jsonStringifyReplacerSortKeys);
 }
 
 module.exports = {
