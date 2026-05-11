@@ -127,12 +127,13 @@ class ESLintRspackPlugin {
       });
 
       // await and interpret results
-      compilation.hooks.additionalAssets.tapAsync(
+      compilation.hooks.processAssets.tapAsync(
         this.key,
         /**
+         * @param {Record<string, unknown>} _assets
          * @param {(error?: Error | null) => void} callback
          */
-        (callback) => {
+        (_assets, callback) => {
           processResults().then(
             (error) => callback(error),
             (error) => callback(error),
