@@ -1,2 +1,2 @@
-// this file should be totally ignore since it's present in .eslintignore
+// this file should be totally ignored by configured ignore patterns
 var -dasdas;

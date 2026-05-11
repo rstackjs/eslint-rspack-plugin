@@ -2,9 +2,14 @@ import ESLintError from '../src/ESLintError';
 
 import pack from './utils/pack';
 
-describe('eslintignore', () => {
-  it('should ignores files present in .eslintignore', async () => {
-    const compiler = pack('ignore', { ignore: true });
+describe('ignore patterns', () => {
+  it('should ignore files matching ignore patterns', async () => {
+    const compiler = pack('ignore', {
+      ignore: true,
+      overrideConfig: {
+        ignores: ['**/ignore.js'],
+      },
+    });
 
     const stats = await compiler.runAsync();
     expect(stats.hasWarnings()).toBe(false);

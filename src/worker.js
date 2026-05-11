@@ -29,38 +29,19 @@ function setup({ eslintPath, configType, eslintOptions }) {
   fix = !!(eslintOptions && eslintOptions.fix);
   const eslintModule = require(eslintPath || 'eslint');
 
-  if (eslintModule.ESLint && parseFloat(eslintModule.ESLint.version) >= 9) {
-    return eslintModule
-      .loadESLint({ useFlatConfig: configType === 'flat' })
-      .then((/** @type {ESLintClass} */ classESLint) => {
-        ESLint = classESLint;
-        eslint = new ESLint(eslintOptions);
-        return eslint;
-      });
+  if (typeof eslintModule.loadESLint !== 'function') {
+    throw new Error(
+      'eslint-rspack-plugin requires ESLint 9 or later. Make sure eslintPath resolves to an ESLint 9+ module that exports loadESLint().',
+    );
   }
 
-  let FlatESLint;
-
-  if (eslintModule.LegacyESLint) {
-    ESLint = eslintModule.LegacyESLint;
-    ({ FlatESLint } = eslintModule);
-  } else {
-    ({ ESLint } = eslintModule);
-
-    if (configType === 'flat') {
-      throw new Error(
-        "Couldn't find FlatESLint, you might need to set eslintPath to 'eslint/use-at-your-own-risk'",
-      );
-    }
-  }
-
-  if (configType === 'flat') {
-    eslint = new FlatESLint(eslintOptions);
-  } else {
-    eslint = new ESLint(eslintOptions);
-  }
-
-  return eslint;
+  return eslintModule
+    .loadESLint({ useFlatConfig: configType === 'flat' })
+    .then((/** @type {ESLintClass} */ classESLint) => {
+      ESLint = classESLint;
+      eslint = new ESLint(eslintOptions);
+      return eslint;
+    });
 }
 
 /**

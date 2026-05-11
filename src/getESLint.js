@@ -24,13 +24,7 @@ const cache = {};
  * @returns {string}
  */
 function getConfigType(options) {
-  if (options.configType) return options.configType;
-
-  const eslintModule = require(options.eslintPath || 'eslint');
-  const eslintVersion =
-    eslintModule.ESLint && parseFloat(eslintModule.ESLint.version);
-
-  return eslintVersion >= 10 ? 'flat' : 'eslintrc';
+  return options.configType || 'flat';
 }
 
 /**

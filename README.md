@@ -36,7 +36,7 @@ pnpm add -D eslint-rspack-plugin
 
 > [!NOTE]
 >
-> You also need to install `eslint >= 8` from npm, if you haven't already:
+> You also need to install `eslint >= 9` from npm, if you haven't already:
 
 ```bash
 npm install eslint --save-dev
@@ -66,13 +66,13 @@ export default {
 
 ## Options
 
-You can pass [ESLint options](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions).
+You can pass [ESLint options](https://eslint.org/docs/latest/integrate/nodejs-api#-new-eslintoptions).
 
 > [!NOTE]
 >
 > The config option you provide will be passed to the `ESLint` class.
-> This is a different set of options than what you'd specify in `package.json` or `.eslintrc`.
-> See the [ESLint docs](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions) for more details.
+> This is a different set of options than what you'd specify in `package.json` or `eslint.config.js`.
+> See the [ESLint docs](https://eslint.org/docs/latest/integrate/nodejs-api#-new-eslintoptions) for more details.
 
 ### `cache`
 
@@ -106,14 +106,12 @@ Specify the path to the cache location. Can be a file or a directory.
 type configType = 'flat' | 'eslintrc';
 ```
 
-- Default:
-  - For ESLint < 10.0.0: `eslintrc`
-  - For ESLint >= 10.0.0: `flat`
+- Default: `flat`
 
 Specify the type of configuration to use with ESLint.
 
-- `eslintrc` is the classic configuration format available in most ESLint versions.
-- `flat` is the new format introduced in ESLint 8.21.0.
+- `flat` is the current standard configuration format.
+- `eslintrc` is the legacy configuration format and has been officially deprecated.
 
 The flat configuration format is explained in its [own documentation](https://eslint.org/docs/latest/use/configure/configuration-files).
 
@@ -203,7 +201,7 @@ type fix = boolean;
 
 - Default: `false`
 
-Will enable [ESLint autofix feature](https://eslint.org/docs/developer-guide/nodejs-api#-eslintoutputfixesresults).
+Will enable [ESLint autofix feature](https://eslint.org/docs/latest/integrate/nodejs-api#-eslintoutputfixesresults).
 
 **Be careful: this option will change source files.**
 
@@ -220,7 +218,7 @@ type formatter = string| (
 
 - Default: `'stylish'`
 
-Accepts a function that will have one argument: an array of eslint messages (object). The function must return the output as a string. You can use official [eslint formatters](https://eslint.org/docs/user-guide/formatters/).
+Accepts a function that will have one argument: an array of eslint messages (object). The function must return the output as a string. You can use official [eslint formatters](https://eslint.org/docs/latest/use/formatters/).
 
 ### `lintDirtyModulesOnly`
 
