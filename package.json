@@ -44,7 +44,13 @@
     "types"
   ],
   "peerDependencies": {
+    "@rspack/core": "^1.0.8 || ^2.0.0",
     "eslint": "^9.0.0 || ^10.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@rspack/core": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@types/eslint": "^9.6.1",
