@@ -2,56 +2,46 @@
   "name": "eslint-rspack-plugin",
   "version": "4.4.1",
   "description": "A ESLint plugin for rspack",
-  "license": "MIT",
-  "repository": "https://github.com/rstackjs/eslint-rspack-plugin",
-  "author": "Ricardo Gobbo de Souza <ricardogobbosouza@yahoo.com.br>",
+  "keywords": [
+    "eslint",
+    "lint",
+    "linter",
+    "plugin",
+    "rspack"
+  ],
   "homepage": "https://github.com/rstackjs/eslint-rspack-plugin",
   "bugs": "https://github.com/rstackjs/eslint-rspack-plugin/issues",
+  "repository": "https://github.com/rstackjs/eslint-rspack-plugin",
+  "license": "MIT",
+  "author": "Ricardo Gobbo de Souza <ricardogobbosouza@yahoo.com.br>",
   "type": "module",
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/webpack"
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
-  "main": "dist/index.js",
-  "types": "types/index.d.ts",
-  "engines": {
-    "node": ">= 20.19.0"
-  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": "pnpm run build -- -w",
-    "clean": "del-cli dist types",
-    "prebuild": "pnpm run clean",
-    "build:types": "tsc --declaration --emitDeclarationOnly --outDir types && prettier \"types/**/*.ts\" --write",
-    "build:code": "cross-env NODE_ENV=production babel src -d dist --copy-files",
-    "build": "npm-run-all -p \"build:**\"",
-    "security": "npm audit",
-    "lint:prettier": "prettier -w --list-different .",
-    "lint:js": "eslint --cache .",
-    "lint:spelling": "cspell \"**/*.*\"",
-    "lint:types": "tsc --pretty --noEmit",
-    "lint": "npm-run-all -l -p \"lint:**\"",
+    "build": "rslib",
+    "bump": "npx bumpp",
+    "fix": "npm-run-all -l fix:js fix:prettier",
     "fix:js": "pnpm run lint:js -- --fix",
     "fix:prettier": "pnpm run lint:prettier -- --write",
-    "fix": "npm-run-all -l fix:js fix:prettier",
-    "test:watch": "rstest --watch",
+    "lint": "npm-run-all -l -p \"lint:**\"",
+    "lint:js": "eslint --cache .",
+    "lint:prettier": "prettier -w --list-different .",
+    "lint:spelling": "cspell \"**/*.*\"",
+    "lint:types": "tsc --pretty --noEmit",
+    "prepare": "pnpm run build",
+    "security": "npm audit",
+    "start": "rslib -w",
     "pretest": "pnpm run lint",
     "test": "rstest",
-    "prepare": "pnpm run build",
-    "bump": "npx bumpp"
-  },
-  "packageManager": "pnpm@10.17.1",
-  "files": [
-    "dist",
-    "types"
-  ],
-  "peerDependencies": {
-    "@rspack/core": "^1.0.8 || ^2.0.0",
-    "eslint": "^9.0.0 || ^10.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@rspack/core": {
-      "optional": true
-    }
+    "test:watch": "rstest --watch"
   },
   "dependencies": {
     "@types/eslint": "^9.6.1",
@@ -60,10 +50,8 @@
     "tinyglobby": "^0.2.15"
   },
   "devDependencies": {
-    "@babel/cli": "^7.24.8",
-    "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.3",
     "@eslint/js": "^9.39.4",
+    "@rslib/core": "^0.21.4",
     "@rspack/core": "^2.0.2",
     "@rstest/core": "^0.9.10",
     "@types/fs-extra": "^11.0.4",
@@ -71,7 +59,6 @@
     "@types/node": "^20.14.9",
     "@types/normalize-path": "^3.0.2",
     "chokidar": "^3.6.0",
-    "cross-env": "^7.0.3",
     "cspell": "^8.13.1",
     "del": "^7.1.0",
     "del-cli": "^5.1.0",
@@ -84,11 +71,17 @@
     "prettier": "^3.3.3",
     "typescript": "^5.5.4"
   },
-  "keywords": [
-    "eslint",
-    "lint",
-    "linter",
-    "plugin",
-    "rspack"
-  ]
+  "peerDependencies": {
+    "@rspack/core": "^1.0.8 || ^2.0.0",
+    "eslint": "^9.0.0 || ^10.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@rspack/core": {
+      "optional": true
+    }
+  },
+  "packageManager": "pnpm@10.17.1",
+  "engines": {
+    "node": ">= 20.19.0"
+  }
 }
