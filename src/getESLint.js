@@ -1,138 +1,57 @@
-const { cpus } = require('os');
-const { join } = require('path');
-
-const { stringify } = require('flatted');
-const { Worker: JestWorker } = require('jest-worker');
-
-// @ts-ignore
-const { setup, lintFiles } = require('./worker');
 const { getESLintOptions } = require('./options');
-const { jsonStringifyReplacerSortKeys } = require('./utils');
-
-/** @type {{[key: string]: any}} */
-const cache = {};
 
 /** @typedef {import('eslint').ESLint} ESLint */
+/** @typedef {import('eslint').ESLint.Options} ESLintOptions */
 /** @typedef {import('eslint').ESLint.LintResult} LintResult */
 /** @typedef {import('./options').Options} Options */
-/** @typedef {() => Promise<void>} AsyncTask */
 /** @typedef {(files: string|string[]) => Promise<LintResult[]>} LintTask */
-/** @typedef {{threads: number, eslint: ESLint, lintFiles: LintTask, cleanup: AsyncTask}} Linter */
-/** @typedef {JestWorker & {lintFiles: LintTask}} Worker */
-
-/**
- * @param {Options} options
- * @returns {string}
- */
-function getConfigType(options) {
-  return options.configType || 'flat';
-}
+/** @typedef {{eslint: ESLint, lintFiles: LintTask}} Linter */
+/** @typedef {{new (arg0: ESLintOptions): ESLint, outputFixes: (arg0: LintResult[]) => Promise<void>}} ESLintClass */
 
 /**
  * @param {Options} options
  * @returns {Promise<Linter>}
  */
-async function loadESLint(options) {
-  const { eslintPath } = options;
-  const configType = getConfigType(options);
-  const eslint = await setup({
-    eslintPath,
-    configType,
-    eslintOptions: getESLintOptions({ ...options, configType }),
+async function getESLint(options) {
+  const eslintModule = require(options.eslintPath || 'eslint');
+
+  if (typeof eslintModule.loadESLint !== 'function') {
+    throw new Error(
+      'eslint-rspack-plugin requires ESLint 9 or later. Make sure eslintPath resolves to an ESLint 9+ module that exports loadESLint().',
+    );
+  }
+
+  const eslintOptions = getESLintOptions(options);
+  const fix = Boolean(eslintOptions && eslintOptions.fix);
+
+  /** @type {ESLintClass} */
+  const ESLint = await eslintModule.loadESLint({
+    useFlatConfig: options.configType === 'flat',
   });
 
-  return {
-    threads: 1,
-    lintFiles,
-    eslint,
-    // no-op for non-threaded
-    cleanup: async () => {},
-  };
-}
+  /** @type {ESLint} */
+  const eslint = new ESLint(eslintOptions);
 
-/**
- * @param {string|undefined} key
- * @param {number} poolSize
- * @param {Options} options
- * @returns {Promise<Linter>}
- */
-async function loadESLintThreaded(key, poolSize, options) {
-  const configType = getConfigType(options);
-  const resolvedOptions = { ...options, configType };
-  const cacheKey = getCacheKey(key, resolvedOptions);
-  const { eslintPath = 'eslint' } = resolvedOptions;
-  const source = join(__dirname, 'worker.js');
-  const workerOptions = {
-    enableWorkerThreads: true,
-    numWorkers: poolSize,
-    setupArgs: [
-      {
-        eslintPath,
-        configType,
-        eslintOptions: getESLintOptions(resolvedOptions),
-      },
-    ],
-  };
+  /**
+   * @param {string|string[]} files
+   * @returns {Promise<LintResult[]>}
+   */
+  async function lintFiles(files) {
+    const results = await eslint.lintFiles(files);
 
-  const local = await loadESLint(resolvedOptions);
+    if (fix) {
+      await ESLint.outputFixes(results);
+    }
 
-  let worker = /** @type {Worker?} */ (new JestWorker(source, workerOptions));
-
-  /** @type {Linter} */
-  const context = {
-    ...local,
-    threads: poolSize,
-    lintFiles: async (files) =>
-      (worker && (await worker.lintFiles(files))) ||
-      /* istanbul ignore next */ [],
-    cleanup: async () => {
-      cache[cacheKey] = local;
-      context.lintFiles = (files) => local.lintFiles(files);
-      if (worker) {
-        worker.end();
-        worker = null;
-      }
-    },
-  };
-
-  return context;
-}
-
-/**
- * @param {string|undefined} key
- * @param {Options} options
- * @returns {Promise<Linter>}
- */
-async function getESLint(key, { threads, ...options }) {
-  const max =
-    typeof threads !== 'number'
-      ? threads
-        ? cpus().length - 1
-        : 1
-      : /* istanbul ignore next */
-        threads;
-
-  const cacheKey = getCacheKey(key, { threads, ...options });
-  if (!cache[cacheKey]) {
-    cache[cacheKey] =
-      max > 1
-        ? await loadESLintThreaded(key, max, options)
-        : await loadESLint(options);
+    return results;
   }
-  return cache[cacheKey];
-}
 
-/**
- * @param {string|undefined} key
- * @param {Options} options
- * @returns {string}
- */
-function getCacheKey(key, options) {
-  return stringify({ key, options }, jsonStringifyReplacerSortKeys);
+  return {
+    eslint,
+    lintFiles,
+  };
 }
 
 module.exports = {
-  loadESLint,
-  loadESLintThreaded,
   getESLint,
 };

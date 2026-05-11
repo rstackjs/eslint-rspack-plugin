@@ -28,4 +28,14 @@ describe('eslint options', () => {
       fix: true,
     });
   });
+
+  it('should pass concurrency through to ESLint', () => {
+    const options = {
+      concurrency: 2,
+      formatter: 'table',
+    };
+    expect(getESLintOptions(options)).toStrictEqual({
+      concurrency: 2,
+    });
+  });
 });

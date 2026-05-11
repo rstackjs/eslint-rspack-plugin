@@ -7,7 +7,6 @@ describe('succeed on flat-configuration', () => {
     const overrideConfigFile = join(__dirname, 'fixtures', 'flat-config.js');
     const compiler = pack('full-of-problems', {
       overrideConfigFile,
-      threads: 1,
     });
 
     const stats = await compiler.runAsync();
@@ -24,7 +23,6 @@ describe('succeed on flat-configuration', () => {
     const compiler = pack('full-of-problems', {
       configType: 'flat',
       overrideConfigFile,
-      threads: 1,
     });
 
     const stats = await compiler.runAsync();

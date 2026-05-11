@@ -34,7 +34,6 @@ const schema = require('./options.json');
  * @property {boolean=} lintAllFiles
  * @property {boolean=} quiet
  * @property {OutputReport=} outputReport
- * @property {number|boolean=} threads
  * @property {RegExp|RegExp[]=} resourceQueryExclude
  * @property {string=} configType
  */

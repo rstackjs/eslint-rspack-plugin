@@ -25,7 +25,7 @@ class ChildPlugin {
 describe('child compiler', () => {
   it('should have linting process', () =>
     new Promise((resolve, reject) => {
-      const config = conf('good', { threads: false });
+      const config = conf('good');
       config.plugins.push(
         new ChildPlugin({
           entry: {

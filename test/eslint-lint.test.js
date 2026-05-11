@@ -16,14 +16,14 @@ describe('eslint lint', () => {
   });
 
   it('should lint one file', async () => {
-    const compiler = pack('lint-one', { eslintPath, threads: false });
+    const compiler = pack('lint-one', { eslintPath });
 
     await compiler.runAsync();
     expect(eslintMock.state.calls).toHaveLength(1);
   });
 
   it('should lint two files', async () => {
-    const compiler = pack('lint-two', { eslintPath, threads: false });
+    const compiler = pack('lint-two', { eslintPath });
 
     await compiler.runAsync();
     const files = [
@@ -34,7 +34,7 @@ describe('eslint lint', () => {
   });
 
   it('should lint more files', async () => {
-    const compiler = pack('lint-more', { eslintPath, threads: false });
+    const compiler = pack('lint-more', { eslintPath });
 
     await compiler.runAsync();
     const files = [

@@ -15,29 +15,22 @@ const { getESLint } = require('./getESLint');
 /** @typedef {(files: string|string[]) => void} Linter */
 
 /**
- * @param {string|undefined} key
  * @param {Options} options
  * @param {Compilation} compilation
- * @returns {Promise<{lint: Linter, report: Reporter, threads: number}>}
+ * @returns {Promise<{lint: Linter, report: Reporter}>}
  */
-async function linter(key, options, compilation) {
+async function linter(options, compilation) {
   /** @type {ESLint} */
   let eslint;
 
   /** @type {(files: string|string[]) => Promise<LintResult[]>} */
   let lintFiles;
 
-  /** @type {() => Promise<void>} */
-  let cleanup;
-
-  /** @type number */
-  let threads;
-
   /** @type {Promise<LintResult[]>[]} */
   const rawResults = [];
 
   try {
-    ({ eslint, lintFiles, cleanup, threads } = await getESLint(key, options));
+    ({ eslint, lintFiles } = await getESLint(options));
   } catch (e) {
     throw new ESLintError(e.message);
   }
@@ -45,7 +38,6 @@ async function linter(key, options, compilation) {
   return {
     lint,
     report,
-    threads,
   };
 
   /**
@@ -68,8 +60,6 @@ async function linter(key, options, compilation) {
       // Get the current results, resetting the rawResults to empty
       await flatten(rawResults.splice(0, rawResults.length)),
     );
-
-    await cleanup();
 
     // do not analyze if there are no results or eslint config
     if (!results || results.length < 1) {
