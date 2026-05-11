@@ -43,7 +43,6 @@
     "test:watch": "rstest --watch"
   },
   "dependencies": {
-    "@types/eslint": "^9.6.1",
     "micromatch": "^4.0.8",
     "normalize-path": "^3.0.0",
     "tinyglobby": "^0.2.15"
