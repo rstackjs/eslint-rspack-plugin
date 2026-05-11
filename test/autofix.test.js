@@ -15,7 +15,7 @@ describe('autofix stop', () => {
     removeSync(entry);
   });
 
-  test.each([[{}], [{ threads: false }]])(
+  test.each([[{}], [{ concurrency: 'off' }]])(
     'should not throw error if file ok after auto-fixing',
     async (cfg) => {
       const compiler = pack('fixable-clone', {

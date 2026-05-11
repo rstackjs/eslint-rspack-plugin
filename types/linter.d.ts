@@ -1,25 +1,31 @@
 export = linter;
+/** @typedef {import('eslint').ESLint} ESLint */
+/** @typedef {import('eslint').ESLint.Formatter} Formatter */
+/** @typedef {import('eslint').ESLint.LintResult} LintResult */
+/** @typedef {import('@rspack/core').Compilation} Compilation */
+/** @typedef {import('./options').Options} Options */
+/** @typedef {import('./options').FormatterFunction} FormatterFunction */
+/** @typedef {(compilation: Compilation) => Promise<void>} GenerateReport */
+/** @typedef {{errors?: ESLintError, warnings?: ESLintError, generateReportAsset?: GenerateReport}} Report */
+/** @typedef {() => Promise<Report>} Reporter */
+/** @typedef {(files: string|string[]) => void} Linter */
 /**
- * @param {string|undefined} key
  * @param {Options} options
  * @param {Compilation} compilation
- * @returns {Promise<{lint: Linter, report: Reporter, threads: number}>}
+ * @returns {Promise<{lint: Linter, report: Reporter}>}
  */
 declare function linter(
-  key: string | undefined,
   options: Options,
   compilation: Compilation,
 ): Promise<{
   lint: Linter;
   report: Reporter;
-  threads: number;
 }>;
 declare namespace linter {
   export {
     ESLint,
     Formatter,
     LintResult,
-    Compiler,
     Compilation,
     Options,
     FormatterFunction,
@@ -27,13 +33,11 @@ declare namespace linter {
     Report,
     Reporter,
     Linter,
-    LintResultMap,
   };
 }
 type ESLint = import('eslint').ESLint;
 type Formatter = import('eslint').ESLint.Formatter;
 type LintResult = import('eslint').ESLint.LintResult;
-type Compiler = import('@rspack/core').Compiler;
 type Compilation = import('@rspack/core').Compilation;
 type Options = import('./options').Options;
 type FormatterFunction = import('./options').FormatterFunction;
@@ -45,7 +49,4 @@ type Report = {
 };
 type Reporter = () => Promise<Report>;
 type Linter = (files: string | string[]) => void;
-type LintResultMap = {
-  [files: string]: LintResult;
-};
 import ESLintError = require('./ESLintError');

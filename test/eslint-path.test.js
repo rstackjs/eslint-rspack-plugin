@@ -1,6 +1,6 @@
 import { join } from 'path';
 
-import { setup } from '../src/worker';
+import { getESLint } from '../src/getESLint';
 import pack from './utils/pack';
 
 describe('eslint path', () => {
@@ -17,13 +17,12 @@ describe('eslint path', () => {
   it('should fail with a clear error when eslintPath does not export loadESLint', async () => {
     const eslintPath = join(__dirname, 'mock/eslint-no-load');
 
-    expect(() =>
-      setup({
+    await expect(
+      getESLint({
         eslintPath,
         configType: 'flat',
-        eslintOptions: {},
       }),
-    ).toThrow(
+    ).rejects.toThrow(
       'eslint-rspack-plugin requires ESLint 9 or later. Make sure eslintPath resolves to an ESLint 9+ module that exports loadESLint().',
     );
   });

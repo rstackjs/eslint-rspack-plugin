@@ -50,6 +50,27 @@ export default {
 
 `eslintrc` is deprecated by ESLint, so flat config is the recommended migration target.
 
+### Remove `threads`
+
+The plugin-specific `threads` option was removed in v5. The plugin no longer creates its own worker pool, and there is no replacement plugin option.
+
+```diff
+import ESLintPlugin from 'eslint-rspack-plugin';
+
+export default {
+  plugins: [
+    new ESLintPlugin({
+-     threads: true,
++     concurrency: 'auto',
+    }),
+  ],
+};
+```
+
+If you still want parallel linting, use ESLint's native `concurrency` Node.js API option. It is passed through to the `ESLint` constructor like other ESLint options. Use a number for an explicit worker count, or remove `threads: false` because ESLint's default `concurrency` value is `'off'`.
+
+When `concurrency` is enabled, ESLint options must support structured cloning. If you pass functions or complex plugin objects through ESLint options, leave `concurrency` off or move that configuration into your ESLint config file.
+
 ### `failOnError` Follows Compiler Mode
 
 In v4, `failOnError` defaulted to `true`. In v5, it defaults to `false` when [mode](https://rspack.rs/config/mode) is `development`, and `true` otherwise.

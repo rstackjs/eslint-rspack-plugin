@@ -249,18 +249,6 @@ Lint all files matching the `files` and `extensions` patterns, regardless of whe
 >
 > Enabling this option will run a single ESLint instance to check all files rather than running separate ESLint instances for each environment.
 
-### `threads`
-
-- Type:
-
-```ts
-type threads = boolean | number;
-```
-
-- Default: `false`
-
-Will run lint tasks across a thread pool. The pool size is automatic unless you specify a number.
-
 ### Errors and Warning
 
 **By default the plugin will auto adjust error reporting depending on eslint errors/warnings counts.**

@@ -25,7 +25,6 @@ export type PluginOptions = {
   lintAllFiles?: boolean | undefined;
   quiet?: boolean | undefined;
   outputReport?: OutputReport | undefined;
-  threads?: (number | boolean) | undefined;
   resourceQueryExclude?: (RegExp | RegExp[]) | undefined;
   configType?: string | undefined;
 };
@@ -61,7 +60,6 @@ export type Options = PluginOptions & ESLintOptions;
  * @property {boolean=} lintAllFiles
  * @property {boolean=} quiet
  * @property {OutputReport=} outputReport
- * @property {number|boolean=} threads
  * @property {RegExp|RegExp[]=} resourceQueryExclude
  * @property {string=} configType
  */

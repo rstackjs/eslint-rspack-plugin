@@ -39,8 +39,3 @@ export function parseFoldersToGlobs(
   patterns: string | string[],
   extensions?: string | string[],
 ): string[];
-/**
- * @param {string} _ key, but unused
- * @param {any} value
- */
-export function jsonStringifyReplacerSortKeys(_: string, value: any): any;

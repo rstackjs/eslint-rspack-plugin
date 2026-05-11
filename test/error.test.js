@@ -17,7 +17,7 @@ describe('error', () => {
   it('should propagate eslint exceptions as errors', async () => {
     eslintMock.reset({ shouldReject: true });
 
-    const compiler = pack('good', { eslintPath, threads: false });
+    const compiler = pack('good', { eslintPath });
 
     const stats = await compiler.runAsync();
     expect(stats.hasWarnings()).toBe(false);

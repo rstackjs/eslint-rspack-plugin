@@ -25,7 +25,6 @@ describe('circular plugin', () => {
         },
       },
       overrideConfigFile: true,
-      threads: 1,
     });
 
     const stats = await compiler.runAsync();

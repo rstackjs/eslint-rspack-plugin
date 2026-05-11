@@ -30,8 +30,6 @@ export default (entry, pluginConf = {}, webpackConf = {}) => {
       new ESLintPlugin({
         overrideConfigFile,
         ignore: false,
-        // TODO: update tests to run both states: test.each([[{threads: false}], [{threads: true}]])('it should...', async ({threads}) => {...})
-        threads: true,
         ...pluginConf,
       }),
     ],

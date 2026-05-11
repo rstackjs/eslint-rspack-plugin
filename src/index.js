@@ -101,8 +101,6 @@ class ESLintRspackPlugin {
       let lint;
       /** @type {import('./linter').Reporter} */
       let report;
-      /** @type number */
-      let threads;
 
       /** @type {string[]} */
       const files = [];
@@ -142,11 +140,7 @@ class ESLintRspackPlugin {
       );
 
       try {
-        ({ lint, report, threads } = await linter(
-          this.key,
-          options,
-          compilation,
-        ));
+        ({ lint, report } = await linter(options, compilation));
       } catch (e) {
         linterError = e;
         compilation.errors.push(e);
@@ -178,8 +172,6 @@ class ESLintRspackPlugin {
 
         if (isFileNotListed && isFileWanted && isQueryNotExclude) {
           files.push(file);
-
-          if (threads > 1) lint(file);
         }
       }
 
@@ -190,7 +182,6 @@ class ESLintRspackPlugin {
           for (const file of allMatchingFiles) {
             if (!files.includes(file)) {
               files.push(file);
-              if (threads > 1) lint(file);
             }
           }
         } else if (this.options.lintDirtyModulesOnly) {
@@ -200,7 +191,7 @@ class ESLintRspackPlugin {
             addFile(m);
           }
         }
-        if (files.length > 0 && threads <= 1) lint(files);
+        if (files.length > 0) lint(files);
       });
       async function processResults() {
         if (linterError) {
