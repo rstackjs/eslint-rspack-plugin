@@ -1,4 +1,10 @@
-import { parseFoldersToGlobs, parseFiles } from '../src/utils';
+import { stringify } from 'flatted';
+
+import {
+  jsonStringifyReplacerSortKeys,
+  parseFoldersToGlobs,
+  parseFiles,
+} from '../src/utils';
 
 jest.mock('fs', () => {
   return {
@@ -74,4 +80,37 @@ test('parseFoldersToGlobs should return unmodified globs for globs (ignoring ext
       "**.notjs",
     ]
   `);
+});
+
+test('jsonStringifyReplacerSortKeys should support circular objects with flatted', () => {
+  const plugin = {
+    configs: {},
+    processors: {},
+    rules: {},
+  };
+
+  Object.assign(plugin.configs, {
+    recommended: {
+      plugins: {
+        self: plugin,
+      },
+      rules: {},
+    },
+  });
+
+  const cacheKey = stringify(
+    {
+      key: 'test',
+      options: {
+        overrideConfig: {
+          plugins: {
+            plugin,
+          },
+        },
+      },
+    },
+    jsonStringifyReplacerSortKeys,
+  );
+
+  expect(cacheKey).toContain('"self"');
 });

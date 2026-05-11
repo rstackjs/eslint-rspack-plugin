@@ -11,6 +11,9 @@ importers:
       '@types/eslint':
         specifier: ^8.56.10
         version: 8.56.12
+      flatted:
+        specifier: ^3.3.3
+        version: 3.3.3
       jest-worker:
         specifier: ^29.7.0
         version: 29.7.0
