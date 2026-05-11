@@ -2,56 +2,46 @@
   "name": "eslint-rspack-plugin",
   "version": "4.4.1",
   "description": "A ESLint plugin for rspack",
-  "license": "MIT",
-  "repository": "https://github.com/rstackjs/eslint-rspack-plugin",
-  "author": "Ricardo Gobbo de Souza <ricardogobbosouza@yahoo.com.br>",
+  "keywords": [
+    "eslint",
+    "lint",
+    "linter",
+    "plugin",
+    "rspack"
+  ],
   "homepage": "https://github.com/rstackjs/eslint-rspack-plugin",
   "bugs": "https://github.com/rstackjs/eslint-rspack-plugin/issues",
+  "repository": "https://github.com/rstackjs/eslint-rspack-plugin",
+  "license": "MIT",
+  "author": "Ricardo Gobbo de Souza <ricardogobbosouza@yahoo.com.br>",
   "type": "module",
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/webpack"
-  },
-  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     }
   },
-  "engines": {
-    "node": ">= 20.19.0"
-  },
-  "scripts": {
-    "start": "rslib -w",
-    "build": "rslib",
-    "security": "npm audit",
-    "lint:prettier": "prettier -w --list-different .",
-    "lint:js": "eslint --cache .",
-    "lint:spelling": "cspell \"**/*.*\"",
-    "lint:types": "tsc --pretty --noEmit",
-    "lint": "npm-run-all -l -p \"lint:**\"",
-    "fix:js": "pnpm run lint:js -- --fix",
-    "fix:prettier": "pnpm run lint:prettier -- --write",
-    "fix": "npm-run-all -l fix:js fix:prettier",
-    "test:watch": "rstest --watch",
-    "pretest": "pnpm run lint",
-    "test": "rstest",
-    "prepare": "pnpm run build",
-    "bump": "npx bumpp"
-  },
-  "packageManager": "pnpm@10.17.1",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "peerDependencies": {
-    "@rspack/core": "^1.0.8 || ^2.0.0",
-    "eslint": "^9.0.0 || ^10.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@rspack/core": {
-      "optional": true
-    }
+  "scripts": {
+    "build": "rslib",
+    "bump": "npx bumpp",
+    "fix": "npm-run-all -l fix:js fix:prettier",
+    "fix:js": "pnpm run lint:js -- --fix",
+    "fix:prettier": "pnpm run lint:prettier -- --write",
+    "lint": "npm-run-all -l -p \"lint:**\"",
+    "lint:js": "eslint --cache .",
+    "lint:prettier": "prettier -w --list-different .",
+    "lint:spelling": "cspell \"**/*.*\"",
+    "lint:types": "tsc --pretty --noEmit",
+    "prepare": "pnpm run build",
+    "security": "npm audit",
+    "start": "rslib -w",
+    "pretest": "pnpm run lint",
+    "test": "rstest",
+    "test:watch": "rstest --watch"
   },
   "dependencies": {
     "@types/eslint": "^9.6.1",
@@ -81,11 +71,17 @@
     "prettier": "^3.3.3",
     "typescript": "^5.5.4"
   },
-  "keywords": [
-    "eslint",
-    "lint",
-    "linter",
-    "plugin",
-    "rspack"
-  ]
+  "peerDependencies": {
+    "@rspack/core": "^1.0.8 || ^2.0.0",
+    "eslint": "^9.0.0 || ^10.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@rspack/core": {
+      "optional": true
+    }
+  },
+  "packageManager": "pnpm@10.17.1",
+  "engines": {
+    "node": ">= 20.19.0"
+  }
 }
