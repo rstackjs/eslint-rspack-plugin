@@ -10,11 +10,11 @@ ESLint 8 is no longer supported in v5.
 
 The supported ESLint peer dependency range is now `^9.0.0 || ^10.0.0`.
 
-### Drop Node 16 Support
+### Drop Node 18 Support
 
-Node.js 16 is no longer supported in v5.
+Node.js 18 is no longer supported in v5.
 
-The minimum supported Node.js version is now `>=18.18.0`.
+The minimum supported Node.js version is now `>=20.19.0`.
 
 ### Flat Config is the Default
 
