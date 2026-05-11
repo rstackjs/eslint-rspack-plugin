@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { pathToFileURL } from 'url';
 
 import { getESLint } from '../src/getESLint.js';
 import pack from './utils/pack.js';
@@ -24,6 +25,32 @@ describe('eslint path', () => {
       }),
     ).rejects.toThrow(
       'eslint-rspack-plugin requires ESLint 9 or later. Make sure eslintPath resolves to an ESLint 9+ module that exports loadESLint().',
+    );
+  });
+
+  it('should preserve eslintPath module evaluation errors', async () => {
+    const eslintPath = `${
+      pathToFileURL(
+        join(import.meta.dirname, 'mock/eslint-import-error/index.js'),
+      ).href
+    }?runtime-error`;
+
+    await expect(
+      getESLint({
+        eslintPath,
+        configType: 'flat',
+      }),
+    ).rejects.toThrow('ESLint import failed during evaluation.');
+  });
+
+  it('should report eslintPath setup failures as compilation errors', async () => {
+    const eslintPath = join(import.meta.dirname, 'mock/eslint-no-load');
+    const compiler = pack('good', { eslintPath });
+
+    const stats = await compiler.runAsync();
+    expect(stats.hasErrors()).toBe(true);
+    expect(stats.compilation.errors[0].message).toContain(
+      'eslint-rspack-plugin requires ESLint 9 or later.',
     );
   });
 });
