@@ -125,9 +125,8 @@ class ESLintRspackPlugin {
           compilation.errors.push(e);
         });
 
-      // Need to register a finishModules hook first.
-      // The linter is an asynchronous operation, which will cause subsequent hooks to fail to be registered.
-      // Maybe this is caused by the call optimization of rspack?
+      // Register compilation hooks before waiting for linter setup.
+      // Awaiting linter setup here can make later hooks register too late in Rspack.
       compilation.hooks.finishModules.tap(this.key, (modules) => {
         if (!this.options.lintDirtyModulesOnly && !shouldLintAllFiles) {
           for (const m of modules) {
