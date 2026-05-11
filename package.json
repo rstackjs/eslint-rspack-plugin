@@ -12,18 +12,13 @@
     "type": "opencollective",
     "url": "https://opencollective.com/webpack"
   },
-  "main": "dist/index.js",
-  "types": "types/index.d.ts",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">= 20.19.0"
   },
   "scripts": {
-    "start": "pnpm run build -- -w",
-    "clean": "del-cli dist types",
-    "prebuild": "pnpm run clean",
-    "build:types": "tsc --declaration --emitDeclarationOnly --outDir types && prettier \"types/**/*.ts\" --write",
-    "build:code": "cross-env NODE_ENV=production babel src -d dist --copy-files",
-    "build": "npm-run-all -p \"build:**\"",
+    "start": "rslib -w",
+    "build": "rslib",
     "security": "npm audit",
     "lint:prettier": "prettier -w --list-different .",
     "lint:js": "eslint --cache .",
@@ -41,8 +36,7 @@
   },
   "packageManager": "pnpm@10.17.1",
   "files": [
-    "dist",
-    "types"
+    "dist"
   ],
   "peerDependencies": {
     "@rspack/core": "^1.0.8 || ^2.0.0",
@@ -60,10 +54,8 @@
     "tinyglobby": "^0.2.15"
   },
   "devDependencies": {
-    "@babel/cli": "^7.24.8",
-    "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.3",
     "@eslint/js": "^9.39.4",
+    "@rslib/core": "^0.21.4",
     "@rspack/core": "^2.0.2",
     "@rstest/core": "^0.9.10",
     "@types/fs-extra": "^11.0.4",
@@ -71,7 +63,6 @@
     "@types/node": "^20.14.9",
     "@types/normalize-path": "^3.0.2",
     "chokidar": "^3.6.0",
-    "cross-env": "^7.0.3",
     "cspell": "^8.13.1",
     "del": "^7.1.0",
     "del-cli": "^5.1.0",
