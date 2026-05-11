@@ -298,7 +298,9 @@ The warnings found will always be emitted, to disable set to `false`.
 type failOnError = boolean;
 ```
 
-- Default: `true`
+- Default:
+  - `false` when [mode](https://rspack.rs/config/mode) is `development`
+  - `true` otherwise
 
 Will cause the module build to fail if there are any errors, to disable set to `false`.
 

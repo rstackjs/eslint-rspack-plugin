@@ -26,8 +26,16 @@ describe('multiple instances', () => {
       {},
       {
         plugins: [
-          new ESLintPlugin({ ignore: false, exclude: 'good.js' }),
-          new ESLintPlugin({ ignore: false, exclude: 'error.js' }),
+          new ESLintPlugin({
+            ignore: false,
+            exclude: 'good.js',
+            failOnError: true,
+          }),
+          new ESLintPlugin({
+            ignore: false,
+            exclude: 'error.js',
+            failOnError: true,
+          }),
         ],
       },
     );
@@ -41,8 +49,16 @@ describe('multiple instances', () => {
       {},
       {
         plugins: [
-          new ESLintPlugin({ ignore: false, exclude: 'error.js' }),
-          new ESLintPlugin({ ignore: false, exclude: 'good.js' }),
+          new ESLintPlugin({
+            ignore: false,
+            exclude: 'error.js',
+            failOnError: true,
+          }),
+          new ESLintPlugin({
+            ignore: false,
+            exclude: 'good.js',
+            failOnError: true,
+          }),
         ],
       },
     );
