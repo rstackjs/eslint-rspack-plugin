@@ -35,10 +35,7 @@ class ESLintRspackPlugin {
     // Generate key for each compilation,
     // this differentiates one from the other when being cached.
     this.key = compiler.name || `${this.key}_${(compilerId += 1)}`;
-    if (
-      this.options.failOnError === null ||
-      this.options.failOnError === undefined
-    ) {
+    if (this.options.failOnError === undefined) {
       this.options.failOnError = compiler.options.mode !== 'development';
     }
 
