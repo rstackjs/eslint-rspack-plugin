@@ -4,11 +4,10 @@ npm-debug.log*
 yarn-debug.log*
 .eslintcache
 
-/coverage
-/dist
-/local
-/reports
+**/dist
 **/node_modules
+/coverage
+/reports
 /test/output
 
 .DS_Store
