@@ -37,9 +37,6 @@ class ESLintRspackPlugin {
     // Generate key for each compilation,
     // this differentiates one from the other when being cached.
     this.key = compiler.name || `${this.key}_${(compilerId += 1)}`;
-    if (this.options.failOnError === undefined) {
-      this.options.failOnError = compiler.options.mode !== 'development';
-    }
 
     const excludedFiles = parseFiles(
       this.options.exclude || [],
@@ -136,19 +133,7 @@ class ESLintRspackPlugin {
       });
 
       // await and interpret results
-      compilation.hooks.processAssets.tapAsync(
-        this.key,
-        /**
-         * @param {Record<string, unknown>} _assets
-         * @param {(error?: Error | null) => void} callback
-         */
-        (_assets, callback) => {
-          processResults().then(
-            (error) => callback(error),
-            (error) => callback(error),
-          );
-        },
-      );
+      compilation.hooks.processAssets.tapPromise(this.key, processResults);
 
       /**
        * This two hooks will cause performance problem for rspack
@@ -208,7 +193,7 @@ class ESLintRspackPlugin {
         await setupLinter;
 
         if (linterError) {
-          return options.failOnError ? linterError : null;
+          return;
         }
 
         scheduleLint();
@@ -226,16 +211,6 @@ class ESLintRspackPlugin {
         }
 
         if (generateReportAsset) await generateReportAsset(compilation);
-
-        if (errors && options.failOnError) {
-          return errors;
-        }
-
-        if (warnings && options.failOnWarning) {
-          return warnings;
-        }
-
-        return null;
       }
     });
   }

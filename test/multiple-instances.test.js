@@ -20,7 +20,7 @@ describe('multiple instances', () => {
     expect(stats.hasErrors()).toBe(false);
   });
 
-  it('should fail on first instance', async () => {
+  it('should report errors from first instance', async () => {
     const compiler = pack(
       'multiple',
       {},
@@ -29,21 +29,23 @@ describe('multiple instances', () => {
           new ESLintPlugin({
             ignore: false,
             exclude: 'good.js',
-            failOnError: true,
+            severity: { error: 'error' },
           }),
           new ESLintPlugin({
             ignore: false,
             exclude: 'error.js',
-            failOnError: true,
+            severity: { error: 'error' },
           }),
         ],
       },
     );
 
-    await expect(compiler.runAsync()).rejects.toThrow();
+    const stats = await compiler.runAsync();
+    expect(stats.hasErrors()).toBe(true);
+    expect(stats.compilation.errors[0].message).toContain('[eslint]');
   });
 
-  it('should fail on second instance', async () => {
+  it('should report errors from second instance', async () => {
     const compiler = pack(
       'multiple',
       {},
@@ -52,17 +54,19 @@ describe('multiple instances', () => {
           new ESLintPlugin({
             ignore: false,
             exclude: 'error.js',
-            failOnError: true,
+            severity: { error: 'error' },
           }),
           new ESLintPlugin({
             ignore: false,
             exclude: 'good.js',
-            failOnError: true,
+            severity: { error: 'error' },
           }),
         ],
       },
     );
 
-    await expect(compiler.runAsync()).rejects.toThrow();
+    const stats = await compiler.runAsync();
+    expect(stats.hasErrors()).toBe(true);
+    expect(stats.compilation.errors[0].message).toContain('[eslint]');
   });
 });

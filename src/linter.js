@@ -159,26 +159,39 @@ function parseResults(options, results) {
 
   /** @type {LintResult[]} */
   const warnings = [];
+  /** @type {{error: 'error' | 'warning' | 'off', warning: 'error' | 'warning' | 'off'}} */
+  const severity = {
+    error: 'error',
+    warning: 'warning',
+    ...options.severity,
+  };
 
   results.forEach((file) => {
-    if (fileHasErrors(file)) {
-      const messages = file.messages.filter(
-        (message) => options.emitError && message.severity === 2,
-      );
+    /** @type {Record<'error' | 'warning', LintResult['messages']>} */
+    const messagesByTarget = {
+      error: [],
+      warning: [],
+    };
 
-      if (messages.length > 0) {
-        errors.push({ ...file, messages });
+    for (const message of file.messages) {
+      const target =
+        message.severity === 2
+          ? severity.error
+          : message.severity === 1
+            ? severity.warning
+            : 'off';
+
+      if (target === 'error' || target === 'warning') {
+        messagesByTarget[target].push(message);
       }
     }
 
-    if (fileHasWarnings(file)) {
-      const messages = file.messages.filter(
-        (message) => options.emitWarning && message.severity === 1,
-      );
+    if (messagesByTarget.error.length > 0) {
+      errors.push({ ...file, messages: messagesByTarget.error });
+    }
 
-      if (messages.length > 0) {
-        warnings.push({ ...file, messages });
-      }
+    if (messagesByTarget.warning.length > 0) {
+      warnings.push({ ...file, messages: messagesByTarget.warning });
     }
   });
 
@@ -186,22 +199,6 @@ function parseResults(options, results) {
     errors,
     warnings,
   };
-}
-
-/**
- * @param {LintResult} file
- * @returns {boolean}
- */
-function fileHasErrors(file) {
-  return file.errorCount > 0;
-}
-
-/**
- * @param {LintResult} file
- * @returns {boolean}
- */
-function fileHasWarnings(file) {
-  return file.warningCount > 0;
 }
 
 /**

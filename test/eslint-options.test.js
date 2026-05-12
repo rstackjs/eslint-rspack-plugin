@@ -17,11 +17,10 @@ describe('eslint options', () => {
       eslintPath: 'some/place/where/eslint/lives',
       formatter: 'table',
       fix: true,
-      emitError: false,
-      emitWarning: false,
-      failOnError: true,
-      failOnWarning: true,
-      quiet: false,
+      severity: {
+        error: 'warning',
+        warning: 'off',
+      },
       outputReport: true,
     };
     expect(getESLintOptions(options)).toStrictEqual({

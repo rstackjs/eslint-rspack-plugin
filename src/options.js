@@ -17,22 +17,26 @@ import schema from './options.json' with { type: 'json' };
  * @property {string|FormatterFunction=} formatter
  */
 
+/** @typedef {'error' | 'warning' | 'off'} Severity */
+
+/**
+ * @typedef {Object} SeverityOptions
+ * @property {Severity=} error
+ * @property {Severity=} warning
+ */
+
 /**
  * @typedef {Object} PluginOptions
  * @property {string=} context
- * @property {boolean=} emitError
- * @property {boolean=} emitWarning
  * @property {string=} eslintPath
  * @property {string|string[]=} exclude
  * @property {string|string[]=} extensions
- * @property {boolean=} failOnError
- * @property {boolean=} failOnWarning
  * @property {string|string[]=} files
  * @property {boolean=} fix
  * @property {string|FormatterFunction=} formatter
  * @property {boolean=} lintDirtyModulesOnly
  * @property {boolean=} lintAllFiles
- * @property {boolean=} quiet
+ * @property {SeverityOptions=} severity
  * @property {OutputReport=} outputReport
  * @property {RegExp|RegExp[]=} resourceQueryExclude
  * @property {string=} configType
@@ -45,16 +49,25 @@ import schema from './options.json' with { type: 'json' };
  * @returns {PluginOptions}
  */
 function getOptions(pluginOptions) {
+  /** @type {{error: Severity, warning: Severity}} */
+  const defaultSeverity = {
+    error: 'error',
+    warning: 'warning',
+  };
+  /** @type {{error: Severity, warning: Severity}} */
+  const severity = {
+    ...defaultSeverity,
+    ...pluginOptions.severity,
+  };
+
   const options = {
     cache: true,
     cacheLocation: 'node_modules/.cache/eslint-rspack-plugin/.eslintcache',
     configType: 'flat',
     extensions: 'js',
-    emitError: true,
-    emitWarning: true,
     resourceQueryExclude: [],
     ...pluginOptions,
-    ...(pluginOptions.quiet ? { emitError: true, emitWarning: false } : {}),
+    severity,
   };
 
   return options;

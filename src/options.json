@@ -10,14 +10,6 @@
       "description": "A string indicating the root of your files.",
       "type": "string"
     },
-    "emitError": {
-      "description": "The errors found will always be emitted, to disable set to `false`.",
-      "type": "boolean"
-    },
-    "emitWarning": {
-      "description": "The warnings found will always be emitted, to disable set to `false`.",
-      "type": "boolean"
-    },
     "eslintPath": {
       "description": "Path to `eslint` instance that will be used for linting. If the `eslintPath` is a folder like a official eslint, or specify a `formatter` option. now you don't have to install `eslint`.",
       "type": "string"
@@ -29,14 +21,6 @@
     "resourceQueryExclude": {
       "description": "Specify the resource query to exclude.",
       "anyOf": [{ "instanceof": "RegExp" }, { "type": "array" }]
-    },
-    "failOnError": {
-      "description": "Will cause the module build to fail if there are any errors, to disable set to `false`.",
-      "type": "boolean"
-    },
-    "failOnWarning": {
-      "description": "Will cause the module build to fail if there are any warnings, if set to `true`.",
-      "type": "boolean"
     },
     "files": {
       "description": "Specify the files and/or directories to traverse. Must be relative to `options.context`.",
@@ -62,9 +46,20 @@
       "description": "Lint all files matching the `files` and `extensions` patterns, regardless of whether they are part of the compilation. Useful for multi-environment builds where you want to check the entire codebase.",
       "type": "boolean"
     },
-    "quiet": {
-      "description": "Will process and report errors only and ignore warnings, if set to `true`.",
-      "type": "boolean"
+    "severity": {
+      "description": "Controls how ESLint errors and warnings are emitted as Rspack diagnostics.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "description": "Rspack diagnostic level for ESLint errors.",
+          "enum": ["error", "warning", "off"]
+        },
+        "warning": {
+          "description": "Rspack diagnostic level for ESLint warnings.",
+          "enum": ["error", "warning", "off"]
+        }
+      }
     },
     "outputReport": {
       "description": "Write the output of the errors to a file, for example a checkstyle xml file for use for reporting on Jenkins CI",

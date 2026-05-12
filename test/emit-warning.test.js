@@ -1,31 +1,44 @@
 import pack from './utils/pack.js';
 
-describe('emit warning', () => {
-  it('should not emit warnings if emitWarning is false', async () => {
-    const compiler = pack('warn', { emitWarning: false });
+describe('warning severity', () => {
+  it('should not emit ESLint warnings if severity.warning is off', async () => {
+    const compiler = pack('warn', { severity: { warning: 'off' } });
 
     const stats = await compiler.runAsync();
     expect(stats.hasWarnings()).toBe(false);
+    expect(stats.hasErrors()).toBe(false);
   });
 
-  it('should emit warnings if emitWarning is undefined', async () => {
+  it('should emit ESLint warnings as Rspack warnings by default', async () => {
     const compiler = pack('warn', {});
 
     const stats = await compiler.runAsync();
     expect(stats.hasWarnings()).toBe(true);
+    expect(stats.hasErrors()).toBe(false);
   });
 
-  it('should emit warnings if emitWarning is true', async () => {
-    const compiler = pack('warn', { emitWarning: true });
+  it('should emit ESLint warnings as Rspack warnings if severity.warning is warning', async () => {
+    const compiler = pack('warn', { severity: { warning: 'warning' } });
 
     const stats = await compiler.runAsync();
     expect(stats.hasWarnings()).toBe(true);
+    expect(stats.hasErrors()).toBe(false);
   });
 
-  it('should emit warnings, but not warnings if emitWarning is true and emitError is false', async () => {
+  it('should emit ESLint warnings as Rspack errors if severity.warning is error', async () => {
+    const compiler = pack('warn', { severity: { warning: 'error' } });
+
+    const stats = await compiler.runAsync();
+    expect(stats.hasWarnings()).toBe(false);
+    expect(stats.hasErrors()).toBe(true);
+    expect(stats.compilation.errors[0].message).toContain('[eslint]');
+  });
+
+  it('should emit ESLint warnings but not ESLint errors if severity.error is off', async () => {
     const compiler = pack('full-of-problems', {
-      emitWarning: true,
-      emitError: false,
+      severity: {
+        error: 'off',
+      },
     });
 
     const stats = await compiler.runAsync();
@@ -33,8 +46,8 @@ describe('emit warning', () => {
     expect(stats.hasErrors()).toBe(false);
   });
 
-  it('should emit warnings and errors if emitWarning is true and emitError is undefined', async () => {
-    const compiler = pack('full-of-problems', { emitWarning: true });
+  it('should emit ESLint warnings and errors by default', async () => {
+    const compiler = pack('full-of-problems', {});
 
     const stats = await compiler.runAsync();
     expect(stats.hasWarnings()).toBe(true);
