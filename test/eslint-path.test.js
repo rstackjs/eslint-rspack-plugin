@@ -15,6 +15,17 @@ describe('eslint path', () => {
     expect(stats.compilation.errors[0].message).toContain('Fake error');
   });
 
+  it('should use eslint from an absolute file path', async () => {
+    const eslintPath = join(import.meta.dirname, 'mock/eslint/index.js');
+
+    const { eslint } = await getESLint({
+      eslintPath,
+      configType: 'flat',
+    });
+
+    expect(eslint).toBeTruthy();
+  });
+
   it('should fail with a clear error when eslintPath does not export loadESLint', async () => {
     const eslintPath = join(import.meta.dirname, 'mock/eslint-no-load');
 

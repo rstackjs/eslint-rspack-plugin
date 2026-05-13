@@ -1,4 +1,5 @@
 import { createRequire } from 'node:module';
+import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import { getESLintOptions } from './options.js';
@@ -62,6 +63,10 @@ async function getESLint(options) {
  * @returns {Promise<Record<string, any>>}
  */
 async function loadESLintModule(specifier) {
+  if (isAbsolutePathSpecifier(specifier)) {
+    return loadResolvedModule(specifier);
+  }
+
   try {
     // Prefer native ESM resolution for package specifiers so conditional
     // exports use the import-compatible entry.
@@ -73,9 +78,25 @@ async function loadESLintModule(specifier) {
 
     // Fall back to CommonJS resolution only for legacy path-style eslintPath
     // values, such as directories that ESM import cannot resolve directly.
-    const resolvedPath = moduleRequire.resolve(specifier);
-    return normalizeModule(await import(pathToFileURL(resolvedPath).href));
+    return loadResolvedModule(specifier);
   }
+}
+
+/**
+ * @param {string} specifier
+ * @returns {Promise<Record<string, any>>}
+ */
+async function loadResolvedModule(specifier) {
+  const resolvedPath = moduleRequire.resolve(specifier);
+  return normalizeModule(await import(pathToFileURL(resolvedPath).href));
+}
+
+/**
+ * @param {string} specifier
+ * @returns {boolean}
+ */
+function isAbsolutePathSpecifier(specifier) {
+  return path.isAbsolute(specifier) || path.win32.isAbsolute(specifier);
 }
 
 /**
