@@ -13,6 +13,7 @@ import { getESLint } from './getESLint.js';
 /** @typedef {{errors?: ESLintError, warnings?: ESLintError, generateReportAsset?: GenerateReport}} Report */
 /** @typedef {() => Promise<Report>} Reporter */
 /** @typedef {(files: string|string[]) => void} Linter */
+/** @typedef {'error' | 'warning'} DiagnosticSeverity */
 
 /**
  * @param {Options} options
@@ -187,17 +188,49 @@ function parseResults(options, results) {
     }
 
     if (messagesByTarget.error.length > 0) {
-      errors.push({ ...file, messages: messagesByTarget.error });
+      errors.push(createSeverityResult(file, 'error', messagesByTarget.error));
     }
 
     if (messagesByTarget.warning.length > 0) {
-      warnings.push({ ...file, messages: messagesByTarget.warning });
+      warnings.push(
+        createSeverityResult(file, 'warning', messagesByTarget.warning),
+      );
     }
   });
 
   return {
     errors,
     warnings,
+  };
+}
+
+/**
+ * @param {LintResult} file
+ * @param {DiagnosticSeverity} severity
+ * @param {LintResult['messages']} messages
+ * @returns {LintResult}
+ */
+function createSeverityResult(file, severity, messages) {
+  const eslintSeverity = /** @type {1 | 2} */ (severity === 'error' ? 2 : 1);
+  const normalizedMessages = messages.map((message) => ({
+    ...message,
+    severity: eslintSeverity,
+  }));
+  const fixableCount = normalizedMessages.filter((message) =>
+    Boolean(message.fix),
+  ).length;
+
+  return {
+    ...file,
+    messages: normalizedMessages,
+    errorCount: severity === 'error' ? normalizedMessages.length : 0,
+    warningCount: severity === 'warning' ? normalizedMessages.length : 0,
+    fatalErrorCount:
+      severity === 'error'
+        ? normalizedMessages.filter((message) => message.fatal).length
+        : 0,
+    fixableErrorCount: severity === 'error' ? fixableCount : 0,
+    fixableWarningCount: severity === 'warning' ? fixableCount : 0,
   };
 }
 

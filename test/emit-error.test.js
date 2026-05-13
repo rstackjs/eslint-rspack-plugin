@@ -30,6 +30,8 @@ describe('error severity', () => {
     expect(stats.hasWarnings()).toBe(true);
     expect(stats.hasErrors()).toBe(false);
     expect(stats.compilation.warnings[0].message).toContain('[eslint]');
+    expect(stats.compilation.warnings[0].message).toContain('3 warnings');
+    expect(stats.compilation.warnings[0].message).not.toContain('3 errors');
   });
 
   it('should emit ESLint errors but not ESLint warnings if severity.warning is off', async () => {
