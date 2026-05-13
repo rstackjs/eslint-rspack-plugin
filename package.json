@@ -56,6 +56,8 @@
     "@types/micromatch": "^4.0.9",
     "@types/node": "^20.14.9",
     "@types/normalize-path": "^3.0.2",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
+    "@typescript-eslint/parser": "^8.59.3",
     "chokidar": "^3.6.0",
     "eslint": "^9.39.4",
     "fs-extra": "^11.2.0",

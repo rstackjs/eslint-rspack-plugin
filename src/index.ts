@@ -6,34 +6,38 @@ import { globSync } from 'tinyglobby';
 import linter from './linter.js';
 import { getOptions } from './options.js';
 import { arrify, parseFiles, parseFoldersToGlobs } from './utils.js';
+import type { Linter, Reporter } from './linter.js';
+import type { Options, ResolvedOptions } from './options.js';
+import type { Compiler, Module, NormalModule, RspackError } from '@rspack/core';
 
 const { isMatch } = micromatch;
-
-/** @typedef {import('@rspack/core').Compiler} Compiler */
-/** @typedef {import('@rspack/core').Module} Module */
-/** @typedef {import('@rspack/core').NormalModule} NormalModule */
-/** @typedef {import('./options.js').Options} Options */
 
 const ESLINT_PLUGIN = 'ESLintRspackPlugin';
 const DEFAULT_FOLDER_TO_EXCLUDE = '**/node_modules/**';
 
 let compilerId = 0;
 
+type RunOptions = Omit<ResolvedOptions, 'resourceQueryExclude'> & {
+  resourceQueryExclude: RegExp[];
+  extensions: string[];
+  files: string[];
+  exclude: string[];
+};
+type CompilationHookWithTaps = Compiler['hooks']['compilation'] & {
+  taps: Array<{ name?: string }>;
+};
+
 class ESLintRspackPlugin {
-  /**
-   * @param {Options} options
-   */
-  constructor(options = {}) {
+  key: string;
+  options: ResolvedOptions;
+
+  constructor(options: Options = {}) {
     this.key = ESLINT_PLUGIN;
     this.options = getOptions(options);
     this.run = this.run.bind(this);
   }
 
-  /**
-   * @param {Compiler} compiler
-   * @returns {void}
-   */
-  apply(compiler) {
+  apply(compiler: Compiler): void {
     // Generate key for each compilation,
     // this differentiates one from the other when being cached.
     this.key = compiler.name || `${this.key}_${(compilerId += 1)}`;
@@ -43,11 +47,12 @@ class ESLintRspackPlugin {
       this.getContext(compiler),
     );
     const resourceQueries = arrify(this.options.resourceQueryExclude || []);
-    const excludedResourceQueries = resourceQueries.map((item) =>
-      item instanceof RegExp ? item : new RegExp(item),
+    const excludedResourceQueries = resourceQueries.map(
+      (item: RegExp | string) =>
+        item instanceof RegExp ? item : new RegExp(item),
     );
 
-    const options = {
+    const options: RunOptions = {
       ...this.options,
       exclude: excludedFiles,
       resourceQueryExclude: excludedResourceQueries,
@@ -81,31 +86,27 @@ class ESLintRspackPlugin {
     });
   }
 
-  /**
-   * @param {Compiler} compiler
-   * @param {Omit<Options, 'resourceQueryExclude'> & {resourceQueryExclude: RegExp[]}} options
-   * @param {string[]} wanted
-   * @param {string[]} exclude
-   */
-  async run(compiler, options, wanted, exclude) {
-    // @ts-ignore
-    const isCompilerHooked = compiler.hooks.compilation.taps.find(
+  async run(
+    compiler: Compiler,
+    options: RunOptions,
+    wanted: string[],
+    exclude: string[],
+  ): Promise<void> {
+    const compilationHook = compiler.hooks
+      .compilation as CompilationHookWithTaps;
+    const isCompilerHooked = compilationHook.taps.find(
       ({ name }) => name === this.key,
     );
 
     if (isCompilerHooked) return;
 
     compiler.hooks.compilation.tap(this.key, async (compilation) => {
-      /** @type {import('./linter.js').Linter} */
-      let lint;
-      /** @type {import('./linter.js').Reporter} */
-      let report;
+      let lint: Linter;
+      let report: Reporter;
 
-      /** @type {string[]} */
-      const files = [];
+      const files: string[] = [];
 
-      /** @type {Error | null} */
-      let linterError = null;
+      let linterError: Error | null = null;
       let hasLinted = false;
 
       const shouldLintAllFiles = this.options.lintAllFiles;
@@ -119,7 +120,7 @@ class ESLintRspackPlugin {
         })
         .catch((e) => {
           linterError = e;
-          compilation.errors.push(e);
+          compilation.errors.push(e as RspackError);
         });
 
       // Register compilation hooks before waiting for linter setup.
@@ -141,11 +142,8 @@ class ESLintRspackPlugin {
       // compilation.hooks.succeedModule.tap(this.key, addFile);
       // compilation.hooks.stillValidModule.tap(this.key, addFile);
 
-      /**
-       * @param {Module} module
-       */
-      function addFile(module) {
-        const { resource } = /** @type {NormalModule} */ (module);
+      function addFile(module: Module): void {
+        const { resource } = module as NormalModule;
 
         if (!resource) return;
 
@@ -173,23 +171,21 @@ class ESLintRspackPlugin {
             }
           }
         } else if (this.options.lintDirtyModulesOnly) {
-          for (const m of /** @type {Set<Module>} */ (
-            compilation.builtModules
-          )) {
+          for (const m of compilation.builtModules) {
             addFile(m);
           }
         }
         setupLinter.then(scheduleLint);
       });
 
-      function scheduleLint() {
+      function scheduleLint(): void {
         if (linterError || hasLinted || files.length < 1) return;
 
         hasLinted = true;
         lint(files);
       }
 
-      async function processResults() {
+      async function processResults(): Promise<void> {
         await setupLinter;
 
         if (linterError) {
@@ -201,13 +197,11 @@ class ESLintRspackPlugin {
         const { errors, warnings, generateReportAsset } = await report();
 
         if (warnings) {
-          // @ts-ignore
-          compilation.warnings.push(warnings);
+          compilation.warnings.push(warnings as RspackError);
         }
 
         if (errors) {
-          // @ts-ignore
-          compilation.errors.push(errors);
+          compilation.errors.push(errors as RspackError);
         }
 
         if (generateReportAsset) await generateReportAsset(compilation);
@@ -215,12 +209,7 @@ class ESLintRspackPlugin {
     });
   }
 
-  /**
-   *
-   * @param {Compiler} compiler
-   * @returns {string}
-   */
-  getContext(compiler) {
+  getContext(compiler: Compiler): string {
     const compilerContext = String(compiler.options.context);
     const optionContext = this.options.context;
 

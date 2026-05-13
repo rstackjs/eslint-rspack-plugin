@@ -1,8 +1,5 @@
 export default class ESLintError extends Error {
-  /**
-   * @param {string=} messages
-   */
-  constructor(messages) {
+  constructor(messages?: string) {
     super(`[eslint] ${messages}`);
     this.name = 'ESLintError';
     this.stack = '';
