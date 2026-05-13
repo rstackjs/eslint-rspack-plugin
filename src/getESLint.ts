@@ -3,22 +3,24 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import { getESLintOptions } from './options.js';
+import type { Options } from './options.js';
+import type { ESLint as ESLintType } from 'eslint';
 
-/** @typedef {import('eslint').ESLint} ESLint */
-/** @typedef {import('eslint').ESLint.Options} ESLintOptions */
-/** @typedef {import('eslint').ESLint.LintResult} LintResult */
-/** @typedef {import('./options.js').Options} Options */
-/** @typedef {(files: string|string[]) => Promise<LintResult[]>} LintTask */
-/** @typedef {{eslint: ESLint, lintFiles: LintTask}} Linter */
-/** @typedef {{new (arg0: ESLintOptions): ESLint, outputFixes: (arg0: LintResult[]) => Promise<void>}} ESLintClass */
+type ESLintOptions = ESLintType.Options;
+type LintResult = ESLintType.LintResult;
+type LintTask = (files: string | string[]) => Promise<LintResult[]>;
+type Linter = { eslint: ESLintType; lintFiles: LintTask };
+type ESLintClass = {
+  new (arg0: ESLintOptions): ESLintType;
+  outputFixes: (arg0: LintResult[]) => Promise<void>;
+};
+type ESLintModule = Record<string, unknown> & {
+  loadESLint?: (arg0: { useFlatConfig: boolean }) => Promise<ESLintClass>;
+};
 
 const moduleRequire = createRequire(import.meta.url);
 
-/**
- * @param {Options} options
- * @returns {Promise<Linter>}
- */
-async function getESLint(options) {
+async function getESLint(options: Options): Promise<Linter> {
   const eslintModule = await loadESLintModule(options.eslintPath || 'eslint');
 
   if (typeof eslintModule.loadESLint !== 'function') {
@@ -30,19 +32,13 @@ async function getESLint(options) {
   const eslintOptions = getESLintOptions(options);
   const fix = Boolean(eslintOptions && eslintOptions.fix);
 
-  /** @type {ESLintClass} */
   const ESLint = await eslintModule.loadESLint({
     useFlatConfig: options.configType === 'flat',
   });
 
-  /** @type {ESLint} */
   const eslint = new ESLint(eslintOptions);
 
-  /**
-   * @param {string|string[]} files
-   * @returns {Promise<LintResult[]>}
-   */
-  async function lintFiles(files) {
+  async function lintFiles(files: string | string[]): Promise<LintResult[]> {
     const results = await eslint.lintFiles(files);
 
     if (fix) {
@@ -58,11 +54,7 @@ async function getESLint(options) {
   };
 }
 
-/**
- * @param {string} specifier
- * @returns {Promise<Record<string, any>>}
- */
-async function loadESLintModule(specifier) {
+async function loadESLintModule(specifier: string): Promise<ESLintModule> {
   if (isAbsolutePathSpecifier(specifier)) {
     return loadResolvedModule(specifier);
   }
@@ -82,31 +74,19 @@ async function loadESLintModule(specifier) {
   }
 }
 
-/**
- * @param {string} specifier
- * @returns {Promise<Record<string, any>>}
- */
-async function loadResolvedModule(specifier) {
+async function loadResolvedModule(specifier: string): Promise<ESLintModule> {
   const resolvedPath = moduleRequire.resolve(specifier);
   return normalizeModule(await import(pathToFileURL(resolvedPath).href));
 }
 
-/**
- * @param {string} specifier
- * @returns {boolean}
- */
-function isAbsolutePathSpecifier(specifier) {
+function isAbsolutePathSpecifier(specifier: string): boolean {
   return path.isAbsolute(specifier) || path.win32.isAbsolute(specifier);
 }
 
-/**
- * @param {unknown} error
- * @returns {boolean}
- */
-function isImportResolutionError(error) {
+function isImportResolutionError(error: unknown): boolean {
   if (!error || typeof error !== 'object') return false;
 
-  const { code } = /** @type {{ code?: string }} */ (error);
+  const { code } = error as { code?: string };
   return (
     code === 'ERR_MODULE_NOT_FOUND' ||
     code === 'ERR_UNSUPPORTED_DIR_IMPORT' ||
@@ -114,14 +94,13 @@ function isImportResolutionError(error) {
   );
 }
 
-/**
- * @param {Record<string, any>} module
- * @returns {Record<string, any>}
- */
-function normalizeModule(module) {
+function normalizeModule(module: Record<string, unknown>): ESLintModule {
   return module.default && typeof module.default === 'object'
-    ? { ...module.default, ...module }
-    : module;
+    ? ({
+        ...(module.default as Record<string, unknown>),
+        ...module,
+      } as ESLintModule)
+    : (module as ESLintModule);
 }
 
 export { getESLint };
