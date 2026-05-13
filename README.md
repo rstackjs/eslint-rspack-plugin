@@ -167,12 +167,43 @@ Specify the files and/or directories to exclude. Must be relative to `options.co
 - Type:
 
 ```ts
-type resourceQueryExclude = RegExp | Array<RegExp>;
+type resourceQueryExclude = string | RegExp | Array<string | RegExp>;
 ```
 
 - Default: `[]`
 
-Specify the resource query to exclude.
+Exclude modules from linting when their resource query matches one of the
+provided patterns. The resource query is the part after `?` in an import, such
+as `raw` in `import './file.js?raw'`.
+
+String values are converted to `RegExp`. Use anchors when you need an exact
+match.
+
+```js
+import ESLintPlugin from 'eslint-rspack-plugin';
+
+export default {
+  plugins: [
+    new ESLintPlugin({
+      resourceQueryExclude: 'raw',
+    }),
+  ],
+};
+```
+
+You can also mix strings and `RegExp` values:
+
+```js
+import ESLintPlugin from 'eslint-rspack-plugin';
+
+export default {
+  plugins: [
+    new ESLintPlugin({
+      resourceQueryExclude: [/media/, '^raw$'],
+    }),
+  ],
+};
+```
 
 ### `files`
 
