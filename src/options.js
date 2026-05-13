@@ -1,5 +1,3 @@
-import schema from './options.json' with { type: 'json' };
-
 /** @typedef {import("eslint").ESLint.Options} ESLintOptions */
 /** @typedef {import('eslint').ESLint.LintResult} LintResult */
 /** @typedef {import('eslint').ESLint.LintResultData} LintResultData */
@@ -55,6 +53,20 @@ const removedOptionMessages = {
   quiet: "Use `severity.warning: 'off'` to hide ESLint warnings.",
 };
 
+const pluginOnlyOptionKeys = [
+  'configType',
+  'context',
+  'eslintPath',
+  'exclude',
+  'resourceQueryExclude',
+  'files',
+  'formatter',
+  'lintDirtyModulesOnly',
+  'lintAllFiles',
+  'severity',
+  'outputReport',
+];
+
 /**
  * @param {Options} pluginOptions
  * @returns {PluginOptions}
@@ -95,11 +107,7 @@ function getESLintOptions(loaderOptions) {
 
   const eslintOptions = { ...loaderOptions };
 
-  // Keep the fix option because it is common to both the loader and ESLint.
-  const { fix, extensions, ...eslintOnlyOptions } = schema.properties;
-
-  // No need to guard the for-in because schema.properties has hardcoded keys.
-  for (const option in eslintOnlyOptions) {
+  for (const option of pluginOnlyOptionKeys) {
     // @ts-ignore
     delete eslintOptions[option];
   }
