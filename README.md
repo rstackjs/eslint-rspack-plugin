@@ -14,6 +14,11 @@ This plugin uses [ESLint](https://eslint.org/) to find and fix problems in your 
 
 > You may find it more efficient to avoid using the `eslint-rspack-plugin`, as running ESLint during the build can lead to longer build times. A separate lint command usually offers a better workflow.
 
+## Versions
+
+- 5.x: Supports ESLint 9/10, see [v4 -> v5](https://github.com/rstackjs/eslint-rspack-plugin/blob/master/docs/migrate-v4-to-v5.md) for migration guide.
+- 4.x: Supports ESLint 8/9/10, see [4.x README](https://github.com/rstackjs/eslint-rspack-plugin/tree/v4.x) for usage guide.
+
 ## Getting Started
 
 To begin, you'll need to install `eslint-rspack-plugin`:
