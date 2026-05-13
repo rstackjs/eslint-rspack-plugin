@@ -23,6 +23,8 @@ export type SeverityOptions = {
   warning?: Severity;
 };
 
+export type ResourceQueryExclude = string | RegExp | Array<string | RegExp>;
+
 export type PluginOptions = {
   context?: string;
   eslintPath?: string;
@@ -35,7 +37,7 @@ export type PluginOptions = {
   lintAllFiles?: boolean;
   severity?: SeverityOptions;
   outputReport?: OutputReport;
-  resourceQueryExclude?: RegExp | RegExp[];
+  resourceQueryExclude?: ResourceQueryExclude;
   configType?: string;
 };
 
@@ -46,7 +48,7 @@ export type ResolvedOptions = Options & {
   cacheLocation: string;
   configType: string;
   extensions: string | string[];
-  resourceQueryExclude: RegExp | RegExp[];
+  resourceQueryExclude: ResourceQueryExclude;
   severity: Required<SeverityOptions>;
 };
 
