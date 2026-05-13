@@ -8,16 +8,14 @@
   <a href="https://npmcharts.com/compare/eslint-rspack-plugin?minimal=true"><img src="https://img.shields.io/npm/dm/eslint-rspack-plugin.svg?style=flat-square&colorA=564341&colorB=EDED91" alt="downloads" /></a>
 </p>
 
-> This plugin was forked from the excellent [eslint-webpack-plugin](https://github.com/webpack/eslint-webpack-plugin/). Many thanks to the original authors for their great work.
-
-This plugin uses [ESLint](https://eslint.org/) to find and fix problems in your JavaScript code.
+This plugin runs [ESLint](https://eslint.org/) during Rspack compilation to detect issues in your JavaScript code. In watch mode, it re-runs ESLint on files changed by Rspack.
 
 > You may find it more efficient to avoid using the `eslint-rspack-plugin`, as running ESLint during the build can lead to longer build times. A separate lint command usually offers a better workflow.
 
 ## Versions
 
 - 5.x: Supports ESLint 9/10, see [v4 -> v5](https://github.com/rstackjs/eslint-rspack-plugin/blob/master/docs/migrate-v4-to-v5.md) for migration guide.
-- 4.x: Supports ESLint 8/9/10, see [4.x README](https://github.com/rstackjs/eslint-rspack-plugin/tree/v4.x) for usage guide.
+- 4.x: Supports ESLint 8/9/10, see [4.x README](https://github.com/rstackjs/eslint-rspack-plugin/tree/v4.x#eslint-rspack-plugin) for usage guide.
 
 ## Getting Started
 
@@ -350,9 +348,9 @@ The `filePath` is an absolute path or relative to the Rspack config: `output.pat
 You can pass in a different `formatter` for the output file,
 if none is passed in the default/configured formatter will be used.
 
-## Changelog
+## Credits
 
-[Changelog](CHANGELOG.md)
+This plugin was forked from the excellent [eslint-webpack-plugin](https://github.com/webpack/eslint-webpack-plugin/). Many thanks to the original authors for their great work.
 
 ## License
 
