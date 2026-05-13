@@ -1,34 +1,32 @@
 import pack from './utils/pack.js';
 
-describe('fail on error', () => {
-  it('should fail the build by default outside development mode', async () => {
+describe('error handling', () => {
+  it('should report ESLint errors as Rspack errors outside development mode', async () => {
     const compiler = pack('error', {}, { mode: 'production' });
 
-    await expect(compiler.runAsync()).rejects.toThrow();
+    const stats = await compiler.runAsync();
+    expect(stats.hasErrors()).toBe(true);
+    expect(stats.compilation.errors[0].message).toContain('[eslint]');
   });
 
-  it('should not fail the build by default in development mode', async () => {
+  it('should report ESLint errors as Rspack errors in development mode', async () => {
     const compiler = pack('error');
 
     const stats = await compiler.runAsync();
     expect(stats.hasErrors()).toBe(true);
   });
 
-  it('should fail the build when failOnError is enabled', async () => {
-    const compiler = pack('error', { failOnError: true });
-
-    await expect(compiler.runAsync()).rejects.toThrow();
-  });
-
-  it('should not fail the build when failOnError is disabled', async () => {
-    const compiler = pack('error', { failOnError: false });
+  it('should report ESLint errors as Rspack warnings when severity.error is warning', async () => {
+    const compiler = pack('error', { severity: { error: 'warning' } });
 
     const stats = await compiler.runAsync();
-    expect(stats.hasErrors()).toBe(true);
+    expect(stats.hasWarnings()).toBe(true);
+    expect(stats.hasErrors()).toBe(false);
+    expect(stats.compilation.warnings[0].message).toContain('[eslint]');
   });
 
   it('should correctly identifies a success', async () => {
-    const compiler = pack('good', { failOnError: true });
+    const compiler = pack('good', { severity: { error: 'error' } });
 
     const stats = await compiler.runAsync();
     expect(stats.hasErrors()).toBe(false);

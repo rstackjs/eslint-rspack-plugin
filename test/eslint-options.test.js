@@ -1,4 +1,4 @@
-import { getESLintOptions } from '../src/options.js';
+import { getESLintOptions, getOptions } from '../src/options.js';
 
 describe('eslint options', () => {
   it('should filter loader options', () => {
@@ -17,11 +17,10 @@ describe('eslint options', () => {
       eslintPath: 'some/place/where/eslint/lives',
       formatter: 'table',
       fix: true,
-      emitError: false,
-      emitWarning: false,
-      failOnError: true,
-      failOnWarning: true,
-      quiet: false,
+      severity: {
+        error: 'warning',
+        warning: 'off',
+      },
       outputReport: true,
     };
     expect(getESLintOptions(options)).toStrictEqual({
@@ -37,5 +36,14 @@ describe('eslint options', () => {
     expect(getESLintOptions(options)).toStrictEqual({
       concurrency: 2,
     });
+  });
+
+  it('should reject removed plugin options with migration guidance', () => {
+    expect(() => getOptions({ emitError: false })).toThrow(
+      "Use `severity.error: 'off'`",
+    );
+    expect(() => getESLintOptions({ failOnWarning: true })).toThrow(
+      "Use `severity.warning: 'error'`",
+    );
   });
 });

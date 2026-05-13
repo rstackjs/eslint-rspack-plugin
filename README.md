@@ -252,72 +252,91 @@ Lint all files matching the `files` and `extensions` patterns, regardless of whe
 >
 > Enabling this option will run a single ESLint instance to check all files rather than running separate ESLint instances for each environment.
 
-### Errors and Warning
-
-**By default the plugin will auto adjust error reporting depending on eslint errors/warnings counts.**
-You can still force this behavior by using `emitError` **or** `emitWarning` options:
-
-#### `emitError`
+### `severity`
 
 - Type:
 
 ```ts
-type emitError = boolean;
-```
-
-- Default: `true`
-
-The errors found will always be emitted, to disable set to `false`.
-
-#### `emitWarning`
-
-- Type:
-
-```ts
-type emitWarning = boolean;
-```
-
-- Default: `true`
-
-The warnings found will always be emitted, to disable set to `false`.
-
-#### `failOnError`
-
-- Type:
-
-```ts
-type failOnError = boolean;
+type severity = {
+  error?: 'error' | 'warning' | 'off';
+  warning?: 'error' | 'warning' | 'off';
+};
 ```
 
 - Default:
-  - `false` when [mode](https://rspack.rs/config/mode) is `development`
-  - `true` otherwise
 
-Will cause the module build to fail if there are any errors, to disable set to `false`.
-
-#### `failOnWarning`
-
-- Type:
-
-```ts
-type failOnWarning = boolean;
+```js
+{
+  error: 'error',
+  warning: 'warning',
+}
 ```
 
-- Default: `false`
+Controls how ESLint diagnostics are emitted to Rspack.
 
-Will cause the module build to fail if there are any warnings, if set to `true`.
+Diagnostics emitted as `compilation.errors` are treated as build errors by
+Rspack and make the build fail. Diagnostics emitted as `compilation.warnings`
+are printed as warnings and do not fail the build.
 
-#### `quiet`
+- `error: 'error'`: emit ESLint errors as `compilation.errors`.
+- `error: 'warning'`: emit ESLint errors as `compilation.warnings`.
+- `error: 'off'`: do not emit ESLint errors.
+- `warning: 'warning'`: emit ESLint warnings as `compilation.warnings`.
+- `warning: 'error'`: emit ESLint warnings as `compilation.errors`.
+- `warning: 'off'`: do not emit ESLint warnings.
 
-- Type:
+Examples:
 
-```ts
-type quiet = boolean;
+Use the default behavior:
+
+```js
+new ESLintPlugin({
+  severity: {
+    error: 'error',
+    warning: 'warning',
+  },
+});
 ```
 
-- Default: `false`
+Downgrade ESLint errors so they are still shown but do not fail the build:
 
-Will process and report errors only and ignore warnings, if set to `true`.
+```js
+new ESLintPlugin({
+  severity: {
+    error: 'warning',
+  },
+});
+```
+
+Treat ESLint warnings as build errors:
+
+```js
+new ESLintPlugin({
+  severity: {
+    warning: 'error',
+  },
+});
+```
+
+Ignore ESLint warnings:
+
+```js
+new ESLintPlugin({
+  severity: {
+    warning: 'off',
+  },
+});
+```
+
+Ignore ESLint errors:
+
+```js
+new ESLintPlugin({
+  severity: {
+    error: 'off',
+  },
+});
+```
 
 #### `outputReport`
 

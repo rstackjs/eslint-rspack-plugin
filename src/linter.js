@@ -13,6 +13,7 @@ import { getESLint } from './getESLint.js';
 /** @typedef {{errors?: ESLintError, warnings?: ESLintError, generateReportAsset?: GenerateReport}} Report */
 /** @typedef {() => Promise<Report>} Reporter */
 /** @typedef {(files: string|string[]) => void} Linter */
+/** @typedef {'error' | 'warning'} DiagnosticSeverity */
 
 /**
  * @param {Options} options
@@ -159,26 +160,41 @@ function parseResults(options, results) {
 
   /** @type {LintResult[]} */
   const warnings = [];
+  /** @type {{error: 'error' | 'warning' | 'off', warning: 'error' | 'warning' | 'off'}} */
+  const severity = {
+    error: 'error',
+    warning: 'warning',
+    ...options.severity,
+  };
 
   results.forEach((file) => {
-    if (fileHasErrors(file)) {
-      const messages = file.messages.filter(
-        (message) => options.emitError && message.severity === 2,
-      );
+    /** @type {Record<'error' | 'warning', LintResult['messages']>} */
+    const messagesByTarget = {
+      error: [],
+      warning: [],
+    };
 
-      if (messages.length > 0) {
-        errors.push({ ...file, messages });
+    for (const message of file.messages) {
+      const target =
+        message.severity === 2
+          ? severity.error
+          : message.severity === 1
+            ? severity.warning
+            : 'off';
+
+      if (target === 'error' || target === 'warning') {
+        messagesByTarget[target].push(message);
       }
     }
 
-    if (fileHasWarnings(file)) {
-      const messages = file.messages.filter(
-        (message) => options.emitWarning && message.severity === 1,
-      );
+    if (messagesByTarget.error.length > 0) {
+      errors.push(createSeverityResult(file, 'error', messagesByTarget.error));
+    }
 
-      if (messages.length > 0) {
-        warnings.push({ ...file, messages });
-      }
+    if (messagesByTarget.warning.length > 0) {
+      warnings.push(
+        createSeverityResult(file, 'warning', messagesByTarget.warning),
+      );
     }
   });
 
@@ -190,18 +206,32 @@ function parseResults(options, results) {
 
 /**
  * @param {LintResult} file
- * @returns {boolean}
+ * @param {DiagnosticSeverity} severity
+ * @param {LintResult['messages']} messages
+ * @returns {LintResult}
  */
-function fileHasErrors(file) {
-  return file.errorCount > 0;
-}
+function createSeverityResult(file, severity, messages) {
+  const eslintSeverity = /** @type {1 | 2} */ (severity === 'error' ? 2 : 1);
+  const normalizedMessages = messages.map((message) => ({
+    ...message,
+    severity: eslintSeverity,
+  }));
+  const fixableCount = normalizedMessages.filter((message) =>
+    Boolean(message.fix),
+  ).length;
 
-/**
- * @param {LintResult} file
- * @returns {boolean}
- */
-function fileHasWarnings(file) {
-  return file.warningCount > 0;
+  return {
+    ...file,
+    messages: normalizedMessages,
+    errorCount: severity === 'error' ? normalizedMessages.length : 0,
+    warningCount: severity === 'warning' ? normalizedMessages.length : 0,
+    fatalErrorCount:
+      severity === 'error'
+        ? normalizedMessages.filter((message) => message.fatal).length
+        : 0,
+    fixableErrorCount: severity === 'error' ? fixableCount : 0,
+    fixableWarningCount: severity === 'warning' ? fixableCount : 0,
+  };
 }
 
 /**

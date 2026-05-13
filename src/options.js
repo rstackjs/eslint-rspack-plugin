@@ -17,22 +17,26 @@ import schema from './options.json' with { type: 'json' };
  * @property {string|FormatterFunction=} formatter
  */
 
+/** @typedef {'error' | 'warning' | 'off'} Severity */
+
+/**
+ * @typedef {Object} SeverityOptions
+ * @property {Severity=} error
+ * @property {Severity=} warning
+ */
+
 /**
  * @typedef {Object} PluginOptions
  * @property {string=} context
- * @property {boolean=} emitError
- * @property {boolean=} emitWarning
  * @property {string=} eslintPath
  * @property {string|string[]=} exclude
  * @property {string|string[]=} extensions
- * @property {boolean=} failOnError
- * @property {boolean=} failOnWarning
  * @property {string|string[]=} files
  * @property {boolean=} fix
  * @property {string|FormatterFunction=} formatter
  * @property {boolean=} lintDirtyModulesOnly
  * @property {boolean=} lintAllFiles
- * @property {boolean=} quiet
+ * @property {SeverityOptions=} severity
  * @property {OutputReport=} outputReport
  * @property {RegExp|RegExp[]=} resourceQueryExclude
  * @property {string=} configType
@@ -40,21 +44,43 @@ import schema from './options.json' with { type: 'json' };
 
 /** @typedef {PluginOptions & ESLintOptions} Options */
 
+/** @type {Record<string, string>} */
+const removedOptionMessages = {
+  emitError: "Use `severity.error: 'off'` to hide ESLint errors.",
+  emitWarning: "Use `severity.warning: 'off'` to hide ESLint warnings.",
+  failOnError:
+    "ESLint errors are emitted as Rspack errors by default. Use `severity.error: 'warning'` to keep ESLint error output without failing the build.",
+  failOnWarning:
+    "Use `severity.warning: 'error'` to emit ESLint warnings as Rspack errors.",
+  quiet: "Use `severity.warning: 'off'` to hide ESLint warnings.",
+};
+
 /**
  * @param {Options} pluginOptions
  * @returns {PluginOptions}
  */
 function getOptions(pluginOptions) {
+  assertNoRemovedOptions(pluginOptions);
+
+  /** @type {{error: Severity, warning: Severity}} */
+  const defaultSeverity = {
+    error: 'error',
+    warning: 'warning',
+  };
+  /** @type {{error: Severity, warning: Severity}} */
+  const severity = {
+    ...defaultSeverity,
+    ...pluginOptions.severity,
+  };
+
   const options = {
     cache: true,
     cacheLocation: 'node_modules/.cache/eslint-rspack-plugin/.eslintcache',
     configType: 'flat',
     extensions: 'js',
-    emitError: true,
-    emitWarning: true,
     resourceQueryExclude: [],
     ...pluginOptions,
-    ...(pluginOptions.quiet ? { emitError: true, emitWarning: false } : {}),
+    severity,
   };
 
   return options;
@@ -65,6 +91,8 @@ function getOptions(pluginOptions) {
  * @returns {ESLintOptions}
  */
 function getESLintOptions(loaderOptions) {
+  assertNoRemovedOptions(loaderOptions);
+
   const eslintOptions = { ...loaderOptions };
 
   // Keep the fix option because it is common to both the loader and ESLint.
@@ -82,6 +110,30 @@ function getESLintOptions(loaderOptions) {
   }
 
   return eslintOptions;
+}
+
+/**
+ * @param {object} options
+ * @returns {void}
+ */
+function assertNoRemovedOptions(options) {
+  const removedOptions = Object.keys(removedOptionMessages).filter((option) =>
+    Object.prototype.hasOwnProperty.call(options, option),
+  );
+
+  if (removedOptions.length < 1) return;
+
+  const details = removedOptions.map(
+    (option) => `- \`${option}\` was removed. ${removedOptionMessages[option]}`,
+  );
+
+  throw new Error(
+    [
+      'eslint-rspack-plugin received removed options.',
+      ...details,
+      'Use the `severity` option to control ESLint diagnostic output.',
+    ].join('\n'),
+  );
 }
 
 export { getOptions, getESLintOptions };

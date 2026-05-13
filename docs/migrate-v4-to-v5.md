@@ -88,8 +88,85 @@ Use a number for an explicit worker count. If you use ESLint 9.0-9.33, or if you
 
 When you enable `concurrency`, ESLint options must support structured cloning. If you pass functions or complex plugin objects through ESLint options, leave `concurrency` off or move that configuration into your ESLint config file.
 
-### `failOnError` Follows Compiler Mode
+### `severity` Replaces Emit and Fail Options
 
-In v4, `failOnError` defaulted to `true`. In v5, it defaults to `false` when [mode](https://rspack.rs/config/mode) is `development`, and `true` otherwise.
+The `emitError`, `emitWarning`, `failOnError`, `failOnWarning`, and `quiet`
+options were removed. Use the new `severity` option to choose how ESLint
+diagnostics are emitted to Rspack.
 
-Set `failOnError: true` explicitly if development builds should still fail on ESLint errors.
+By default, ESLint errors are emitted as Rspack errors and ESLint warnings are
+emitted as Rspack warnings:
+
+```js
+new ESLintPlugin({
+  severity: {
+    error: 'error',
+    warning: 'warning',
+  },
+});
+```
+
+#### `emitError: false`
+
+Use `severity.error: 'off'` to hide ESLint errors:
+
+```js
+// v4
+new ESLintPlugin({ emitError: false });
+
+// v5
+new ESLintPlugin({ severity: { error: 'off' } });
+```
+
+#### `emitWarning: false`
+
+Use `severity.warning: 'off'` to hide ESLint warnings:
+
+```js
+// v4
+new ESLintPlugin({ emitWarning: false });
+
+// v5
+new ESLintPlugin({ severity: { warning: 'off' } });
+```
+
+#### `quiet: true`
+
+Use `severity.warning: 'off'` to keep ESLint errors and hide ESLint warnings:
+
+```js
+// v4
+new ESLintPlugin({ quiet: true });
+
+// v5
+new ESLintPlugin({ severity: { warning: 'off' } });
+```
+
+#### `failOnWarning: true`
+
+Use `severity.warning: 'error'` to emit ESLint warnings as Rspack errors:
+
+```js
+// v4
+new ESLintPlugin({ failOnWarning: true });
+
+// v5
+new ESLintPlugin({ severity: { warning: 'error' } });
+```
+
+#### `failOnError`
+
+There is no direct `failOnError` replacement. ESLint errors are emitted as
+Rspack errors by default, so they fail production builds without an extra plugin
+option.
+
+If you want to keep ESLint error output visible without failing the build, emit
+ESLint errors as Rspack warnings instead:
+
+```js
+new ESLintPlugin({
+  severity: {
+    error: 'warning',
+  },
+});
+```
