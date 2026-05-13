@@ -22,39 +22,33 @@ This plugin runs [ESLint](https://eslint.org/) during Rspack compilation to dete
 To begin, you'll need to install `eslint-rspack-plugin`:
 
 ```bash
-npm install eslint-rspack-plugin --save-dev
-```
-
-or
-
-```bash
-yarn add -D eslint-rspack-plugin
-```
-
-or
-
-```bash
+# pnpm
 pnpm add -D eslint-rspack-plugin
+
+# npm
+npm install -D eslint-rspack-plugin
+
+# yarn
+yarn add -D eslint-rspack-plugin
+
+# bun
+bun add -D eslint-rspack-plugin
 ```
 
-> [!NOTE]
->
-> You also need to install `eslint >= 9` from npm, if you haven't already:
+You also need to install `eslint >= 9`, if you haven't already:
 
 ```bash
-npm install eslint --save-dev
-```
-
-or
-
-```bash
-yarn add -D eslint
-```
-
-or
-
-```bash
+# pnpm
 pnpm add -D eslint
+
+# npm
+npm install -D eslint
+
+# yarn
+yarn add -D eslint
+
+# bun
+bun add -D eslint
 ```
 
 Then add the plugin to your Rspack config. For example:
