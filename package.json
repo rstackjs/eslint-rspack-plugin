@@ -35,7 +35,6 @@
     "lint:js": "eslint --cache .",
     "lint:prettier": "prettier -w --list-different .",
     "lint:types": "tsc --pretty --noEmit",
-    "prepare": "pnpm run build",
     "security": "npm audit",
     "start": "rslib -w",
     "pretest": "pnpm run lint",
