@@ -74,7 +74,7 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@11.1.2",
+  "packageManager": "pnpm@11.3.0",
   "engines": {
     "node": ">= 20.19.0"
   }
