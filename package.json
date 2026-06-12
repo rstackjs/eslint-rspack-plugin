@@ -10,7 +10,9 @@
     "rspack"
   ],
   "homepage": "https://github.com/rstackjs/eslint-rspack-plugin",
-  "bugs": "https://github.com/rstackjs/eslint-rspack-plugin/issues",
+  "bugs": {
+    "url": "https://github.com/rstackjs/eslint-rspack-plugin/issues"
+  },
   "repository": "https://github.com/rstackjs/eslint-rspack-plugin",
   "license": "MIT",
   "author": "Ricardo Gobbo de Souza <ricardogobbosouza@yahoo.com.br>",
