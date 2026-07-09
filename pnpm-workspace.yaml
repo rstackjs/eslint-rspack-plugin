@@ -1,2 +1,11 @@
 packages:
   - examples/*
+
+minimumReleaseAgeExclude:
+  - '@rspack/*'
+  - '@rsbuild/*'
+  - '@rslib/*'
+  - '@rstest/*'
+  - '@rslint/*'
+  - '@typescript/*'
+  - typescript
