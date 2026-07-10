@@ -50,21 +50,19 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
-    "@rslib/core": "^0.21.4",
+    "@rslib/core": "^0.23.2",
     "@rspack/core": "^2.0.2",
     "@rstest/core": "^0.9.10",
     "@types/fs-extra": "^11.0.4",
     "@types/micromatch": "^4.0.9",
     "@types/node": "^20.14.9",
     "@types/normalize-path": "^3.0.2",
-    "@typescript-eslint/eslint-plugin": "^8.59.3",
-    "@typescript-eslint/parser": "^8.59.3",
     "chokidar": "^3.6.0",
     "eslint": "^9.39.4",
     "fs-extra": "^11.2.0",
     "globals": "^16.5.0",
     "prettier": "^3.3.3",
-    "typescript": "^5.5.4"
+    "typescript": "^7.0.2"
   },
   "peerDependencies": {
     "@rspack/core": "^1.0.8 || ^2.0.0",

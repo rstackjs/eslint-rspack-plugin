@@ -43,7 +43,7 @@ async function linter(
   try {
     ({ eslint, lintFiles } = await getESLint(options));
   } catch (e) {
-    throw new ESLintError(e.message);
+    throw new ESLintError(e instanceof Error ? e.message : String(e));
   }
 
   return {

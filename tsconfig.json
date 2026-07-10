@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "allowJs": true,
-    "checkJs": true,
-    "strict": true,
-    "allowSyntheticDefaultImports": true,
-    "useUnknownInCatchVariables": false,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "target": "ES2023",
     "types": ["node"],
-    "resolveJsonModule": true,
-    "skipLibCheck": true
+    "lib": ["DOM", "ESNext"],
+    "declaration": true,
+    "isolatedModules": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
   },
-  "include": ["./src/**/*"]
+  "include": ["src"]
 }
