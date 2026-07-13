@@ -1,13 +1,15 @@
 import { join } from 'path';
 import { readFileSync, removeSync } from 'fs-extra';
 import { rspack } from '@rspack/core';
+import { normalizeEol } from '@rstackjs/test-utils';
 import conf from './utils/conf.js';
 import { stripVTControlCharacters } from 'node:util';
 
 const cleanContents = (contents) =>
-  stripVTControlCharacters(contents.split('error.js')[1])
-    .replace(/\r\n/g, '\n')
-    .replace(/\\r\\n/g, '\\n');
+  normalizeEol(stripVTControlCharacters(contents.split('error.js')[1])).replace(
+    /\\r\\n/g,
+    '\\n',
+  );
 
 describe('formatter write', () => {
   it('should write results to relative file with a custom formatter', () =>
