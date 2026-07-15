@@ -40,8 +40,8 @@ importers:
         specifier: ^4.0.9
         version: 4.0.10
       '@types/node':
-        specifier: ^20.14.9
-        version: 20.19.25
+        specifier: ^24.13.3
+        version: 24.13.3
       '@types/normalize-path':
         specifier: ^3.0.2
         version: 3.0.2
@@ -562,6 +562,9 @@ packages:
 
   '@types/node@20.19.25':
     resolution: {integrity: sha512-ZsJzA5thDQMSQO788d7IocwwQbI8B5OPzmqNvpf3NY/+MHDAS759Wo0gd2WQeXYt5AAAQjzcrTVC6SKCuYgoCQ==}
+
+  '@types/node@24.13.3':
+    resolution: {integrity: sha512-Dh8vAsV36ig5wa9OX4pXvMc9D3Veibfw2wix0CUwYODLD8nkj9UsLjASr49nPg+2eKzxhBV+v7L8pXvT4e639Q==}
 
   '@types/normalize-path@3.0.2':
     resolution: {integrity: sha512-DO++toKYPaFn0Z8hQ7Tx+3iT9t77IJo/nDiqTXilgEP+kPNIYdpS9kh3fXuc53ugqwp9pxC1PVjCpV1tQDyqMA==}
@@ -1087,6 +1090,9 @@ packages:
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
+  undici-types@7.18.2:
+    resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
+
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
@@ -1502,6 +1508,10 @@ snapshots:
   '@types/node@20.19.25':
     dependencies:
       undici-types: 6.21.0
+
+  '@types/node@24.13.3':
+    dependencies:
+      undici-types: 7.18.2
 
   '@types/normalize-path@3.0.2': {}
 
@@ -1947,6 +1957,8 @@ snapshots:
       '@typescript/typescript-win32-x64': 7.0.2
 
   undici-types@6.21.0: {}
+
+  undici-types@7.18.2: {}
 
   universalify@2.0.1: {}
 
