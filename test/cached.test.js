@@ -18,11 +18,11 @@ describe('error (cached module)', () => {
     new Promise((resolve, reject) => {
       const config = conf('error');
       config.cache = {
-        type: 'filesystem',
-        idleTimeout: 0,
-        idleTimeoutAfterLargeChanges: 0,
-        idleTimeoutForInitialStore: 0,
-        cacheLocation,
+        type: 'persistent',
+        storage: {
+          type: 'filesystem',
+          directory: cacheLocation,
+        },
       };
 
       const c1 = rspack(config);
@@ -44,10 +44,12 @@ describe('error (cached module)', () => {
               expect(err2).toBeNull();
               expect(stats2.hasWarnings()).toBe(false);
               expect(stats2.hasErrors()).toBe(true);
-              resolve();
             } catch (error) {
               reject(error);
+              return;
             }
+
+            c2.close((error) => (error ? reject(error) : resolve()));
           });
         });
       });

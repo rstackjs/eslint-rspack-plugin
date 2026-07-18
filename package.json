@@ -46,23 +46,23 @@
   "dependencies": {
     "micromatch": "^4.0.8",
     "normalize-path": "^3.0.0",
-    "tinyglobby": "^0.2.15"
+    "tinyglobby": "^0.2.17"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
+    "@eslint/js": "^9.39.5",
     "@rslib/core": "^0.23.2",
-    "@rspack/core": "^2.0.2",
+    "@rspack/core": "^2.1.4",
     "@rstackjs/test-utils": "^0.2.0",
-    "@rstest/core": "^0.9.10",
+    "@rstest/core": "^0.11.2",
     "@types/fs-extra": "^11.0.4",
-    "@types/micromatch": "^4.0.9",
+    "@types/micromatch": "^4.0.10",
     "@types/node": "^24.13.3",
     "@types/normalize-path": "^3.0.2",
     "chokidar": "^3.6.0",
-    "eslint": "^9.39.4",
-    "fs-extra": "^11.2.0",
+    "eslint": "^9.39.5",
+    "fs-extra": "^11.3.6",
     "globals": "^16.5.0",
-    "prettier": "^3.3.3",
+    "prettier": "^3.9.5",
     "typescript": "^7.0.2"
   },
   "peerDependencies": {
@@ -74,7 +74,7 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@11.3.0",
+  "packageManager": "pnpm@11.13.1",
   "engines": {
     "node": ">= 20.19.0"
   }
