@@ -2,11 +2,14 @@ packages:
   - examples/*
 
 minimumReleaseAgeExclude:
-  - '@rspack/*'
   - '@rsbuild/*'
   - '@rslib/*'
-  - '@rstest/*'
   - '@rslint/*'
-  - '@typescript/*'
-  - typescript
+  - '@rspack/*'
+  - '@rspress/*'
   - '@rstackjs/*'
+  - '@rstest/*'
+  - '@typescript/*'
+  - 'rsbuild-plugin-*'
+  - rstack
+  - typescript
