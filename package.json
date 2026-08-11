@@ -58,7 +58,7 @@
     "@types/micromatch": "^4.0.10",
     "@types/node": "^24.13.3",
     "@types/normalize-path": "^3.0.2",
-    "chokidar": "^3.6.0",
+    "chokidar": "^5.0.0",
     "eslint": "^9.39.5",
     "fs-extra": "^11.3.6",
     "globals": "^16.5.0",
