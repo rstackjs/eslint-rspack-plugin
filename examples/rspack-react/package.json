@@ -15,9 +15,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
-    "@rspack/cli": "^2.1.10",
-    "@rspack/core": "^2.1.10",
-    "@rspack/dev-server": "^2.2.0",
+    "@rspack/cli": "^2.2.1",
+    "@rspack/core": "^2.2.1",
+    "@rspack/dev-server": "^2.2.1",
     "@rspack/plugin-react-refresh": "^2.0.2",
     "eslint": "^9.39.5",
     "eslint-rspack-plugin": "workspace:*",
