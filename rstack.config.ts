@@ -21,17 +21,7 @@ define.test({
 
 define.fmt({
   singleQuote: true,
-  tabWidth: 2,
-  useTabs: false,
-  endOfLine: 'lf',
-  ignorePatterns: [
-    'coverage/**',
-    'dist/**',
-    'node_modules/**',
-    'test/fixtures/**',
-    'test/output/**',
-    'CHANGELOG.md',
-  ],
+  ignorePatterns: ['test/fixtures/**', 'CHANGELOG.md'],
 });
 
 define.staged({
