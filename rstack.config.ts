@@ -31,14 +31,7 @@ define.staged({
 
 define.lint(({ globals, js }) => [
   {
-    ignores: [
-      'coverage/**',
-      'dist/**',
-      'node_modules/**',
-      'test/fixtures/**',
-      'test/output/**',
-      'types/**/*',
-    ],
+    ignores: ['test/fixtures/**'],
   },
   {
     ...js.configs.recommended,
