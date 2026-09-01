@@ -2,12 +2,8 @@
 import { define } from 'rstack';
 
 define.lib({
-  lib: [
-    {
-      syntax: 'es2023',
-      dts: true,
-    },
-  ],
+  syntax: 'es2023',
+  dts: true,
 });
 
 define.test({
