@@ -239,7 +239,7 @@ async function loadFormatter(
   if (typeof formatter === 'string') {
     try {
       return eslint.loadFormatter(formatter);
-    } catch (_) {
+    } catch {
       // Load the default formatter.
     }
   }

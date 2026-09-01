@@ -1,4 +1,4 @@
-name: eslint-rspack-plugin
+name: Lint
 
 on:
   push:
@@ -14,27 +14,22 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: Test - ${{ matrix.os }} - Node v${{ matrix.node-version }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        node-version: [22.20.0]
-
-    runs-on: ${{ matrix.os }}
+  lint:
+    runs-on: ubuntu-latest
 
     concurrency:
-      group: test-${{ matrix.os }}-v${{ matrix.node-version }}-${{ github.ref }}
+      group: lint-${{ github.ref }}
       cancel-in-progress: true
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22.20.0
           package-manager-cache: false
 
       - name: Install Pnpm
@@ -42,5 +37,5 @@ jobs:
         with:
           run_install: true
 
-      - name: Run tests
-        run: pnpm run test
+      - name: Run Check
+        run: node --run check
