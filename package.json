@@ -28,20 +28,18 @@
     "dist"
   ],
   "scripts": {
-    "build": "rslib",
-    "bump": "npx bumpp",
-    "fix": "pnpm --filter . run --sequential \"/^fix:(js|prettier)$/\"",
-    "fix:js": "pnpm run lint:js -- --fix",
-    "fix:prettier": "pnpm run lint:prettier -- --write",
-    "lint": "pnpm --filter . run --parallel \"/^lint:.*/\"",
-    "lint:js": "eslint --cache .",
-    "lint:prettier": "prettier -w --list-different .",
-    "lint:types": "tsc --pretty --noEmit",
+    "build": "rs lib",
+    "bump": "pnpx bumpp",
+    "check": "rs check --type-check",
+    "dev": "rs lib -w",
+    "fix": "rs lint --fix && rs fmt",
+    "format": "rs fmt",
+    "lint": "rs lint",
+    "prepare": "rs hooks",
+    "pretest": "pnpm run check",
     "security": "npm audit",
-    "start": "rslib -w",
-    "pretest": "pnpm run lint",
-    "test": "rstest",
-    "test:watch": "rstest --watch"
+    "test": "rs test",
+    "test:watch": "rs test --watch"
   },
   "dependencies": {
     "micromatch": "^4.0.8",
@@ -50,10 +48,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
-    "@rslib/core": "^0.23.2",
     "@rspack/core": "^2.2.1",
     "@rstackjs/test-utils": "^0.2.0",
-    "@rstest/core": "^0.11.11",
     "@types/fs-extra": "^11.0.4",
     "@types/micromatch": "^4.0.10",
     "@types/node": "^24.13.3",
@@ -62,7 +58,7 @@
     "eslint": "^9.39.5",
     "fs-extra": "^11.4.0",
     "globals": "^17.11.0",
-    "prettier": "^3.9.6",
+    "rstack": "^0.7.1",
     "typescript": "^7.0.2"
   },
   "peerDependencies": {
