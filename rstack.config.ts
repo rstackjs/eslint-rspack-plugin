@@ -29,36 +29,10 @@ define.staged({
   '*.{json,md,mdx,css,scss,less,html,yml,yaml}': 'rs fmt',
 });
 
-define.lint(({ globals, js }) => [
-  {
-    ignores: ['test/fixtures/**'],
-  },
+define.lint(({ js }) => [
+  { ignores: ['test/fixtures/**'] },
   {
     ...js.configs.recommended,
     files: ['**/*.js'],
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      globals: {
-        ...globals.node,
-        ...globals.vitest,
-      },
-    },
-    rules: {
-      'global-require': 'off',
-      'no-unused-vars': [
-        'error',
-        {
-          argsIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^_',
-          ignoreRestSiblings: true,
-          varsIgnorePattern: '^_',
-        },
-      ],
-      strict: 'error',
-    },
   },
 ]);
