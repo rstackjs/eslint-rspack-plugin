@@ -29,10 +29,8 @@ define.staged({
   '*.{json,md,mdx,css,scss,less,html,yml,yaml}': 'rs fmt',
 });
 
-define.lint(({ js }) => [
+define.lint(({ js, ts }) => [
   { ignores: ['test/fixtures/**'] },
-  {
-    ...js.configs.recommended,
-    files: ['**/*.js'],
-  },
+  js.configs.recommended,
+  ts.configs.recommended,
 ]);

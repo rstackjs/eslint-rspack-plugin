@@ -62,7 +62,7 @@ function parseFoldersToGlobs(
           }`,
         );
       }
-    } catch (_) {
+    } catch {
       // Return the pattern as is on error.
     }
     return pattern;
