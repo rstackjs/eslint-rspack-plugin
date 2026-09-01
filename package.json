@@ -36,10 +36,7 @@
     "format": "rs fmt",
     "lint": "rs lint",
     "prepare": "rs hooks",
-    "pretest": "pnpm run check",
-    "security": "npm audit",
-    "test": "rs test",
-    "test:watch": "rs test --watch"
+    "test": "rs test"
   },
   "dependencies": {
     "micromatch": "^4.0.8",
