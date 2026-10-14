@@ -46,7 +46,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.5",
     "@rspack/core": "^2.2.9",
-    "@rstackjs/test-utils": "^0.2.0",
+    "@rstackjs/test-utils": "^1.0.0",
     "@types/fs-extra": "^11.0.4",
     "@types/micromatch": "^4.0.10",
     "@types/node": "^24.19.2",
