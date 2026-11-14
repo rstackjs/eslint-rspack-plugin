@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
-    "@rspack/core": "^2.2.9",
+    "@rspack/core": "^2.3.2",
     "@rstackjs/test-utils": "^1.0.0",
     "@types/fs-extra": "^11.0.4",
     "@types/micromatch": "^4.0.10",
@@ -54,8 +54,8 @@
     "chokidar": "^5.0.0",
     "eslint": "^9.39.5",
     "fs-extra": "^11.4.1",
-    "globals": "^17.13.0",
-    "rstack": "^0.8.3",
+    "globals": "^17.14.0",
+    "rstack": "^0.9.1",
     "typescript": "^7.0.2"
   },
   "peerDependencies": {
@@ -67,7 +67,7 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@11.28.5",
+  "packageManager": "pnpm@11.28.11",
   "engines": {
     "node": ">= 20.19.0"
   }
